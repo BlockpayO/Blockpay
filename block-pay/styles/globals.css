@@ -1,48 +1,7 @@
-/* @import url("./fonts/Aeonik-font-download/Aeonik-Regular.otf"); */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/*
-@font-face {
-  font-family: 'Aeonik';
-  src: url('../app/Aeonik-Medium.otf') format('opentype');
-  font-weight: medium;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Aeonik';
-  src: url('../app/Aeonik-Regular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Aeonik';
-  src: url('../app/Aeonik-Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Aeonik';
-  src: url('../app/Aeonik-Bold.otf') format('opentype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Aeonik';
-  src: url('../app/Aeonik-RegularItalic.otf') format('opentype');
-  font-weight: normal;
-  font-style: italic;
-}
-.font-aeonik {
-  font-family: 'Aeonik', sans-serif;
-}
-*/
 
 
 /* 
@@ -50,7 +9,12 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
 */
 
 .bg {
-  background: #1e1e1e;
+  background: #f7f7f7;
+  ;
+}
+
+* {
+  scroll-behavior: smooth;
 }
 
 .main {
@@ -68,6 +32,24 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
   .main {
     padding: 0;
   }
+}
+
+
+.button {
+  color: #1856F3;
+}
+
+.text-color {
+  color: #1856F3;
+  ;
+}
+
+.bg-hover:hover {
+  background-color: #CBC8C8;
+  border-width: .4rem;
+  border-color: #CBC8C8;
+  border-radius: 9px;
+  ;
 }
 
 /* Tailwind Styles */

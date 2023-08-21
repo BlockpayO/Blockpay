@@ -7,7 +7,6 @@ export const metadata = {
   description: 'Your personal subscription manager',
 }
 
-
 const aeonik = localFont({
   src: [
     {
@@ -37,7 +36,6 @@ const aeonik = localFont({
     },
   ],
 })
-
 
 const Layout = () => {
   return (
