@@ -7,9 +7,41 @@ export const metadata = {
   description: 'Your personal subscription manager',
 }
 
+
+const aeonik = localFont({
+  src: [
+    {
+      path: 'fonts//Aeonik-Light.otf',
+      weight: '300',
+      style: 'light',
+    },
+    {
+      path: '/fonts/Aeonik-Regular.otf',
+      weight: 'normal',
+      style: 'normal',
+    },
+    {
+      path: 'fonts/Aeonik-Bold.otf',
+      weight: '700',
+      style: 'bold',
+    },
+    {
+      path: 'fonts//Aeonik-Medium.otf',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: 'fonts/Aeonik-RegularItalic.otf',
+      weight: 'normal',
+      style: 'italic',
+    },
+  ],
+})
+
+
 const Layout = () => {
   return (
-    <html lang="en">
+    <html lang="en" className={aeonik.className}>
       <body>
         <Home />
       </body>
@@ -18,25 +50,3 @@ const Layout = () => {
 }
 
 export default Layout;
-    
-    /*
-    const aeonik = localFont ({
-      src: [
-        {
-          path: './styles/fonts/Aeonik-font-download/Aeonik-Light.otf',
-          weight: '300',
-          style: 'light'
-        },
-        {
-          path: './styles/fonts/Aeonik-font-download/Aeonik-Regular.otf',
-          weight: '400',
-          style: 'normal'
-        },
-        {
-          path: './styles/fonts/Aeonik-font-download/Aeonik-Bold.otf',
-          weight: '700',
-          style: 'bold'
-        },
-      ]
-    })
-    */

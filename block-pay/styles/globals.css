@@ -4,41 +4,45 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/*
 @font-face {
-    font-family: Aeonik-Light;
-    src: url("./fonts/Aeonik-font-download/Aeonik-Light.otf");
+  font-family: 'Aeonik';
+  src: url('../app/Aeonik-Medium.otf') format('opentype');
+  font-weight: medium;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: Aeonik-Air;
-    src: url("./fonts/Aeonik-font-download/Aeonik-Air.otf");
+  font-family: 'Aeonik';
+  src: url('../app/Aeonik-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: Aeonik-Thin;
-    src: url("./fonts/Aeonik-font-download/Aeonik-Thin.otf");
+  font-family: 'Aeonik';
+  src: url('../app/Aeonik-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: Aeonik-Medium;
-    src: url("./fonts/Aeonik-font-download/Aeonik-Medium.otf");
+  font-family: 'Aeonik';
+  src: url('../app/Aeonik-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: Aeonik-Regular;
-    src: url("./fonts/Aeonik-font-download/Aeonik-Regular.otf");
+  font-family: 'Aeonik';
+  src: url('../app/Aeonik-RegularItalic.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
 }
-
-@font-face {
-    font-family: Aeonik-Black;
-    src: url("./fonts/Aeonik-font-download/Aeonik-Black.otf");
+.font-aeonik {
+  font-family: 'Aeonik', sans-serif;
 }
-
-@font-face {
-    font-family: AeonikTRIAL-Bold;
-    src: url("./fonts/Aeonik-font-download/Aeonik-Bold.otf");
-}
+*/
 
 
 /* 
