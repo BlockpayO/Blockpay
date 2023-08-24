@@ -1,4 +1,4 @@
-import {Navbar, Hero, Advantages} from '@/components/index';
+import {Navbar, Hero, Advantages, PaymentLinks} from '@/components/index';
 import '@/styles/globals.css';
 
 export default function Home() {
