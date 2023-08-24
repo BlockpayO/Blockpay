@@ -10,7 +10,7 @@ export const metadata = {
 const aeonik = localFont({
   src: [
     {
-      path: 'fonts//Aeonik-Light.otf',
+      path: '/fonts/Aeonik-Light.otf',
       weight: '300',
       style: 'light',
     },
@@ -20,17 +20,17 @@ const aeonik = localFont({
       style: 'normal',
     },
     {
-      path: 'fonts/Aeonik-Bold.otf',
+      path: '/fonts/Aeonik-Bold.otf',
       weight: '700',
       style: 'bold',
     },
     {
-      path: 'fonts//Aeonik-Medium.otf',
+      path: '/fonts/Aeonik-Medium.otf',
       weight: '500',
       style: 'normal',
     },
     {
-      path: 'fonts/Aeonik-RegularItalic.otf',
+      path: '/fonts/Aeonik-RegularItalic.otf',
       weight: 'normal',
       style: 'italic',
     },
@@ -39,7 +39,7 @@ const aeonik = localFont({
 
 const Layout = () => {
   return (
-    <html lang="en" className={aeonik.className}>
+    <html lang="en" className={`${aeonik.className}`}>
       <body>
         <Home />
       </body>

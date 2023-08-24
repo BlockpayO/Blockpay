@@ -1,5 +1,5 @@
-import {Navbar, Hero} from '@/components';
-import '../styles/globals.css';
+import {Navbar, Hero} from '@/components/index';
+import '@/styles/globals.css';
 
 export default function Home() {
   return (
