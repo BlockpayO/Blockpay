@@ -4,7 +4,7 @@ const TrustedBy = () => {
     return (
     <section>
         <div>
-            <h2>Trusted By</h2>
+            <h2 className="text-color ">Trusted By</h2>
         </div>
         </section>
     )
