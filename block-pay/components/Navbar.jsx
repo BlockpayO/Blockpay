@@ -12,7 +12,7 @@ const Navbar = () => {
             <Image src={""} alt="logo" />
         </Link>
         
-        <ul className='list-none text-[20px] sm:flex hidden justify-end'>
+        <ul className='list-none text-[20px] justify-end'>
             {navLinks.map((nav) => (
                 <li key={nav.id} className="nav-text m-10 justify-end bg-hover">
                     <a href={`/${nav.id}`}>
