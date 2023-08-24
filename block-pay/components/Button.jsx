@@ -1,11 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
-import getstartedbutton from "@/public/assets/images/index"
 
 const Button = () => {
     return (
         <Link href="app/signup/signup-page">
-            <button type="button">
+            <button type="button" className="button">
                 Get Started
             </button>
         </Link>

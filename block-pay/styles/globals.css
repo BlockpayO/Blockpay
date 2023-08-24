@@ -29,6 +29,12 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
 }
 
 
+.text-head {
+  font-size: 47px;
+  font-weight: 500;
+  line-height: 4.375rem;
+}
+
 @media screen and (max-width: 640px) {
   .main {
     padding: 0;
@@ -47,16 +53,41 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
 
 .nav-text {
   color: #4f7df2e6;
-  ;
 }
 
 .text-color {
   color: #1856F3;
-  ;
 }
 
 .bg-hover:hover {
   color: #1856F3;
   text-decoration-line: underline;
   text-decoration-color: #1856F3;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  text-align: center;
+}
+
+.card-icon {
+  width: 75px;
+  height: 75px;
+  justify-items: center;
+}
+
+.card-head{
+  color: #201E1E;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 25px;
+}
+
+.card-desc {
+  color: #171616;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28.8px;
 }

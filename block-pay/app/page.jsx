@@ -1,4 +1,4 @@
-import {Navbar, Hero} from '@/components/index';
+import {Navbar, Hero, Advantages} from '@/components/index';
 import '@/styles/globals.css';
 
 export default function Home() {
@@ -6,6 +6,8 @@ export default function Home() {
     <main className="flex flex-col items-center justify-between py-5 px-24">
       <Navbar/>
       <Hero/>
+      <Advantages/>
+      <PaymentLinks/>
     </main>
   )
-}
+};

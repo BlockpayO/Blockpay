@@ -19,17 +19,17 @@ export const navLinks = [
 
 export const advantages = [
     {
-        img: "shield1",
+        img: shield1,
         id: "Security",
         desc: "Lorem ipsum dolor sit amet consectetur. Consectetur quis suspendisse netus iaculis semper commodo viverra eget. Tincidunt eget vestibulum fringilla urna eget. Leo scelerisque adipiscing dignissim sed commodo mauris mattis tempor. Odio velit turpis ac nibh."
     },
     {
-        img: "shield2",
+        img: shield2,
         id: "Transparency",
         desc: "Lorem ipsum dolor sit amet consectetur. Consectetur quis suspendisse netus iaculis semper commodo viverra eget. Tincidunt eget vestibulum fringilla urna eget. Leo scelerisque adipiscing dignissim sed commodo mauris mattis tempor. Odio velit turpis ac nibh."
     },
     {
-        img: "shield3",
+        img: shield3,
         id: "Low Cost Transaction",
         desc: "Lorem ipsum dolor sit amet consectetur. Consectetur quis suspendisse netus iaculis semper commodo viverra eget. Tincidunt eget vestibulum fringilla urna eget. Leo scelerisque adipiscing dignissim sed commodo mauris mattis tempor. Odio velit turpis ac nibh."
     },
