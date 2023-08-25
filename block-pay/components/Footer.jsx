@@ -2,7 +2,7 @@
 
 const Footer = () => {
     return (
-        <section className="flex flex-col w-full px-24 justify-between items-center mt-[4rem]">
+        <section className="flex flex-col h-[330px] w-full justify-between items-center bg-[#F7F7F7] mt-[4rem]">
             Footer
         </section>
     )
