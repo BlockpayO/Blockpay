@@ -25,5 +25,5 @@ export {
     genpaylink,
     paymentID,
     trustedblank,
-    getPayLink
+    getPayLInk
 };
