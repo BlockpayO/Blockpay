@@ -4,7 +4,7 @@ import { achievements } from "@/public/assets/images/index"
 
 const Achievements = () => {
     return (
-        <section className="flex flex-col w-[1230px] items-center ml-[75px] mt-[4rem] justify-between">
+        <section className="flex flex-col w-[1230px] items-center ml-[75px] mt-[4rem] justify-between px-24">
             <div className="flex flex-row">
                 <div className="flex flex-col justify-center">
                     <h1 className="text-head text-color ">
