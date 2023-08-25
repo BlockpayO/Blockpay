@@ -1,4 +1,4 @@
-import {  shield1, shield2, shield3, ophirImg, achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getPayLInk} from "@/public/assets/images/index"
+import {  shield1, shield2, shield3, ophirImg, achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getPayLink} from "@/public/assets/images/index"
 
 export const navLinks = [
     {
