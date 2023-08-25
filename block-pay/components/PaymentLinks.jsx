@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import Image from "next/image";
-import { cashpayment, paymentID, genpaylink } from "@/public/assets/images/index";
+import { cashpayment, paymentID, genpaylink, getpayName } from "@/public/assets/images/index";
 
 const PaymentLinks = () => {
     return (
@@ -12,8 +12,9 @@ const PaymentLinks = () => {
                 </div>
                 <Image className="w-[600px] h-[440px]" src={cashpayment} alt="cash payment"/>
             </div>
-            <div className="flex flex-col">
-                <Image className="flex-col h-[600px] w-[940px]" src={genpaylink} alt="cash payment"/>
+            <div className="flex flex-row">
+                <Image className="mr-6 h-[480px] w-[469px]" src={getpayName} alt="cash payment"/>
+                <Image className="ml-6 h-[480px] w-[450px]" src={genpaylink} alt="cash payment"/>
             </div>
         </section>
     )

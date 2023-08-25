@@ -7,6 +7,7 @@ import Advantages from "@/components/Advantages";
 import PaymentLinks from "@/components/PaymentLinks";
 import TrustedBy from "@/components/TrustedBy";
 import Footer from "@/components/Footer";
+import Achievements from "@/components/Achievements";
 
 
 export {
@@ -17,5 +18,6 @@ export {
     Advantages,
     TrustedBy,
     PaymentLinks,
-    Footer
+    Footer,
+    Achievements
 };

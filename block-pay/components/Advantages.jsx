@@ -2,18 +2,23 @@ import "@/styles/globals.css";
 import Image from "next/image";
 import { advantages } from "@/constants";
 import { Button } from "@/components/index";
+import "@/styles/globals.css";
 
 const Cards = () => (
-    <div className="card-container pt-6">
+    <div className="flex flex-col pt-6 mb-6">
+        <div className="flex sm:flex-row">
         {advantages.map((advantage, index) => (
-            <div key={index} className="card flex flex-row">
-                <div className="card-icon mx-auto mb-4">
+            <div key={index} className="card mx-4 flex-row justify-between">
+                <div className="card-icon mx-auto">
                     <Image src={advantage.img} alt={advantage.id}/>
                 </div>
-                <h2 className="card-head mb-3">{advantage.id}</h2>
-                <p className="card-desc mb-4">{advantage.desc}</p>
+                <div className="rounded-[15px] w-auto px-[8px] py-[10px] bg-[#F7F7F7]">
+                    <h2 className="card-head mb-3">{advantage.id}</h2>
+                    <p className="card-desc">{advantage.desc}</p>
+                </div>
             </div>
         ))}
+        </div>
     </div>
 );
 

@@ -5,12 +5,14 @@ import ophirImg from "./Ophir Logo.svg";
 import achievements from "./achievements.svg";
 import cashpayment from "./cashpayment.svg";
 import deleteIcon from "./delete.svg";
-import genpaylink from "./generatepaymentlink-img.svg";
+import genpaylink from "./paylink.svg";
+import getpayName from "./payname.svg";
 import paymentID from "./paymentID.svg";
 import paymentlink from "./paymentlink.svg";
 import trustedblank from "./trustedblank-img.svg";
 import heroImg from "./hero.svg";
 import getPayLink from "./getpaymentLInk.svg";
+import logo from "./blockpaylogo.svg";
 
 export {
     shield1,
@@ -25,5 +27,7 @@ export {
     genpaylink,
     paymentID,
     trustedblank,
-    getPayLInk
+    getPayLink,
+    logo,
+    getpayName
 };

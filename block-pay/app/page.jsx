@@ -1,4 +1,4 @@
-import {Navbar, Hero, Advantages, PaymentLinks, TrustedBy} from '@/components/index';
+import {Navbar, Hero, Advantages, PaymentLinks, Achievements, TrustedBy, Footer} from '@/components/index';
 import '@/styles/globals.css';
 
 export default function Home() {
@@ -9,6 +9,8 @@ export default function Home() {
       <Advantages/>
       <TrustedBy/>
       <PaymentLinks/>
+      <Achievements/>
+      <Footer/>
     </main>
   )
 };
