@@ -1,5 +1,4 @@
-import { shield1, shield2, shield3, ophirImg, getstartedbutton, successImg, heroImg,
-} from "@/public/assets/images/index"
+import {  shield1, shield2, shield3, ophirImg, achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getPayLink} from "@/public/assets/images/index"
 
 export const navLinks = [
     {
@@ -35,3 +34,26 @@ export const advantages = [
     },
 ]
 
+
+export const trusts = [
+    {
+        alt: "ophir",
+        img: ophirImg,
+    },
+    {
+        alt: 2,
+        img: trustedblank,
+    },
+    {
+        alt: 3,
+        img: trustedblank,
+    },
+    {
+        alt: 4,
+        img: trustedblank,
+    },
+    {
+        alt: 5,
+        img: trustedblank,
+    },
+]

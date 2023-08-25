@@ -7,7 +7,7 @@ import { navLinks } from "@/constants/index";
 
 const Navbar = () => {
     return (
-    <nav className='w-[1289px] h-[50px] px-24 flex py-1 justify-between items-center'>
+    <nav className='w-[1289px] h-[50px] px-24 flex pt-[4px] justify-between items-center'>
         <Link href="./app/page">
             <Image src={""} alt="logo" />
         </Link>

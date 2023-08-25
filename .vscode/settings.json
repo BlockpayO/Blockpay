@@ -3,8 +3,14 @@
         "Aeonik",
         "Blockpay",
         "Signup",
+        "cashpayment",
+        "genpaylink",
         "getstartedbutton",
         "glassmorphism",
+        "tailwind"
+    ],
+    "cSpell.words": [
+        "generatepayment",
         "tailwind"
     ]
 }

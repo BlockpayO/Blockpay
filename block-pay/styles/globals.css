@@ -91,3 +91,16 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
   font-weight: 400;
   line-height: 28.8px;
 }
+
+.h2 {
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 25px;
+}
+
+/*
+.trust{
+  align-items: start;
+  text-align: left;
+}
+*/
