@@ -13,6 +13,7 @@ import trustedblank from "./trustedblank-img.svg";
 import heroImg from "./hero.svg";
 import getPayLink from "./getpaymentLInk.svg";
 import logo from "./blockpaylogo.svg";
+import bluedash from "./bluedash.svg";
 
 export {
     shield1,
@@ -29,5 +30,6 @@ export {
     trustedblank,
     getPayLink,
     logo,
-    getpayName
+    getpayName,
+    bluedash
 };

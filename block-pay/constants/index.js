@@ -1,4 +1,4 @@
-import {  shield1, shield2, shield3, ophirImg, achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo} from "@/public/assets/images/index"
+import {  shield1, shield2, shield3, ophirImg, achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo, bluedash} from "@/public/assets/images/index"
 
 export const navLinks = [
     {
@@ -56,4 +56,28 @@ export const trusts = [
         alt: 5,
         img: trustedblank,
     },
+]
+
+
+export const successes = [
+    {
+        id: 1,
+        icon: bluedash,
+        desc: "3 Million Accounts created"
+    },
+    {
+        id: 2,
+        icon: bluedash,
+        desc: "20 Countries Reached"
+    },
+    {
+        id: 3,
+        icon: bluedash,
+        desc: "20 Countries Reached"
+    },
+    {
+        id: 4,
+        icon: bluedash,
+        desc: "Over 200k Payments Daily"
+    }
 ]
