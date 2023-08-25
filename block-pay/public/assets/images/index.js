@@ -10,7 +10,7 @@ import paymentID from "./paymentID.svg";
 import paymentlink from "./paymentlink.svg";
 import trustedblank from "./trustedblank-img.svg";
 import heroImg from "./hero.svg";
-import getPayLink from "./getpaymentLink.svg";
+import getPayLink from "./getpaymentLInk.svg";
 
 export {
     shield1,
