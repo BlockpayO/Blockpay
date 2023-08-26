@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Button = () => {
     return (
-        <Link href="app/signup/signup-page">
+        <Link href="/getstarted/signin">
             <button type="button" className="button">
                 Get Started
             </button>

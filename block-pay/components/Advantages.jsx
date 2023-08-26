@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import Image from "next/image";
 import { advantages } from "@/constants";
-import { Button } from "@/components/index";
+import Button from "@/app/Button";
 import "@/styles/globals.css";
 
 const Cards = () => (

@@ -2,7 +2,7 @@ import "@/styles/globals.css"
 import Image from "next/image"
 import { achievements } from "@/public/assets/images/index"
 import { successes } from "@/constants/index"
-import { Button } from "@/components/index"
+import Button from "@/app/Button"
 
 const Achievements = () => {
     return (

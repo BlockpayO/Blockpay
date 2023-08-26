@@ -81,3 +81,19 @@ export const successes = [
         desc: "Over 200k Payments Daily"
     }
 ]
+
+
+export const footerLinks = [
+    {
+        id: 1,
+        name: "Learn More",
+        desc1: "About",
+        desc2: "Light Paper"
+    },
+    {
+        id: 2,
+        name: "Legal",
+        desc1: "Privacy",
+        desc2: "Terms of Use"
+    }
+]
