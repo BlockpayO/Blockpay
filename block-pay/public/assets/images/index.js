@@ -14,6 +14,7 @@ import heroImg from "./hero.svg";
 import getPayLink from "./getpaymentLInk.svg";
 import logo from "./blockpaylogo.svg";
 import bluedash from "./bluedash.svg";
+import backarrow from "./backarrow.svg";
 
 export {
     shield1,
@@ -31,5 +32,6 @@ export {
     getPayLink,
     logo,
     getpayName,
-    bluedash
+    bluedash,
+    backarrow
 };

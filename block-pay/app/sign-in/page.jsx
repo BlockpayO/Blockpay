@@ -1,7 +1,11 @@
 "use client"
 
+import Link from "next/link";
 import { useState } from "react";
 import "@/styles/globals.css"
+import Image from "next/image";
+import { backarrow } from "@/public/assets/images";
+
 
 const SignIn = () => {
     const [name, setName] = useState('');
@@ -14,41 +18,50 @@ const SignIn = () => {
     };
 
     return (
-        <div className="justify-between items-center flex flex-col my-auto">
-            <form onSubmit={handleSubmit} className="justify-between items-center flex flex-col">
-                <input
-                type="text"
-                placeholder="    -Name-"
-                id="name"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required className="mb-4 rounded-[8px] w-[520px] h-[40px]"/>
+        <div className="justify-between items-center flex flex-col ">
+            <div className="flex flex-col w-[500px] h-[550px] bg-[#f7f7f7] justify-center my-auto items-center rounded-[25px]">
 
-                <input
-                type="email"
-                id="email"
-                placeholder="    -E-mail Address-"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required className="mb-4 rounded-[8px] w-[520px] h-[40px]"/>
+                <div className="">
+                    <Image src={backarrow} className="w-[20px] h-[20px]"/>
+                </div>
 
-                <input
-                type="password"
-                id="password"
-                placeholder="    -E-mail Address-"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required className="mb-4 rounded-[8px] w-[520px] h-[40px]"/>
+                <div className="flex justify-center items-center mb-10 mx-auto">
+                        <h2 className="h2 text-color  justify-center">
+                            Login
+                        </h2>
+                </div>
+                <form onSubmit={handleSubmit} className="justify-center">
 
+                    <div className="justify-center items-center mb-[26px]">
+                        <input
+                        type="text"
+                        placeholder="    -E-mail Or Username Or Phone Number-"
+                        id="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setName(e.target.value)}
+                        required className="rounded-[12px] w-[380px] h-[35px]"/>
+                    </div>
 
+                    <div className="justify-center items-center mb-[40px]">
+                        <input
+                        type="password"
+                        id="password"
+                        placeholder="    -Password-"
+                        name="password"
+                        value={name}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required className="rounded-[12px] w-[380px] h-[35px]"/>
+                    </div>
 
-                <button type="submit" className="w-[520px] h-[40px] font-[210px] text-[18px] text-[#f7f7f7] rounded-[8.5px] bg-[#1856F3]">
-                    Send Message
-                </button>
-            </form>
+                    <div className="justify-center items-center mb-6">
+                        <button type="submit" className="w-[380px] h-[40px] font-[210px] text-[18px] text-[#f7f7f7] rounded-[16px] bg-[#1856F3]">
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
         </div>
     );
 }
