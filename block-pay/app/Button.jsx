@@ -1,10 +1,11 @@
+
 import Link from "next/link";
 
 const Button = () => {
     return (
-        <Link href="/getstarted/signin">
+        <Link href="/sign-up">
             <button type="button" className="button">
-                Get Started
+                    Get Started
             </button>
         </Link>
     )

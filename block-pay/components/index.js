@@ -9,7 +9,6 @@ import TrustedBy from "@/components/TrustedBy";
 import Footer from "@/components/Footer";
 import Achievements from "@/components/Achievements";
 
-
 export {
     Button,
     Navbar,
@@ -19,5 +18,5 @@ export {
     TrustedBy,
     PaymentLinks,
     Footer,
-    Achievements
+    Achievements,
 };

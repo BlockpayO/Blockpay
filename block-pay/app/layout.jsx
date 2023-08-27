@@ -1,6 +1,7 @@
-import '../styles/globals.css';
+
+import '@/styles/globals.css';
 import localFont from 'next/font/local';
-import Home from './page';
+
 
 export const metadata = {
   title: 'Blockpay',
@@ -37,11 +38,14 @@ const aeonik = localFont({
   ],
 })
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
     <html lang="en" className={`${aeonik.className}`}>
+      <title>Blockpay - Your personal subscription manager</title>
       <body>
-        <Home />
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   )
