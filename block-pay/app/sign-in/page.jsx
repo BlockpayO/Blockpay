@@ -21,8 +21,15 @@ const SignIn = () => {
         <div className="justify-between items-center flex flex-col ">
             <div className="flex flex-col w-[500px] h-[550px] bg-[#f7f7f7] justify-center my-auto items-center rounded-[25px]">
 
-                <div className="">
-                    <Image src={backarrow} className="w-[20px] h-[20px]"/>
+                <div className="flex flex-row">
+                    <div className="">
+                        <Link href="/">
+                            <Image src={backarrow} className="w-[20px] h-[20px]"/>
+                            <p className="ml-1 text-color font-normal text-[14px]">
+                                Back
+                            </p>
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="flex justify-center items-center mb-10 mx-auto">

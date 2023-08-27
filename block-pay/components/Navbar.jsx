@@ -16,9 +16,9 @@ const Navbar = () => {
         <ul className='list-none text-[20px] sm:flex hidden justify-end'>
             {navLinks.map((nav) => (
                 <li key={nav.id} className="nav-text m-[60px] justify-end bg-hover">
-                    <a href={`/${nav.id}`}>
+                    <Link href={`/${nav.id}`}>
                         {nav.title}
-                    </a>
+                    </Link>
                 </li>
             ))}
         </ul>

@@ -2,15 +2,15 @@ import {  shield1, shield2, shield3, ophirImg, achievements, paymentlink, heroIm
 
 export const navLinks = [
     {
-        id: "home",
+        id: " ",
         title: "Home",
     },
     {
-        id: "pay",
+        id: " ",
         title: "Pay",
     },
     {
-        id: "contact-us",
+        id: " ",
         title: "Contact Us",
     },
 ];
