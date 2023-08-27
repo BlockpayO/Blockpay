@@ -3,7 +3,7 @@
 import { useState } from "react";
 import "@/styles/globals.css"
 
-const Signup = () => {
+const SignUp = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -53,4 +53,4 @@ const Signup = () => {
     );
 }
 
-export default Signup
+export default SignUp
