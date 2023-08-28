@@ -1,5 +1,4 @@
 
-import Button from "@/app/Button";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Dashboard from "@/components/PaymentLinks";
@@ -10,7 +9,6 @@ import Footer from "@/components/Footer";
 import Achievements from "@/components/Achievements";
 
 export {
-    Button,
     Navbar,
     Hero,
     Dashboard,

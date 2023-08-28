@@ -1,5 +1,7 @@
+import "@/styles/globals.css"
+import Link from "next/link"
 
-const page = () => {
+const DashBoard = () => {
     return (
         <div>
             <h1>
@@ -9,4 +11,4 @@ const page = () => {
     )
 }
 
-export default page
+export default DashBoard

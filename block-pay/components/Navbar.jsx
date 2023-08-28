@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Button from "@/app/Button";
 import { navLinks } from "@/constants/index";
 import { logo } from "@/public/assets/images";
 
@@ -24,7 +23,7 @@ const Navbar = () => {
               <Link
                 key={nav.id}
                 href={`/${nav.id}`}
-                className="text-gray-300 hover:bg-[#1856F3] px-3 py-2 rounded-md text-sm font-medium"
+                className="text-[#4f7df2e6]  hover:text-gray-300 hover:bg-[#1856F3] px-3 py-2 rounded-md text-lg font-medium"
               >
                 {nav.title}
               </Link>
@@ -34,7 +33,7 @@ const Navbar = () => {
 
           <div className="sm:hidden">
             <button
-              className="text-gray-300 hover:bg-[#1856F3] px-3 py-2 rounded-md text-sm font-medium flex"
+              className="text-[#4f7df2e6] hover:bg-[#1856F3] px-3 py-2 rounded-md text-sm font-medium flex"
               onClick={toggleMobileMenu}
             >
               <svg
@@ -62,7 +61,7 @@ const Navbar = () => {
               <Link
                 key={nav.id}
                 href={`/${nav.id}`}
-                className="text-gray-500 hover:text-gray-700 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
+                className="text-[#4f7df2e6] hover:text-gray-700 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
               >
                 {nav.title}
               </Link>
