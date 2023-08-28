@@ -15,7 +15,7 @@ const Navbar = () => {
       <nav>
     <div className='w-[1289px] h-[50px] px-24 flex pt-[40px] justify-between items-center '>
         <Link href="/">
-                <Image src={logo} alt="logo" className="w-[10rem] h-[5rem]" />
+                <Image src={logo} alt="logo" className="w-[9.5rem] h-[4.5rem]" />
         </Link>
         
         <ul className='list-none text-[20px] sm:flex hidden justify-end'>

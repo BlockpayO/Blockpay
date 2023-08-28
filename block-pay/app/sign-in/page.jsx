@@ -50,7 +50,7 @@ const SignIn = () => {
           <Link href="/sign-up">
             <div className="flex items-center cursor-pointer">
               <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
-              <p className="ml-2 text-sm text-gray-600">Back</p>
+              <p className="ml-2 text-sm text-color">Back</p>
             </div>
           </Link>
         </div>
@@ -62,7 +62,7 @@ const SignIn = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            placeholder="E-mail Or Username Or Phone Number"
+            placeholder="E-mail Or Username"
             id="email"
             name="email"
             value={email}
@@ -83,11 +83,12 @@ const SignIn = () => {
           />
 
           <button
-            type="submit"
-            className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-          >
-            Login
-          </button>
+              type="submit"
+              className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+            >
+              Login
+            </button>
+          
         </form>
       </div>
     </div>

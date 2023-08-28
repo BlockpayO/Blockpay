@@ -1,4 +1,5 @@
-import {  shield1, shield2, shield3, ophirImg, achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo, bluedash} from "@/public/assets/images/index"
+
+import {  shield1, shield2, shield3, ophirImg, homeIcon,achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo, bluedash, transactIcon, payments, settingsIcon, logOut} from "@/public/assets/images/index"
 
 export const navLinks = [
     {
@@ -99,5 +100,33 @@ export const footerLinks = [
         name: "Legal",
         desc1: "Privacy",
         desc2: "Terms of Use"
+    }
+]
+
+export const dashboards = [
+    {
+        id: 1,
+        icon: homeIcon,
+        title: "Dashboard"
+    },
+    {
+        id: 2,
+        icon: transactIcon,
+        title: "Transactions"
+    },
+    {
+        id: 3,
+        icon: payments,
+        title: "Paymemnt"
+    },
+    {
+        id: 4,
+        icon: settingsIcon,
+        title: "Settings"
+    },
+    {
+        id: 5,
+        icon: logOut,
+        title: "Log Out"
     }
 ]

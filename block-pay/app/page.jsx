@@ -17,12 +17,3 @@ export default function Home() {
     </main>
   )
 };
-/*
-export default function Signup() {
-  return (
-    <main className="flex flex-col items-center justify-between">
-      <SignUpForm/>
-    </main>
-  )
-};
-*/

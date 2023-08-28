@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
+import { backarrow } from "@/public/assets/images";
 import { useState } from "react";
 import { getFirestore } from "firebase/firestore";
 import {  doc, setDoc } from "firebase/firestore"; 
@@ -47,6 +49,14 @@ const SignUp = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white w-full max-w-md p-8 rounded-lg shadow-md">
+      <div className="flex items-center mb-6">
+          <Link href="/">
+            <div className="flex items-center cursor-pointer">
+              <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
+              <p className="ml-2 text-sm text-color">Back</p>
+            </div>
+          </Link>
+        </div>
         <h2 className="text-2xl font-semibold text-center text-color mb-8">
           Sign Up
         </h2>
@@ -97,19 +107,20 @@ const SignUp = () => {
           />
 
                     <div className="justify-center items-center mb-6">
-                        <button type="submit" className="w-[380px] h-[40px] font-[210px] text-[18px] text-[#f7f7f7] rounded-[16px] bg-[#1856F3]">
-                            Create Account
-                        </button>
+                          <button type="submit" className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600">
+                              Create Account
+                          </button>
                     </div>
                 </form>
-                <p className="font-normal text-[14px]">
-                Have an Account already? 
-                <span className="text-color">
-                    <Link href="/sign-in">
-                        <button type="button">Login</button>
-                    </Link>
-                </span>
-                </p>
+                <div className="justify-center items-center mt-5">
+                  <p className="font-normal text-[14px]">
+                  Have an Account already? <span className="text-color">
+                      <Link href="/sign-in">
+                          <button type="button">Login</button>
+                      </Link>
+                  </span>
+                  </p>
+                </div>
             </div>
             
         </div>

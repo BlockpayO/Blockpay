@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { achievements } from "@/public/assets/images/index";
 import { successes } from "@/constants/index";
-import Button from "@/app/Button";
+import Button from "@/components/Button";
 
 const Achievements = () => {
   return (

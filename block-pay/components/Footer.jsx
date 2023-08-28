@@ -40,18 +40,18 @@ const Footer = () => {
 export default Footer;
 
 function Form() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
 
-  const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-  };
+    };
 
-  return (
+    return (
     <form onSubmit={handleSubmit} className="flex flex-col">
-      <input
+        <input
         type="text"
         placeholder="Name"
         id="name"
@@ -60,7 +60,7 @@ function Form() {
         onChange={(e) => setName(e.target.value)}
         required className="mb-4 rounded-[8px] w-[520px] h-[40px]"/>
 
-      <input
+        <input
         type="email"
         id="email"
         placeholder="E-mail Address"

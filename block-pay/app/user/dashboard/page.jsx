@@ -1,14 +1,12 @@
-import "@/styles/globals.css"
-import Link from "next/link"
 
-const DashBoard = () => {
+import {SideNav} from "@/components/SideNav"
+
+export default function DashBoard () {
     return (
-        <div>
-            <h1>
-                WELCOME TO THE DASHBOARD
+        <main>
+            <h1 className="justify-center items-center">
+                Welcome To DashBoard
             </h1>
-        </div>
+        </main>
     )
-}
-
-export default DashBoard
+};

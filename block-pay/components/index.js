@@ -7,6 +7,7 @@ import PaymentLinks from "@/components/PaymentLinks";
 import TrustedBy from "@/components/TrustedBy";
 import Footer from "@/components/Footer";
 import Achievements from "@/components/Achievements";
+import SideNav from "@/components/SideNav";
 
 export {
     Navbar,
@@ -17,4 +18,5 @@ export {
     PaymentLinks,
     Footer,
     Achievements,
+    SideNav
 };

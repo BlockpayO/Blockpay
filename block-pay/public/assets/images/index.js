@@ -15,6 +15,12 @@ import getPayLink from "./getpaymentLInk.svg";
 import logo from "./blockpaylogo.svg";
 import bluedash from "./bluedash.svg";
 import backarrow from "./backarrow.svg";
+import transactIcon from "./transactionsicon.svg";
+import settingsIcon from "./settings.svg";
+import viewBalance from "./viewbalance.svg";
+import logOut from "./logOut.svg";
+import payments from "./handcoin.svg";
+import homeIcon from "./home.svg";
 
 export {
     shield1,
@@ -33,5 +39,11 @@ export {
     logo,
     getpayName,
     bluedash,
-    backarrow
+    backarrow,
+    transactIcon,
+    settingsIcon,
+    viewBalance,
+    logOut,
+    payments,
+    homeIcon
 };
