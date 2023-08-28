@@ -18,7 +18,7 @@ import backarrow from "./backarrow.svg";
 import transactIcon from "./transactionsicon.svg";
 import settingsIcon from "./settings.svg";
 import viewBalance from "./viewbalance.svg";
-import logOut from "./logOut.svg";
+import logOut from "./logout.svg";
 import payments from "./handcoin.svg";
 import homeIcon from "./home.svg";
 

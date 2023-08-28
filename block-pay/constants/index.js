@@ -1,5 +1,5 @@
 
-import {  shield1, shield2, shield3, ophirImg, homeIcon,achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo, bluedash, transactIcon, payments, settingsIcon, logOut} from "@/public/assets/images/index"
+import {  shield1, shield2, shield3, ophirImg, homeIcon,achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo, bluedash, transactIcon, payments, settingsIcon, logOut} from "@/public/assets/images"
 
 export const navLinks = [
     {
