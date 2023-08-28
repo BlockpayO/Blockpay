@@ -7,7 +7,13 @@ import { navLinks } from "@/constants/index";
 import { logo } from "@/public/assets/images";
 
 const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  function toggleMobileMenu() {
+    // Your code to toggle the mobile menu goes here
+  }
     return (
+      <nav>
     <div className='w-[1289px] h-[50px] px-24 flex pt-[40px] justify-between items-center '>
         <Link href="/">
                 <Image src={logo} alt="logo" className="w-[10rem] h-[5rem]" />
@@ -48,7 +54,7 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-      </div>
+        
       {isMobileMenuOpen && (
         <div className="sm:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1">
