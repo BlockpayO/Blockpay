@@ -1,76 +1,67 @@
-"use client"
-
+"use client";
 import Link from "next/link";
 import { useState } from "react";
-import "@/styles/globals.css"
-import Image from "next/image";
-import { backarrow } from "@/public/assets/images";
-
 
 const SignUp = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
-    const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    };
+  };
 
-    return (
-        <div className="justify-between items-center flex flex-col ">
-            <div className="flex flex-col w-[500px] h-[550px] bg-[#f7f7f7] justify-center my-auto items-center rounded-[25px]">
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white w-full max-w-md p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold text-center text-color mb-8">
+          Sign Up
+        </h2>
 
-                <div className="flex justify-center items-center mb-10 mx-auto">
-                        <h2 className="h2 text-color  justify-center">
-                            Sign Up
-                        </h2>
-                </div>
-                <form onSubmit={handleSubmit} className="justify-center">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Name"
+            id="name"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+          />
 
-                    <div className="justify-center items-center mb-[26px]">
-                        <input
-                        type="text"
-                        placeholder="    -Name-"
-                        id="name"
-                        name="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required className="rounded-[12px] w-[380px] h-[35px]"/>
-                    </div>
+          <input
+            type="email"
+            placeholder="E-mail Address"
+            id="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+          />
 
-                    <div className="justify-center items-center mb-[26px]">
-                        <input
-                        type="email"
-                        id="email"
-                        placeholder="    -E-mail Address-"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required className="rounded-[12px] w-[380px] h-[35px]"/>
-                    </div>
+          <input
+            type="password"
+            placeholder="Create Password"
+            id="password"
+            name="password"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+          />
 
-                    <div className="justify-center items-center mb-[26px]">
-                        <input
-                        type="password"
-                        id="password"
-                        placeholder="    -Create Password-"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required className="rounded-[12px] w-[380px] h-[35px]"/>
-                    </div>
-
-                    <div className="justify-center items-center mb-[40px]">
-                        <input
-                        type="password"
-                        id="password"
-                        placeholder="    -Confirm Password-"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required className="rounded-[12px] w-[380px] h-[35px]"/>
-                    </div>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            id="confirm-password"
+            name="confirm-password"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+          />
 
                     <div className="justify-center items-center mb-6">
                         <button type="submit" className="w-[380px] h-[40px] font-[210px] text-[18px] text-[#f7f7f7] rounded-[16px] bg-[#1856F3]">
@@ -79,7 +70,8 @@ const SignUp = () => {
                     </div>
                 </form>
                 <p className="font-normal text-[14px]">
-                Have an Account already? <span className="text-color">
+                Have an Account already? 
+                <span className="text-color">
                     <Link href="/sign-in">
                         <button type="button">Login</button>
                     </Link>
@@ -90,5 +82,3 @@ const SignUp = () => {
         </div>
     );
 }
-
-export default SignUp

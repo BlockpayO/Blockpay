@@ -42,19 +42,19 @@ export const trusts = [
     },
     {
         alt: 2,
-        img: trustedblank,
+        img: ophirImg,
     },
     {
         alt: 3,
-        img: trustedblank,
+        img: ophirImg,
     },
     {
         alt: 4,
-        img: trustedblank,
+        img: ophirImg,
     },
     {
         alt: 5,
-        img: trustedblank,
+        img: ophirImg,
     },
 ]
 
