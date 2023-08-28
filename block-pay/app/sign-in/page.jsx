@@ -6,16 +6,20 @@ import { backarrow } from "@/public/assets/images";
 import {app} from '../../firebase/firebase'
 import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import {firebaseConfig} from '../../firebase/firebase'
 
 const SignIn = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
+  console.log(firebaseConfig)
   const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
-  const auth = getAuth()
+    
+  const auth = getAuth(app)
+  
   try {
     const userCredentials = await signInWithEmailAndPassword(
       auth,
@@ -27,7 +31,14 @@ const SignIn = () => {
     toast.success("login successful");
     router.push('/dashboard')
   } catch (error) {
-    toast.error(error.message)
+    toast.error(error)
+    if (error.code === 'auth/user-not-found') {
+      console.log('User not found. ');
+    } else {
+      // Handle other authentication errors
+      console.error('Authentication error:', error);
+    }
+  
   }
   };
 
@@ -64,7 +75,7 @@ const SignIn = () => {
             id="password"
             placeholder="Password"
             name="password"
-            value={name}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
