@@ -7,13 +7,14 @@ import {app} from '../../firebase/firebase'
 import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import {firebaseConfig} from '../../firebase/firebase'
+
+
 
 const SignIn = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  console.log(firebaseConfig)
+
   const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
