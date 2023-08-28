@@ -17,6 +17,7 @@ const SignUp = () => {
   const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     const auth = getAuth(app)
     if (password.trim() !== confirm.trim()) {
       console.log('Passwords do not match');
