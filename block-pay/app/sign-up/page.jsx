@@ -1,14 +1,47 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { getFirestore } from "firebase/firestore";
+import {  doc, setDoc } from "firebase/firestore"; 
+import { app } from "@/firebase/firebase";
+import { useRouter } from "next/navigation";
+import { getAuth, createUserWithEmailAndPassword} from "firebase/auth";
 
 const SignUp = () => {
-  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState('')
+  const [confirm, setConfirm] = useState('')
 
-  const handleSubmit = (e) => {
+
+  const router = useRouter()
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    
+    const auth = getAuth(app)
+    if (password.trim() !== confirm.trim()) {
+      console.log('Passwords do not match');
+      toast.error('Passwords do not match');
+    } else {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredentials.user;
+      
+      // Save additional user details to Firestore using the userId as the document ID
+      const db = getFirestore(app);
+      await setDoc(doc(db, 'users', user.uid), {
+        username: username,
+        Email: email,
+
+      });
+
+      console.log('registration successful')
+      alert('registration successful')
+      router.push('/sign-in')
+    } catch (error) {
+      console.log(error)
+    }
+  }
   };
 
   return (
@@ -21,11 +54,11 @@ const SignUp = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            placeholder="Name"
-            id="name"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Username"
+            id="username"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
             className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
           />
@@ -46,8 +79,8 @@ const SignUp = () => {
             placeholder="Create Password"
             id="password"
             name="password"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
             className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
           />
@@ -57,8 +90,8 @@ const SignUp = () => {
             placeholder="Confirm Password"
             id="confirm-password"
             name="confirm-password"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
             required
             className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
           />
