@@ -5,7 +5,7 @@ import { heroImg } from "@/public/assets/images";
 
 const Hero = () => {
     return (
-        <section className="flex flex-row w-[1156.53] px-24 justify-between items-center">
+        <section className="container justify-between items-center">
             <div className="flex flex-row items-center justify-between mt-[35px]">
 
                 <h1 className="text-color text-left text-head mr-6">

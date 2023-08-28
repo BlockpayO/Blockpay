@@ -8,7 +8,7 @@ import { logo } from "@/public/assets/images";
 
 const Navbar = () => {
     return (
-    <nav className='w-[1289px] h-[50px] px-24 flex pt-[40px] justify-between items-center '>
+    <nav className='w-[1289px] h-[50px] flex pt-[40px] justify-between items-center '>
         <Link href="/">
                 <Image src={logo} alt="logo" className="w-[10rem] h-[5rem]" />
         </Link>

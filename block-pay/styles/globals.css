@@ -98,6 +98,6 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
   line-height: 20px;
 }
 
-input::placeholder {
-  margin-left: 2rem;
+.nk {
+  justify-content: left;
 }

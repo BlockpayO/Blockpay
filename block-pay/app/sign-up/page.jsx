@@ -79,8 +79,7 @@ const SignUp = () => {
                     </div>
                 </form>
                 <p className="font-normal text-[14px]">
-                Have an Account already? 
-                <span className="text-color">
+                Have an Account already? <span className="text-color">
                     <Link href="/sign-in">
                         <button type="button">Login</button>
                     </Link>
