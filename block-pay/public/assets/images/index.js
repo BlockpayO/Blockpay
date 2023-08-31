@@ -21,6 +21,10 @@ import viewBalance from "./viewbalance.svg";
 import logOut from "./logout.svg";
 import payments from "./handcoin.svg";
 import homeIcon from "./home.svg";
+import periodIcon from "./period.svg";
+import convertIcon from "./convert.svg";
+import searchIcon from "./search.svg";
+import notiIcon from "./noti.svg";
 
 export {
     shield1,
@@ -45,5 +49,9 @@ export {
     viewBalance,
     logOut,
     payments,
-    homeIcon
+    homeIcon,
+    periodIcon,
+    convertIcon,
+    searchIcon,
+    notiIcon
 };

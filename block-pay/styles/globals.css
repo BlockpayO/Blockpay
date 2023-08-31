@@ -99,3 +99,11 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
 .nk {
   justify-content: left;
 }
+
+
+.user:hover {
+  color: white;
+  background-color: #1856F3;
+  cursor: pointer;
+}
+

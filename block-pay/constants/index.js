@@ -117,7 +117,7 @@ export const dashboards = [
     {
         id: 3,
         icon: payments,
-        title: "Paymemnt"
+        title: "Payment"
     },
     {
         id: 4,
@@ -128,5 +128,114 @@ export const dashboards = [
         id: 5,
         icon: logOut,
         title: "Log Out"
+    }
+]
+
+export const rates = [
+    {
+        desc: "Last rate",
+        rate: 0.00016
+    },
+    {
+        desc: "New rate",
+        rate: 0.14
+    },
+    {
+        desc: "% Change",
+        rate: "2.9 %"
+    }
+]
+
+export const dashData = [
+    {
+        id: 1,
+        title: "Name",
+        desc: "Carla Herwitz"
+    },
+    {
+        id: 2,
+        title: "Amount",
+        desc: "900.00"
+    },
+    {
+        id: 3,
+        title: "Payout Method",
+        desc: "Bank Transfer"
+    },
+    {
+        id: 4,
+        title: "Date",
+        desc: "25/7/2023"
+    },
+    {
+        id: 5,
+        title: "Status",
+        desc: "Pending"
+    }
+]
+/*
+export const dashData = [
+    {
+        id: 1,
+        name: "Name",
+        amount: "Amount",
+        method: "Payout Method",
+        date: "Date",
+        status: "Status"
+    },
+    {
+        id: 2,
+        name: "Carla Herwitz",
+        amount: "900.00",
+        method: "Bank Transfer",
+        date: "25/7/2023",
+        status: "Pending"
+    },
+    {
+        id: 3,
+        name: "Abram Geidt",
+        amount: "900.00",
+        method: "Card",
+        date: "25/7/2023",
+        status: "Pending"
+    },
+    {
+        id: 4,
+        name: "Cristofer Philips",
+        amount: "900.00",
+        method: "Bank Transfer",
+        date: "25/7/2023",
+        status: "Successful"
+    },
+    {
+        id: 5,
+        name: "Chance Dokidis",
+        amount: "900.00",
+        method: "Bank Transfer",
+        date: "25/7/2023",
+        status: "Successful"
+    },
+    {
+        id: 6,
+        name: "Kaiya Philips",
+        amount: "900.00",
+        method: "Bank Transfer",
+        date: "25/7/2023",
+        status: "Failed"
+    },
+    {
+        id: 7,
+        name: "Hanna Press",
+        amount: "900.00",
+        method: "Bank Transfer",
+        date: "25/7/2023",
+        status: "Successful"
+    },
+]
+*/
+
+export const transactions = [
+    {
+
     }
 ]
