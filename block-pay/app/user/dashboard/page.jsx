@@ -70,7 +70,7 @@ const Dashboard = () => {
   wrapperClass=""
   visible={true}
   ariaLabel='oval-loading'
-  secondaryColor="#4fa94d"
+  secondaryColor="#1856f3"
   strokeWidth={2}
   strokeWidthSecondary={2}
 
@@ -82,6 +82,7 @@ const Dashboard = () => {
     return (
         <main className="flex">
             {/**-------======== BEFORE CONNECTING WALLET =======------ */}
+           
             <SideNav />
             <div className="flex-1 p-7">
                 <div className="flex mt-9 mb-4">
