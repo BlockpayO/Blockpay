@@ -86,6 +86,8 @@ const Dashboard = () => {
         <main className="flex">
             {/**-------======== BEFORE CONNECTING WALLET =======------ */}
            
+           {!isConnected ?
+           <>
             <SideNav />
             <div className="flex-1 p-7">
                 <div className="flex mt-9 mb-4">
@@ -197,8 +199,8 @@ const Dashboard = () => {
                     <SearchBar/>
                 </div>
             </div>
-            
-            {/*------======= AFTER CONNECTING WALLET ======------
+            </> :
+            <>
             <SideNav />
             <div className="flex-1 p-7">
                 <div className="flex mt-9 mb-4">
@@ -319,7 +321,9 @@ const Dashboard = () => {
                     </h2>
                     <SearchBar/>
                 </div>
-            </div> */}
+            </div> 
+            </>
+        }
         </main>
     );
 };
