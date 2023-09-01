@@ -23,8 +23,8 @@ const SignUp = () => {
     const auth = getAuth(app)
     if (password.trim() !== confirm.trim()) {
       console.log('Passwords do not match');
-      toast.error('Passwords do not match');
-    } else {
+      return
+    }
     try {
       const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredentials.user;
@@ -44,7 +44,7 @@ const SignUp = () => {
       console.log(error)
     }
   }
-  };
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
