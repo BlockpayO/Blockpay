@@ -16,6 +16,20 @@ const SignUp = () => {
   const [confirm, setConfirm] = useState('')
 
 
+  function generateRandomId(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let randomId = '';
+  
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomId += characters.charAt(randomIndex);
+    }
+  
+    return randomId;
+  }
+
+  
+
   const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,12 +42,13 @@ const SignUp = () => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredentials.user;
-      
+      const randomId = generateRandomId(6)
       // Save additional user details to Firestore using the userId as the document ID
       const db = getFirestore(app);
       await setDoc(doc(db, 'users', user.uid), {
         username: username,
         Email: email,
+        generatedId : randomId
 
       });
 

@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 
 const SideNav = () => {
     const [username, setUsername]= useState('')
+    const [generatedId, setGeneratedId] = useState('')
 
     const auth = getAuth(app)
     const user = auth.currentUser
@@ -28,6 +29,8 @@ const SideNav = () => {
             console.log(userData);
             
             const username = userData.username;
+            const generatedId = userData.generatedId
+            setGeneratedId(generatedId)
             console.log('Username:', username);
            setUsername(username)
           } else {
@@ -84,7 +87,7 @@ const SideNav = () => {
                     @{username}
                 </h1>
                 <p className="text-sm">
-                    ID: 1234567
+                    ID: {generatedId}
                 </p>
             </div>
         </div>
