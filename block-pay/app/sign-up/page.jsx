@@ -106,24 +106,23 @@ const SignUp = () => {
             className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
           />
 
-                    <div className="justify-center items-center mb-6">
-                          <button type="submit" className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600">
-                              Create Account
-                          </button>
-                    </div>
-                </form>
-                <div className="justify-center items-center mt-5">
-                  <p className="font-normal text-[14px]">
-                  Have an Account already? <span className="text-color">
-                      <Link href="/sign-in">
-                          <button type="button">Login</button>
-                      </Link>
-                  </span>
-                  </p>
-                </div>
+            <div className="justify-center items-center mb-6">
+                  <button type="submit" className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600">
+                      Create Account
+                  </button>
             </div>
-            
-        </div>
+        </form>
+          <div className="justify-center items-center mt-5">
+            <p className="font-normal text-[14px]">
+              Have an Account already? <span className="text-color">
+                <Link href="/sign-in">
+                  <button type="button">Login</button>
+                </Link>
+            </span>
+            </p>
+          </div>
+      </div>
+      </div>
     );
 }
 

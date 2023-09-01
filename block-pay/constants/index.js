@@ -7,7 +7,7 @@ export const navLinks = [
         title: "Home",
     },
     {
-        id: " ",
+        id: "sign-up",
         title: "Pay",
     },
     {
@@ -289,19 +289,19 @@ export const transactions = [
 
 export const paymentCards = [
     {
-        id: "generate payment link",
+        id: "generate-payment-link",
         img: getPayLink,
         title: "Generate Payment Link",
         desc: "Generate Links to receive funds seamlessly."
     },
     {
-        id: "payment plan",
+        id: "payment-plan",
         img: paymentplan,
         title: "Payment Plan",
         desc: "Schedule payments easily with just a click."
     },
     {
-        id: "payment link",
+        id: "payment-link",
         img: paymentlink,
         title: "Payment Link",
         desc: "Track and monitor all your payment links with ease.`"

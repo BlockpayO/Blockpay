@@ -8,16 +8,18 @@ const TransactionsPage = () => {
         <main className="flex">
             <SideNav/>
             <div className="flex-1 p-7">
-                <div className="flex mt-9 mb-4">
+                <div className="flex mt-9 mb-4 w-full justify-between">
                     <h1 className="text-3xl text-color font-semibold text-left mr-2">
                         Transactions
                     </h1>
+                    {/*}
                     <select name="userBalance" className="p-1 border border-[#1856f3] rounded cursor-pointer">
                         <option value="usdc">NGN</option>
                         <option value="matic">USD</option>
-                    </select>
+                    </select>*/}
+                    <SearchBar/>
                 </div>
-                <div className="p-7 border border-[#1856f3] rounded-lg flex">
+                <div className="p-7 border-2 border-[#bebebe] rounded-lg flex h-screen">
                     <div>
                         <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-2 w-24 mr-5">
                             All
@@ -71,8 +73,8 @@ export default TransactionsPage
 
 const SearchBar = () => {
     return (
-        <div className="flex self-start justify-start">
-            <input type="search" name="search invoice" id="" placeholder="Search" className="text-[13px] py-2 w-48 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <div className="flex">
+            <input type="search" name="search invoice" id="" placeholder="Search" className="text-[13px] py-2 w-72 px-4 border border-[#bebebe] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
         </div>
     )
 };
