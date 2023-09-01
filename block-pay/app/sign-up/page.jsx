@@ -8,6 +8,7 @@ import {  doc, setDoc } from "firebase/firestore";
 import { app } from "@/firebase/firebase";
 import { useRouter } from "next/navigation";
 import { getAuth, createUserWithEmailAndPassword} from "firebase/auth";
+import {toast} from 'react-toastify'
 
 const SignUp = () => {
   const [password, setPassword] = useState("");
@@ -37,6 +38,7 @@ const SignUp = () => {
     const auth = getAuth(app)
     if (password.trim() !== confirm.trim()) {
       console.log('Passwords do not match');
+      toast.error('Passwords do not match')
       return
     }
     try {
@@ -53,10 +55,11 @@ const SignUp = () => {
       });
 
       console.log('registration successful')
-      alert('registration successful')
+      toast.success('registration successful')
       router.push('/sign-in')
     } catch (error) {
       console.log(error)
+      toast.error(error)
     }
   }
 

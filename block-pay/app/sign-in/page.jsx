@@ -10,9 +10,11 @@ import { useRouter } from "next/navigation";
 
 
 
+
 const SignIn = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
 
 
   const router = useRouter()
@@ -32,12 +34,13 @@ const SignIn = () => {
     toast.success("login successful");
     router.push('/user/dashboard')
   } catch (error) {
-    toast.error(error)
     if (error.code === 'auth/user-not-found') {
       console.log('User not found. ');
+      toast.error('user not found')
     } else {
       // Handle other authentication errors
       console.error('Authentication error:', error);
+      toast.error(error)
     }
   
   }

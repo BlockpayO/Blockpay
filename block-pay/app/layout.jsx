@@ -1,6 +1,8 @@
 
 import '@/styles/globals.css';
 import localFont from 'next/font/local';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export const metadata = {
@@ -46,8 +48,11 @@ const Layout = ({ children }) => {
         <main>
           {children}
         </main>
+        <ToastContainer />
       </body>
+     
     </html>
+ 
   )
 }
 

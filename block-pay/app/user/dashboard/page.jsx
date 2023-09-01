@@ -9,6 +9,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app } from "@/firebase/firebase";
 import {Oval} from 'react-loader-spinner'
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 
 const Dashboard = () => {
@@ -35,11 +36,13 @@ const Dashboard = () => {
         setConnectedAddress(finalAddress);
         setIsConnected(true)
         console.log('wallet connected')
+        toast.success('wallet connected')
       } else {
         console.error('Ethereum provider not found. Please install MetaMask or another Ethereum wallet.');
       }
     } catch (error) {
       console.error('Error connecting to wallet:', error);
+      toast.error(error)
     }
   }
 
