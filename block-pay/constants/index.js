@@ -1,5 +1,5 @@
 
-import {  shield1, shield2, shield3, ophirImg, homeIcon,achievements, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo, bluedash, transactIcon, payments, settingsIcon, logOut} from "@/public/assets/images"
+import {  shield1, shield2, shield3, ophirImg, homeIcon, paymentplan, paymentlink, heroImg, cashpayment, deleteIcon, genpaylink, paymentID, trustedblank, getpayName, getPayLink, logo, bluedash, transactIcon, payments, settingsIcon, logOut, carlPfp, kaiyaPfp, chancePfp, cristoferPfp, abramPfp} from "@/public/assets/images"
 
 export const navLinks = [
     {
@@ -105,27 +105,27 @@ export const footerLinks = [
 
 export const dashboards = [
     {
-        id: 1,
+        id: "user/dashboard",
         icon: homeIcon,
         title: "Dashboard"
     },
     {
-        id: 2,
+        id: "user/transactions",
         icon: transactIcon,
         title: "Transactions"
     },
     {
-        id: 3,
+        id: "user/payments",
         icon: payments,
         title: "Payment"
     },
     {
-        id: 4,
+        id: "user/settings",
         icon: settingsIcon,
         title: "Settings"
     },
     {
-        id: 5,
+        id: "sign-in",
         icon: logOut,
         title: "Log Out"
     }
@@ -173,6 +173,7 @@ export const dashData = [
         desc: "Pending"
     }
 ]
+
 /*
 export const dashData = [
     {
@@ -236,6 +237,73 @@ export const dashData = [
 
 export const transactions = [
     {
-
+        title: "Name",
+        desc: [carlPfp, "Carla Herwitz"],
+        desc: [abramPfp, "Abram Geidt"],
+        desc: [cristoferPfp, "Cristofer Philips"],
+        desc: [chancePfp, "Chance Dokidis"],
+        desc: [kaiyaPfp, "Kaiya Philips"]
+    },
+    {
+        title: "Transaction ID",
+        desc: 143867250,
+        desc: 143867250,
+        desc: 143867250,
+        desc: 143867250,
+        desc: 143867250
+    },
+    {
+        title: "Amount",
+        desc: "900.00",
+        desc: "900.00",
+        desc: "900.00",
+        desc: "900.00",
+        desc: "900.00"
+    },
+    {
+        title: "Payout Method",
+        desc: "Bank Transfer",
+        desc: "Card",
+        desc: "Bank Transfer",
+        desc: "Bank Transfer",
+        desc: "Bank Transfer"
+    },
+    {
+        title: "Date",
+        desc: "25/7/2023",
+        desc: "25/7/2023",
+        desc: "25/7/2023",
+        desc: "25/7/2023",
+        desc: "25/7/2023",
+    },
+    {
+        title: "Status",
+        desc: "Pending",
+        desc: "Pending",
+        desc: "Successful",
+        desc: "Successful",
+        desc: "Failed"
     }
+]
+
+
+export const paymentCards = [
+    {
+        id: "generate payment link",
+        img: getPayLink,
+        title: "Generate Payment Link",
+        desc: "Generate Links to receive funds seamlessly."
+    },
+    {
+        id: "payment plan",
+        img: paymentplan,
+        title: "Payment Plan",
+        desc: "Schedule payments easily with just a click."
+    },
+    {
+        id: "payment link",
+        img: paymentlink,
+        title: "Payment Link",
+        desc: "Track and monitor all your payment links with ease.`"
+    },
 ]
