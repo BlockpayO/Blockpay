@@ -3,13 +3,19 @@ import SideNav from "@/components/SideNav";
 import Image from "next/image";
 import { viewBalance, periodIcon, convertIcon, notiIcon } from "@/public/assets/images";
 import { dashData, rates } from "@/constants";
-import { useState, } from 'react';
+import { useState, useEffect} from 'react';
 import { ethers } from 'ethers';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { app } from "@/firebase/firebase";
+import {Oval} from 'react-loader-spinner'
+import { useRouter } from "next/navigation";
 
 
 const Dashboard = () => {
     const [isConnected, setIsConnected] = useState(false)
     const [connectedAddress, setConnectedAddress] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    
 
     
   async function connectWallet() {
@@ -36,6 +42,43 @@ const Dashboard = () => {
       console.error('Error connecting to wallet:', error);
     }
   }
+
+  const router = useRouter()
+  useEffect(() => {
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoading(false);
+      } else {
+        router.push('/sign-in');
+      }
+    });
+
+    return () => unsubscribe(); 
+  }, [router]);
+
+
+  if (isLoading) {
+    return (
+        <div className="flex items-center justify-center h-screen">
+<Oval
+  height={80}
+  width={80}
+  color="#1856f3"
+  wrapperStyle={{}}
+  wrapperClass=""
+  visible={true}
+  ariaLabel='oval-loading'
+  secondaryColor="#4fa94d"
+  strokeWidth={2}
+  strokeWidthSecondary={2}
+
+/>
+        </div>
+      );
+  }
+
     return (
         <main className="flex">
             {/**-------======== BEFORE CONNECTING WALLET =======------ */}
@@ -122,8 +165,8 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="flex flex-col flex-auto p-6 pt-4 pr-12 mt-9  pl-0">
-                <button type="button" className="bg-blue-500 hover:bg-[#1856F3] text-white text-sm w-32 self-end rounded-md py-2 px-3">
-                        Connect Wallet
+                <button onClick={connectWallet} type="button" className="bg-blue-500 hover:bg-[#1856F3] text-white text-sm w-32 self-end rounded-md py-2 px-3">
+                       {isConnected ? connectedAddress : ' Connect Wallet'}
                 </button>
                 <div className="bg-[#f7f7f7] p-10 pt-8 mt-4 rounded-lg">
                     <h2 className="text-color text-xl font-medium text-color">
