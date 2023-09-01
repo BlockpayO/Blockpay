@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "ethers": "^6.7.1",
+    "react-loader-spinner": "^5.4.5"
+  }
+}

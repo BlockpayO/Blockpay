@@ -1,12 +1,88 @@
+'use client'
 import SideNav from "@/components/SideNav";
 import Image from "next/image";
 import { viewBalance, periodIcon, convertIcon, notiIcon } from "@/public/assets/images";
 import { dashData, rates } from "@/constants";
+import { useState, useEffect} from 'react';
+import { ethers } from 'ethers';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { app } from "@/firebase/firebase";
+import {Oval} from 'react-loader-spinner'
+import { useRouter } from "next/navigation";
+
 
 const Dashboard = () => {
+    const [isConnected, setIsConnected] = useState(false)
+    const [connectedAddress, setConnectedAddress] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    
+
+    
+  async function connectWallet() {
+    try {
+      if (typeof window.ethereum !== 'undefined') {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const address = await signer.getAddress();
+        const startChars = 6
+        const endChars = 6
+        const separator = '...'
+        const trimmedAddress = address.toLowerCase(); // Ensure the address is lowercase
+        const beginning = trimmedAddress.substring(0, startChars);
+        const end = trimmedAddress.substring(trimmedAddress.length - endChars);
+        const finalAddress = `${beginning}${separator}${end}`
+        setConnectedAddress(finalAddress);
+        setIsConnected(true)
+        console.log('wallet connected')
+      } else {
+        console.error('Ethereum provider not found. Please install MetaMask or another Ethereum wallet.');
+      }
+    } catch (error) {
+      console.error('Error connecting to wallet:', error);
+    }
+  }
+
+  const router = useRouter()
+  useEffect(() => {
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoading(false);
+      } else {
+        router.push('/sign-in');
+      }
+    });
+
+    return () => unsubscribe(); 
+  }, [router]);
+
+
+  if (isLoading) {
+    return (
+        <div className="flex items-center justify-center h-screen">
+<Oval
+  height={80}
+  width={80}
+  color="#1856f3"
+  wrapperStyle={{}}
+  wrapperClass=""
+  visible={true}
+  ariaLabel='oval-loading'
+  secondaryColor="#1856f3"
+  strokeWidth={2}
+  strokeWidthSecondary={2}
+
+/>
+        </div>
+      );
+  }
+
     return (
         <main className="flex">
             {/**-------======== BEFORE CONNECTING WALLET =======------ */}
+           
             <SideNav />
             <div className="flex-1 p-7">
                 <div className="flex mt-9 mb-4">
@@ -90,8 +166,8 @@ const Dashboard = () => {
                 </div>
             </div>
             <div className="flex flex-col flex-auto p-6 pt-4 pr-12 mt-9  pl-0">
-                <button type="button" className="bg-blue-500 hover:bg-[#1856F3] text-white text-sm w-32 self-end rounded-md py-2 px-3">
-                        Connect Wallet
+                <button onClick={connectWallet} type="button" className="bg-blue-500 hover:bg-[#1856F3] text-white text-sm w-32 self-end rounded-md py-2 px-3">
+                       {isConnected ? connectedAddress : ' Connect Wallet'}
                 </button>
                 <div className="bg-[#f7f7f7] p-10 pt-8 mt-4 rounded-lg">
                     <h2 className="text-color text-xl font-medium text-color">
@@ -205,8 +281,8 @@ const Dashboard = () => {
             <div className="flex flex-col flex-auto p-6 pt-4 pr-12 mt-9  pl-0">
                 <div className="flex self-end order-first">
                     <Image src={notiIcon} alt="Noti Icon" className="w-7 h-7 p-1 pb-0 cursor-pointer"/>
-                    <button type="button" className="hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 ml-4">
-                        0x123....987
+                    <button onClick={connectWallet} type="button" className="hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 ml-4">
+                       {isConnected ? connectedAddress : "Connect Wallet"}
                     </button>
                 </div>
                 <div className="bg-[#f7f7f7] p-10 pt-8 mt-4 rounded-lg">

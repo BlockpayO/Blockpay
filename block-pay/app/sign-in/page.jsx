@@ -30,7 +30,7 @@ const SignIn = () => {
     const user = userCredentials.user;
     console.log(user);
     toast.success("login successful");
-    router.push('/dashboard')
+    router.push('/user/dashboard')
   } catch (error) {
     toast.error(error)
     if (error.code === 'auth/user-not-found') {
