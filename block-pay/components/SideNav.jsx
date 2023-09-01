@@ -55,7 +55,7 @@ const SideNav = () => {
         
       }, [user])
     return (
-        <div className="flex flex-col bg-[#f7f7f7] relative">
+        <div className="flex flex-col bg-[#f7f7f7] sticky">
             <div className="flex justify-center my-7">
                 <Image src={logo} className="w-[10rem] h-[5rem] cursor-pointer" alt="Logo" />
             </div>
