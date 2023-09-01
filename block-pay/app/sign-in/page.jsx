@@ -34,13 +34,14 @@ const SignIn = () => {
     toast.success("login successful");
     router.push('/user/dashboard')
   } catch (error) {
+    console.log(error)
     if (error.code === 'auth/user-not-found') {
       console.log('User not found. ');
       toast.error('user not found')
-    } else {
-      // Handle other authentication errors
-      console.error('Authentication error:', error);
-      toast.error(error)
+    } else if (error.code === 'auth/wrong-password') {
+      toast.error('Incorrect password')
+    }else{
+      toast.error(error.message)
     }
   
   }

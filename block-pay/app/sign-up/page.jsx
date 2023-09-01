@@ -59,7 +59,7 @@ const SignUp = () => {
       router.push('/sign-in')
     } catch (error) {
       console.log(error)
-      toast.error(error)
+      toast.error(error.message)
     }
   }
 
