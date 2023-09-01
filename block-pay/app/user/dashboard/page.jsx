@@ -6,14 +6,14 @@ import { dashData, rates } from "@/constants";
 const Dashboard = () => {
     return (
         <main className="flex">
-            {/**-------======== BEFORE CONNECTING WALLET =======------ 
+            {/**-------======== BEFORE CONNECTING WALLET =======------ */}
             <SideNav />
             <div className="flex-1 p-7">
                 <div className="flex mt-9 mb-4">
-                    <h1 className="text-2xl text-color font-semibold text-left mr-2">
+                    <h1 className="text-3xl text-color font-semibold text-left mr-2">
                         Dashboard
                     </h1>
-                    <select name="userBalance" className="p-1 border border-[#bebebe] rounded cursor-pointer">
+                    <select name="userBalance" className="p-1 border border-[#1856f3] rounded cursor-pointer">
                         <option value="usdc">USDC</option>
                         <option value="matic">MATIC</option>
                         <option value="eth">ETH</option>
@@ -58,14 +58,14 @@ const Dashboard = () => {
                     </h2>
                         
                     <div className="flex flex-row">
-                        <select name="convertFrom" className="p-1 border border-[#bebebe] w-24 rounded mr-1 cursor-pointer">
+                        <select name="convertFrom" className="p-1 border border-[#1856f3] w-24 rounded mr-1 cursor-pointer">
                             <option value="usdc">USDC</option>
                             <option value="matic">MATIC</option>
                             <option value="eth">ETH</option>
                             <option value="bsc">BSC</option>
                         </select>
                         <Image src={convertIcon} className="w-5 h-5 pt-[6px]"/>
-                        <select name="convertTo" className="p-1 border border-[#bebebe] w-24 rounded ml-1 cursor-pointer">
+                        <select name="convertTo" className="p-1 border border-[#1856f3] w-24 rounded ml-1 cursor-pointer">
                             <option value="usdc">USDC</option>
                             <option value="matic">MATIC</option>
                             <option value="eth">ETH</option>
@@ -105,7 +105,7 @@ const Dashboard = () => {
                                 </li>
                             ))}
                         </ul>
-                        <h1 className="flex justify-center items-center order-first font-medium mb-60 text-xl">
+                        <h1 className="flex justify-center items-center order-first font-medium mt-32 mb-32 text-xl">
                             Connect Wallet to view this section.
                         </h1>
                     </div>
@@ -119,15 +119,14 @@ const Dashboard = () => {
                 </div>
             </div>
             
-            ------======= AFTER CONNECTING WALLET ======------*/}
-
+            {/*------======= AFTER CONNECTING WALLET ======------
             <SideNav />
             <div className="flex-1 p-7">
                 <div className="flex mt-9 mb-4">
                     <h1 className="text-2xl text-color font-semibold text-left mr-2">
                         Dashboard
                     </h1>
-                    <select name="userBalance" className="p-1 border border-[#bebebe] rounded cursor-pointer">
+                    <select name="userBalance" className="p-1 border border-[#1856f3] rounded cursor-pointer">
                         <option value="usdc">USDC</option>
                         <option value="matic">MATIC</option>
                         <option value="eth">ETH</option>
@@ -172,14 +171,14 @@ const Dashboard = () => {
                     </h2>
                         
                     <div className="flex flex-row">
-                        <select name="convertFrom" className="p-1 border border-[#bebebe] w-24 rounded mr-1 cursor-pointer">
+                        <select name="convertFrom" className="p-1 border border-[#1856f3] w-24 rounded mr-1 cursor-pointer">
                             <option value="usdc">USDC</option>
                             <option value="matic">MATIC</option>
                             <option value="eth">ETH</option>
                             <option value="bsc">BSC</option>
                         </select>
                         <Image src={convertIcon} className="w-5 h-5 pt-[6px]"/>
-                        <select name="convertTo" className="p-1 border border-[#bebebe] w-24 rounded ml-1 cursor-pointer">
+                        <select name="convertTo" className="p-1 border border-[#1856f3] w-24 rounded ml-1 cursor-pointer">
                             <option value="usdc">USDC</option>
                             <option value="matic">MATIC</option>
                             <option value="eth">ETH</option>
@@ -241,7 +240,7 @@ const Dashboard = () => {
                     </h2>
                     <SearchBar/>
                 </div>
-            </div>
+            </div> */}
         </main>
     );
 };

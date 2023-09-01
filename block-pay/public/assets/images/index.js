@@ -8,6 +8,7 @@ import deleteIcon from "./delete.svg";
 import genpaylink from "./paylink.svg";
 import getpayName from "./payname.svg";
 import paymentID from "./paymentID.svg";
+import paymentplan from "./paymentplan.svg";
 import paymentlink from "./paymentlink.svg";
 import trustedblank from "./trustedblank-img.svg";
 import heroImg from "./hero.svg";
@@ -25,6 +26,13 @@ import periodIcon from "./period.svg";
 import convertIcon from "./convert.svg";
 import searchIcon from "./search.svg";
 import notiIcon from "./noti.svg";
+import carlPfp from "./carl.svg";
+import kaiyaPfp from "./kaiya.svg";
+import chancePfp from "./chance.svg";
+import cristoferPfp from "./cristofer.svg";
+import abramPfp from "./abram.svg";
+
+
 
 export {
     shield1,
@@ -38,6 +46,7 @@ export {
     deleteIcon,
     genpaylink,
     paymentID,
+    paymentplan,
     trustedblank,
     getPayLink,
     logo,
@@ -53,5 +62,10 @@ export {
     periodIcon,
     convertIcon,
     searchIcon,
-    notiIcon
+    notiIcon,
+    carlPfp, 
+    kaiyaPfp, 
+    chancePfp, 
+    cristoferPfp, 
+    abramPfp
 };
