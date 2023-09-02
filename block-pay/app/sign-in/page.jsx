@@ -15,12 +15,17 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
+<<<<<<< HEAD
 const [loading, setLoading] = useState(false); // Loading state
+=======
+  const [loading, setLoading] = useState(false);
+>>>>>>> 9ee26ee4e285db50955f761c5ffaa35e642cd0fd
 
 
   const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     
   const auth = getAuth(app)
   
@@ -43,6 +48,33 @@ const [loading, setLoading] = useState(false); // Loading state
       toast.error('Incorrect password')
     }else{
       toast.error(error.message)
+=======
+
+    const auth = getAuth(app);
+
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredentials.user;
+      console.log(user);
+      toast.success("login successful");
+      router.push("/user/dashboard");
+    } catch (error) {
+      console.log(error);
+      if (error.code === "auth/user-not-found") {
+        console.log("User not found. ");
+        toast.error("user not found");
+      } else if (error.code === "auth/wrong-password") {
+        toast.error("Incorrect password");
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+>>>>>>> 9ee26ee4e285db50955f761c5ffaa35e642cd0fd
     }
   
   }
@@ -64,6 +96,7 @@ const [loading, setLoading] = useState(false); // Loading state
           Login
         </h2>
 
+<<<<<<< HEAD
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
@@ -99,6 +132,44 @@ const [loading, setLoading] = useState(false); // Loading state
               <p className="font-normal text-xs">Forgot Password?</p>
             </div>          
         </form>
+=======
+        {loading ? (
+          <p className="text-center text-blue-500">Logging In...</p>
+        ) : (
+          <>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                placeholder="E-mail Or Username"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+              />
+
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+              />
+
+              <button
+                type="submit"
+                className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+              >
+                Login
+              </button>
+            </form>
+          </>
+        )}
+>>>>>>> 9ee26ee4e285db50955f761c5ffaa35e642cd0fd
       </div>
     </div>
   );
