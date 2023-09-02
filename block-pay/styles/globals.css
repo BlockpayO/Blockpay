@@ -13,11 +13,11 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
 */
 .bg {
   background: #f7f7f7;
-  ;
 }
 
 * {
   scroll-behavior: smooth;
+  overflow: auto;
 }
 
 .main {
@@ -33,6 +33,8 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
   font-weight: 500;
   line-height: 4.375rem;
 }
+
+
 
 @media screen and (max-width: 640px) {
   .main {

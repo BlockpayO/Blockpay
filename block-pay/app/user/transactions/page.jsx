@@ -1,9 +1,21 @@
+"use client"
 import SideNav from "@/components/SideNav";
+import ProviderContext from "../context/ProviderContext";
 import { transactions } from "@/constants";
 import { carlPfp, kaiyaPfp, chancePfp, cristoferPfp, abramPfp } from "@/public/assets/images";
 import Image from "next/image";
+import { useEffect, useContext } from "react";
 
 const TransactionsPage = () => {
+
+    // brief illustration of how to import the provide inside a page.
+    const { provider } = useContext(ProviderContext);
+
+    useEffect(() => {
+        
+        console.log("Provider", provider);
+    }, []);
+
     return (
         <main className="flex">
             <SideNav/>
