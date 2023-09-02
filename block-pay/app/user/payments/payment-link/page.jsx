@@ -1,15 +1,16 @@
 import SideNav from "@/components/SideNav";
 
-const LogoutPage = () => {
+const PaymentLinkPage = () => {
     return (
-        <main>
+        <main className="flex">
+            <SideNav/>
             <div className="flex justify-center items-center">
                 <h1 className="text-3xl font-bold">
-                    Welcome to Logout Page
+                    Welcome to Payment Link Page
                 </h1>
             </div>
         </main>
     )
 }
 
-export default LogoutPage
+export default PaymentLinkPage

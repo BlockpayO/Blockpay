@@ -66,7 +66,7 @@ const SignIn = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            placeholder="E-mail Or Username"
+            placeholder="E-mail"
             id="email"
             name="email"
             value={email}
@@ -92,7 +92,11 @@ const SignIn = () => {
             >
               Login
             </button>
-          
+
+            <div>
+              <Image src={""} />
+              <p className="font-normal text-xs">Forgot Password?</p>
+            </div>          
         </form>
       </div>
     </div>
