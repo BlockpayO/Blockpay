@@ -12,7 +12,6 @@ const TransactionsPage = () => {
     const { provider } = useContext(ProviderContext);
 
     useEffect(() => {
-        
         console.log("Provider", provider);
     }, []);
 
