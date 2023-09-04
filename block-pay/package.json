@@ -24,7 +24,9 @@
     "@web3-onboard/injected-wallets": "^2.10.1",
     "@web3-onboard/react": "^2.8.9",
     "@web3-onboard/trust": "^2.0.4",
-    "@web3-onboard/walletconnect": "^2.4.0"
+    "@web3-onboard/walletconnect": "^2.4.0",
+    "ethers": "^6.7.1",
+    "react-loader-spinner": "^5.4.5"
   },
   "devDependencies": {
     "prettier-plugin-tailwindcss": "^0.5.3",
