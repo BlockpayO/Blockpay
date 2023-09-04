@@ -3,7 +3,6 @@ import {Navbar, Hero, Advantages, PaymentLinks, Achievements, TrustedBy, Footer}
 import '@/styles/globals.css';
 
 
-
 export default function Home() {
   return (
     <main>

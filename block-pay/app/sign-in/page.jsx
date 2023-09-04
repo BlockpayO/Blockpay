@@ -15,37 +15,40 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
+  const [loading, setLoading] = useState(false);
 
 
   const router = useRouter()
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-  const auth = getAuth(app)
-  
-  try {
-    const userCredentials = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const user = userCredentials.user;
-    console.log(user);
-    toast.success("login successful");
-    router.push('/user/dashboard')
-  } catch (error) {
-    console.log(error)
-    if (error.code === 'auth/user-not-found') {
-      console.log('User not found. ');
-      toast.error('user not found')
-    } else if (error.code === 'auth/wrong-password') {
-      toast.error('Incorrect password')
-    }else{
-      toast.error(error.message)
+
+    const auth = getAuth(app);
+
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredentials.user;
+      console.log(user);
+      toast.success("login successful");
+      router.push("/user/dashboard");
+    } catch (error) {
+      console.log(error);
+      if (error.code === "auth/user-not-found") {
+        console.log("User not found. ");
+        toast.error("user not found");
+      } else if (error.code === "auth/wrong-password") {
+        toast.error("Incorrect password");
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
     }
   
   }
-  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -63,37 +66,42 @@ const SignIn = () => {
           Login
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="E-mail Or Username"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
-          />
+        {loading ? (
+          <p className="text-center text-blue-500">Logging In...</p>
+        ) : (
+          <>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                placeholder="E-mail Or Username"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+              />
 
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
-          />
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
+              />
 
-          <button
-              type="submit"
-              className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-            >
-              Login
-            </button>
-          
-        </form>
+              <button
+                type="submit"
+                className="w-full py-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+              >
+                Login
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
