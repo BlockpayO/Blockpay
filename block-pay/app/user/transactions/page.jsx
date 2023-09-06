@@ -4,9 +4,10 @@ import ProviderContext from "../context/ProviderContext";
 import { transactions } from "@/constants";
 import { carlPfp, kaiyaPfp, chancePfp, cristoferPfp, abramPfp } from "@/public/assets/images";
 import Image from "next/image";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext,useState } from "react";
 
 const TransactionsPage = () => {
+    const [view,setView] = useState(false);
 
     // brief illustration of how to import the provide inside a page.
     const { provider } = useContext(ProviderContext);
@@ -15,12 +16,22 @@ const TransactionsPage = () => {
         console.log("Provider", provider);
     }, []);
 
+    const openView = (view) => {
+        setView(view);
+      };
+    
+      const closeView = (view) => {
+        setView(view);
+      };
+    
+
     return (
         <main className="flex">
-            <SideNav/>
+            <SideNav view={view} closeView={closeView}/>
             <div className="flex-1 p-7">
                 <div className="flex mt-9 mb-4 w-full justify-between">
-                    <h1 className="text-3xl text-color font-semibold text-left mr-2">
+                    <SideNavToggle openView={openView} />
+                    <h1 className="md:text-3xl text-color font-semibold text-left mr-2 text-xl">
                         Transactions
                     </h1>
                     {/*}
@@ -31,20 +42,21 @@ const TransactionsPage = () => {
                     <SearchBar/>
                 </div>
                 <div className="p-7 border-2 border-[#bebebe] rounded-lg flex h-screen">
-                    <div>
-                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-2 w-24 mr-5">
+                    <div className="space-x-2 > * + * top-0 mt-0">
+                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2">
                             All
                         </button>
-                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-2 w-24 mr-5">
+                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2">
                             Pending
                         </button>
-                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-2 w-24 mr-5">
+                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2">
                             Successful
                         </button>
-                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-2 w-24 mr-5">
+                        <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2">
                             Failed
                         </button>
                     </div>
+                    <div className="h-100"></div>
                     {/**<ul>
                         {transactions.map((transaction, index) => (
                             <li key={index}>
@@ -81,11 +93,16 @@ const TransactionsPage = () => {
 
 export default TransactionsPage
 
+const SideNavToggle = ({openView}) => {
+    return (
+      <svg onClick={() => openView(true)} className="lg:hidden" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#080808" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path></svg>
+    );
+  };
 
 const SearchBar = () => {
     return (
         <div className="flex">
-            <input type="search" name="search invoice" id="" placeholder="Search" className="text-[13px] py-2 w-72 px-4 border border-[#bebebe] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+            <input type="search" name="search invoice" id="" placeholder="Search" className="text-[13px] py-1 w-32 md:py-2 md:w-72 px-4 border border-[#bebebe] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
         </div>
     )
 };

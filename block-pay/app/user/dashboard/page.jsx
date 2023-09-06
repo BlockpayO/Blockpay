@@ -106,6 +106,7 @@ init({
 });
 
 const Dashboard = () => {
+  const [view,setView] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const [provider, setProvider] = useState();
@@ -142,6 +143,14 @@ const Dashboard = () => {
     }
   }, [wallet, signerContext.setProvider]);
 
+  const openView = (view) => {
+    setView(view);
+  };
+
+  const closeView = (view) => {
+    setView(view);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -167,10 +176,38 @@ const Dashboard = () => {
 
       {!connect ? (
         <>
-          <SideNav />
+          <SideNav view={view} closeView={closeView}/>
           <div className="flex-1 p-7">
-            <div className="flex mt-9 mb-4">
-              <h1 className="text-3xl text-color font-semibold text-left mr-2">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-row justify-between md:order-last">
+              <SideNavToggle openView={openView}/>
+              <div className="flex self-end order-last">
+                <Image
+                  src={notiIcon}
+                  alt="Noti Icon"
+                  className="w-7 h-7 p-1 pb-0 cursor-pointer"
+                />
+                <button
+                  className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
+                    connecting
+                      ? "bg-gray-500"
+                      : wallet
+                      ? "bg-red-500 border border-none hover:bg-red-700"
+                      : "bg-blue-500 border border-none hover:bg-blue-700"
+                  }`}
+                  disabled={connecting}
+                  onClick={() => (wallet ? disconnect(wallet) : connect())}
+                >
+                  {connecting
+                    ? "Connecting"
+                    : wallet
+                    ? "Disconnect"
+                    : "Connect Wallet"}
+                </button>
+              </div>
+            </div>  
+            <div className="flex flex-col md:flex-row gap-4 md:items-center p-4 mt-4 mb-2 md:mt-9 md:mb-4">
+              <h1 className="text-2xl text-color font-semibold text-left">
                 Dashboard
               </h1>
               <select
@@ -183,7 +220,8 @@ const Dashboard = () => {
                 <option value="bsc">BSC</option>
               </select>
             </div>
-
+            </div>
+           
             <div className="grid bg-[#f7f7f7] px-11 py-6 rounded-lg">
               <div className="flex flex-row">
                 <h2 className="font-medium mr-1 font-base">Total Value</h2>
@@ -250,23 +288,6 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex flex-col flex-auto p-6 pt-4 pr-12 mt-9  pl-0">
-            <button
-              className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                connecting
-                  ? "bg-gray-500"
-                  : wallet
-                  ? "bg-red-500 border border-none hover:bg-red-700"
-                  : "bg-blue-500 border border-none hover:bg-blue-700"
-              }`}
-              disabled={connecting}
-              onClick={() => (wallet ? disconnect(wallet) : connect())}
-            >
-              {connecting
-                ? "Connecting"
-                : wallet
-                ? "Disconnect"
-                : "Connect Wallet"}
-            </button>
             <div className="bg-[#f7f7f7] p-10 pt-8 mt-4 rounded-lg">
               <h2 className="text-color text-xl font-medium text-color">
                 Recent Transactions
@@ -293,10 +314,38 @@ const Dashboard = () => {
         </>
       ) : (
         <>
-          <SideNav />
-          <div className="flex-1 p-7">
-            <div className="flex mt-9 mb-4">
-              <h1 className="text-2xl text-color font-semibold text-left mr-2">
+          <SideNav view={view} closeView={closeView}/>
+          <div className="flex flex-col p-5 w-full">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-row justify-between md:order-last">
+              <SideNavToggle openView={openView}/>
+              <div className="flex self-end order-last">
+                <Image
+                  src={notiIcon}
+                  alt="Noti Icon"
+                  className="w-7 h-7 p-1 pb-0 cursor-pointer"
+                />
+                <button
+                  className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
+                    connecting
+                      ? "bg-gray-500"
+                      : wallet
+                      ? "bg-red-500 border border-none hover:bg-red-700"
+                      : "bg-blue-500 border border-none hover:bg-blue-700"
+                  }`}
+                  disabled={connecting}
+                  onClick={() => (wallet ? disconnect(wallet) : connect())}
+                >
+                  {connecting
+                    ? "Connecting"
+                    : wallet
+                    ? "Disconnect"
+                    : "Connect Wallet"}
+                </button>
+              </div>
+            </div>  
+            <div className="flex flex-col md:flex-row gap-4 md:items-center p-4 mt-4 mb-2 md:mt-9 md:mb-4">
+              <h1 className="text-2xl text-color font-semibold text-left">
                 Dashboard
               </h1>
               <select
@@ -309,7 +358,10 @@ const Dashboard = () => {
                 <option value="bsc">BSC</option>
               </select>
             </div>
+            </div>
 
+            <div className="flex flex-col md:flex-row w-full justify-center items-center">
+            <div className="flex-none py-7 md:p-7 flex-col md:flex-row md:w-2/5 w-full">
             <div className="grid bg-[#f7f7f7] px-11 py-6 rounded-lg">
               <div className="flex flex-row">
                 <h2 className="font-medium mr-1 font-base">Total Value</h2>
@@ -327,7 +379,7 @@ const Dashboard = () => {
                 </p>
               </div>
             </div>
-            <div className="grid bg-[#f7f7f7] w-[339px] px-12 py-6 mt-5 rounded-lg">
+            <div className="grid bg-[#f7f7f7] w-[339px] px-12 py-6 mt-5 rounded-lg w-full">
               <h2 className="text-color text-xl font-medium mb-4">
                 Quick Links
               </h2>
@@ -377,40 +429,17 @@ const Dashboard = () => {
               </ul>
             </div>
           </div>
-          <div className="flex flex-col flex-auto p-6 pt-4 pr-12 mt-9  pl-0">
-            <div className="flex self-end order-first">
-              <Image
-                src={notiIcon}
-                alt="Noti Icon"
-                className="w-7 h-7 p-1 pb-0 cursor-pointer"
-              />
-              <button
-                className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                  connecting
-                    ? "bg-gray-500"
-                    : wallet
-                    ? "bg-red-500 border border-none hover:bg-red-700"
-                    : "bg-blue-500 border border-none hover:bg-blue-700"
-                }`}
-                disabled={connecting}
-                onClick={() => (wallet ? disconnect(wallet) : connect())}
-              >
-                {connecting
-                  ? "Connecting"
-                  : wallet
-                  ? "Disconnect"
-                  : "Connect Wallet"}
-              </button>
-            </div>
-            <div className="bg-[#f7f7f7] p-10 pt-8 mt-4 rounded-lg">
-              <h2 className="text-color text-xl font-medium text-color">
+
+          <div className="flex flex-col md:w-3/5 w-full">
+            <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg">
+              <h2 className="text-color text-l md:text-xl md:font-medium text-color">
                 Recent Transactions
               </h2>
               <div className="mt-1">
-                <ul className="flex justify-between mb-4">
+                <ul className="flex flex-col md:flex-row justify-between mb-2 md:mb-4">
                   {dashData.map((dashDatum) => (
                     <li key={dashDatum.id} className="mb-4">
-                      <div className="text-[#727272] mb-1">
+                      <div className="text-[#727272] text-sm mb-1">
                         {dashDatum.title}
                       </div>
                       <div className="text-black">{dashDatum.desc}</div>
@@ -421,7 +450,7 @@ const Dashboard = () => {
               <div className="flex flex-col justify-center items-center">
                 <button
                   type="button"
-                  className=" font-medium mt-48 hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 cursor-pointer"
+                  className=" font-medium mt-30 md:mt-48 hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 cursor-pointer"
                 >
                   Load more
                 </button>
@@ -433,7 +462,10 @@ const Dashboard = () => {
               <SearchBar />
             </div>
           </div>
-        </>
+
+            </div>
+          </div>
+              </>
       )}
     </main>
   );
@@ -441,20 +473,27 @@ const Dashboard = () => {
 
 export default Dashboard;
 
+
+const SideNavToggle = ({openView}) => {
+  return (
+    <svg onClick={() => openView(true)}  className="lg:hidden" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#080808" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path></svg>
+  );
+};
+
 const SearchBar = () => {
   return (
-    <div>
+    <div className="">
       <input
         type="search"
         name="search invoice"
         id=""
         placeholder="Enter transaction ID"
-        className="w-[355px] text-[13px] py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full text-[13px] py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <button
         type="button"
         name="search invoice"
-        className="mt-2 ml-4 py-2 px-3 bg-blue-500 hover:bg-[#1856f3] text-[13px] text-white rounded-md w-40"
+        className="mt-2 py-2 px-3 bg-blue-500 hover:bg-[#1856f3] text-[13px] text-white rounded-md w-40"
       >
         Search
       </button>

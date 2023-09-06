@@ -11,9 +11,10 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 
 
-const SideNav = () => {
+const SideNav = ({view,closeView}) => {
     const [username, setUsername]= useState('')
     const [generatedId, setGeneratedId] = useState('')
+    const [isMobileView, setIsMobileView] = useState(false);
 
     const auth = getAuth(app)
     const user = auth.currentUser
@@ -53,9 +54,13 @@ const SideNav = () => {
         console.log(userId)
          fetchUsername(userId)
         
-      }, [user])
+      }, [user]);
+
+
+      
     return (
-        <div className="flex flex-col bg-[#f7f7f7] sticky">
+        <div className={`flex flex-col bg-[#f7f7f7] h-screen absolute lg:sticky top-0 left-0 transition-all ${view ? 'translate-x-0' : '-translate-x-60'} lg:translate-x-0`}>
+            <svg className="lg:hidden fixed top-0 right-0 p-1 bg-[#1856F3] rounded-bl-lg" onClick={() => closeView(false)} xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ffffff" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path></svg>
             <div className="flex justify-center my-7">
                 <Image src={logo} className="w-[10rem] h-[5rem] cursor-pointer" alt="Logo" />
             </div>
