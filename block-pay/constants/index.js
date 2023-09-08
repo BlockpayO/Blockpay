@@ -330,7 +330,7 @@ export const paymentCards = [
 ];
 
 export const blockpayFactoryContractAddress =
-  "0x4d48486212eb9F5be5A59d7997Ad677B02C0094e";
+  "0x54e2765279C0Ac23576018CdaC2EAcE26753831f";
 export const blockpayFactoryContractABI = [
   {
     inputs: [
@@ -340,6 +340,82 @@ export const blockpayFactoryContractABI = [
     type: "constructor",
   },
   { inputs: [], name: "TransactionNotSent", type: "error" },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "planName",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "CreatedPaymentPlanBpF",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "planCreator",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "contractIndex",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "firstname",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "lastname",
+        type: "string",
+      },
+      { indexed: false, internalType: "string", name: "email", type: "string" },
+    ],
+    name: "ReceivedPAymentBpF",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "planCreator",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "contractIndex",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "withdrawnAmount",
+        type: "uint256",
+      },
+    ],
+    name: "WithdrawnBpF",
+    type: "event",
+  },
   {
     inputs: [
       {

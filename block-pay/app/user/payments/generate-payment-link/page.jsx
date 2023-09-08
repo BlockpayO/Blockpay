@@ -26,10 +26,15 @@ const GenPaymentLink = () => {
     e.preventDefault();
     if (provider) {
       try {
-        contract.createPaymentBpF(planName, ethers.parseEther(String(amount)));
-        // contract.on("Created", (plan, am, event) => {
-        //   console.log("test", plan, am);
-        // });
+        if (contract) {
+          contract.createPaymentBpF(
+            planName,
+            ethers.parseEther(String(amount))
+          );
+          contract.on("CreatedPaymentPlanBpF", (planName, amount, event) => {
+            console.log("test", planName, amount);
+          });
+        }
       } catch (err) {
         console.log("Error from generate payment links: ", err.message);
       }
