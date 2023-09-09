@@ -63,7 +63,7 @@ const SideNav = ({ view, closeView }) => {
 
   return (
     <div
-      className={` w-[300px] flex flex-col bg-[#f7f7f7] h-screen absolute lg:sticky top-0 left-0 transition-all ${
+      className={` w-[300px] bg-[#f7f7f7] h-screen fixed lg:sticky top-0 left-0 transition-all ${
         view ? "translate-x-0" : "-translate-x-[300px]"
       } lg:translate-x-0`}
     >
