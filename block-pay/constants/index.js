@@ -330,7 +330,7 @@ export const paymentCards = [
 ];
 
 export const blockpayFactoryContractAddress =
-  "0x54e2765279C0Ac23576018CdaC2EAcE26753831f";
+  "0xEBc3f18d62013Bc8ece573eC984738bc82f45E19";
 export const blockpayFactoryContractABI = [
   {
     inputs: [
@@ -345,6 +345,12 @@ export const blockpayFactoryContractABI = [
     inputs: [
       {
         indexed: false,
+        internalType: "contract Blockpay",
+        name: "blockPayContract",
+        type: "address",
+      },
+      {
+        indexed: false,
         internalType: "string",
         name: "planName",
         type: "string",
@@ -353,6 +359,12 @@ export const blockpayFactoryContractABI = [
         indexed: false,
         internalType: "uint256",
         name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "contractIndex",
         type: "uint256",
       },
     ],
@@ -460,6 +472,16 @@ export const blockpayFactoryContractABI = [
     ],
     name: "getContract",
     outputs: [{ internalType: "contract Blockpay", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_contractCreator", type: "address" },
+      { internalType: "address", name: "blockpayAddress", type: "address" },
+    ],
+    name: "getContractIndex",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },

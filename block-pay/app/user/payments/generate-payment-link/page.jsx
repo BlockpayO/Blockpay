@@ -31,9 +31,17 @@ const GenPaymentLink = () => {
             planName,
             ethers.parseEther(String(amount))
           );
-          contract.on("CreatedPaymentPlanBpF", (planName, amount, event) => {
-            console.log("test", planName, amount);
-          });
+          contract.on(
+            "CreatedPaymentPlanBpF",
+            (blockpayContract, planName, amount, contractIndex, event) => {
+              console.log("CreatedPaymentPlan Event", {
+                blockpayContract,
+                planName,
+                amount,
+                contractIndex,
+              });
+            }
+          );
         }
       } catch (err) {
         console.log("Error from generate payment links: ", err.message);

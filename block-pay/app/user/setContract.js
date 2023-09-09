@@ -22,7 +22,7 @@ const setContract = () => {
         );
       })();
     }
-  }, []);
+  }, [provider]);
 
   return { contract };
 };
