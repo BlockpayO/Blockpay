@@ -5,6 +5,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProviderContext from "./user/context/ProviderContext";
 import { useState } from "react";
+import { ChakraProvider  } from "@chakra-ui/react";
+import { theme } from "./chakra/theme";
 
 const aeonik = localFont({
   src: [
@@ -47,8 +49,10 @@ const Layout = ({ children }) => {
       </head>
       <body>
         <ProviderContext.Provider value={{ provider, setProvider }}>
+          <ChakraProvider theme={theme}>
           <main>{children}</main>
           <ToastContainer />
+          </ChakraProvider>
         </ProviderContext.Provider>
       </body>
     </html>
