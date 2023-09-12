@@ -15,10 +15,10 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
   background: #f7f7f7;
 }
 
-* {
+/* * {
   scroll-behavior: smooth;
   overflow: auto;
-}
+} */
 
 .main {
   width: full;
