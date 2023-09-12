@@ -52,10 +52,10 @@ const PaymentLinkPage = () => {
        
                 <SideNavToggle openView={openView} />
            
-         <Flex p={['100px', '100px', '80px']} bgColor={'white'} justifyContent={'center'} alignItems={['center','center', 'normal']} w={['99.8vw', '80vw', '100vw']} border={'1px solid red'}>
+         <Flex p={['100px', '100px', '80px']} bgColor={'white'} justifyContent={'center'} alignItems={['center','center', 'normal']} w={['99.8vw', '80vw', '100vw']} >
           <Flex direction={'column'} bgColor={'#F7F7F7'} w={['95vw', '95vw', '70vw']} borderRadius={'2xl'}  boxShadow={'md'}>
             
-            <Flex p={['2px', '2px', '20px']} justifyContent={'space-between'}  alignItems={'center'} w={['95vw', '95vw', '70vw']}>
+            <Flex p={['10px', '2px', '20px']} justifyContent={'space-between'}  alignItems={'center'} w={['95vw', '95vw', '70vw']}>
               <Flex onClick={goBack} cursor={'pointer'} alignItems={'center'}>
               <Icon
           justifySelf={"flex-end"}
