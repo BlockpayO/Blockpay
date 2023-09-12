@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProviderContext from "./user/context/ProviderContext";
 import { useState } from "react";
 import { ChakraProvider  } from "@chakra-ui/react";
-import { theme } from "./chakra/theme";
+import { theme } from "./chakra-ui/theme";
 
 const aeonik = localFont({
   src: [

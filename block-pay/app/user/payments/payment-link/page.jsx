@@ -37,9 +37,9 @@ const PaymentLinkPage = () => {
 
     return (
       <Flex>
-         <SideNav view={view} closeView={closeView}/>
+          <SideNav view={view} closeView={closeView}/>
 
-         <Flex p={20} bgColor={'white'} justifyContent={'center'}  w={'100vw'}>
+          <Flex p={20} bgColor={'white'} justifyContent={'center'}  w={'100vw'}>
           <Flex direction={'column'} bgColor={'#F7F7F7'} w={'70vw'} borderRadius={'2xl'} boxShadow={'md'}>
             
             <Flex p={10} justifyContent={'space-between'}  alignItems={'center'} w={'70vw'}>
@@ -50,7 +50,7 @@ const PaymentLinkPage = () => {
           as={ChevronLeftIcon}
           color={'#1856F3'}
           fontSize="3xl"/>
-                <Text fontSize={'16pxpx'} color={'#1856F3'}>Back</Text>
+                <Text fontSize={'16px'} color={'#1856F3'}>Back</Text>
               </Flex>
 
               <Box>

@@ -978,7 +978,7 @@
     "@chakra-ui/theme" "3.3.0"
     lodash.mergewith "4.6.2"
 
-"@chakra-ui/theme@3.3.0":
+"@chakra-ui/theme@^3.3.0", "@chakra-ui/theme@3.3.0":
   version "3.3.0"
   resolved "https://registry.npmjs.org/@chakra-ui/theme/-/theme-3.3.0.tgz"
   integrity sha512-VHY2ax5Wqgfm83U/zYBk0GS0TGD8m41s/rxQgnEq8tU+ug1YZjvOZmtOq/VjfKP/bQraFhCt05zchcxXmDpEYg==
@@ -2340,11 +2340,6 @@
   version "13.4.19"
   resolved "https://registry.npmjs.org/@next/env/-/env-13.4.19.tgz"
   integrity sha512-FsAT5x0jF2kkhNkKkukhsyYOrRqtSxrEhfliniIq0bwWbuXLgyt3Gv0Ml+b91XwjwArmuP7NxCiGd++GGKdNMQ==
-
-"@next/font@^13.4.19":
-  version "13.4.19"
-  resolved "https://registry.npmjs.org/@next/font/-/font-13.4.19.tgz"
-  integrity sha512-yOuSRYfqksWcaG/sATr1/DEGvvI8gnmAAnQCCZ0+L9p4Pio3/DMu71J56YHh9Hz84LDN4tMVzuux0ssCuM50sA==
 
 "@next/swc-win32-x64-msvc@13.4.19":
   version "13.4.19"

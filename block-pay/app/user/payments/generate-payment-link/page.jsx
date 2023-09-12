@@ -1,7 +1,9 @@
 "use client";
 
 import { SideNav } from "@/components";
-import copyIcon from "@/constants"
+import {copyIcon, backarrow} from "@/public/assets/images"
+import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import setContract from "../../setContract";
 import connectWallet from "../../connect";
@@ -58,8 +60,17 @@ const GenPaymentLink = () => {
           <SideNavToggle openView={openView} />
         </div>
         <div className="flex justify-center items-center p-12">
-          <div className="flex flex-row justify-center items-center bg-[#f7f7f7] p-7">
-            <form className="space-y-2" onSubmit={createPaymentPlan}>
+          <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] p-7 w-[450px]">
+            <Link href="/user/payments">
+              <div className="flex items-center cursor-pointer order-first">
+                <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
+                <p className="ml-2 text-sm text-color">Back</p>
+              </div>
+            </Link>
+            <h2 className="h2 text-color mt-2 mb-5">
+              Generate Payment Links
+            </h2>
+            <form className="flex flex-col" onSubmit={createPaymentPlan}>
               <input
                 type="text"
                 placeholder="Payment Name"
@@ -69,7 +80,7 @@ const GenPaymentLink = () => {
                   setPlanName(e.target.value);
                 }}
                 required
-                className="px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300 mr-2"
+                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
 
               <input
@@ -81,7 +92,7 @@ const GenPaymentLink = () => {
                   setDescription(e.target.value);
                 }}
                 required
-                className="px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300 mr-2"
+                className="w-[310px] h-[77px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
 
               <input
@@ -93,10 +104,10 @@ const GenPaymentLink = () => {
                   setAmount(e.target.value);
                 }}
                 required
-                className="px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300 mr-2"
+                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
 
-              {/* <input
+              <input
                 type="number"
                 placeholder="Payment ID"
                 id="paymentID"
@@ -104,13 +115,13 @@ const GenPaymentLink = () => {
                 value={""}
                 onChange={""}
                 required
-                className="px-4 py-2 rounded-lg border focus:ring focus:ring-blue-300"
-              /> */}
+                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+              />
 
-              <div className="mb-6">
+              <div className="mb-2">
                 <button
                   type="submit"
-                  className="p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                  className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
                 >
                   Create Link
                 </button>

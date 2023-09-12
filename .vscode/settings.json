@@ -5,10 +5,12 @@
         "Signup",
         "backarrow",
         "cashpayment",
+        "chakra",
         "genpaylink",
         "getstartedbutton",
         "glassmorphism",
-        "tailwind"
+        "tailwind",
+        "toastify"
     ],
     "cSpell.words": [
         "generatepayment",
