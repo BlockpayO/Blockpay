@@ -61,15 +61,17 @@ const GenPaymentLink = () => {
         </div>
         <div className="flex justify-center items-center p-12">
           <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] p-7 w-[450px]">
-            <Link href="/user/payments">
-              <div className="flex items-center cursor-pointer order-first">
-                <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
-                <p className="ml-2 text-sm text-color">Back</p>
-              </div>
-            </Link>
-            <h2 className="h2 text-color mt-2 mb-5">
-              Generate Payment Links
-            </h2>
+            <div className="grid w-full">
+              <Link href="/user/payments" className="flex-row order-first">
+                <div className="flex justify-start items-start cursor-pointer">
+                  <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
+                  <p className="ml-2 text-sm text-color">Back</p>
+                </div>
+              </Link>
+              <h2 className="h2 text-color mt-2 mb-5 flex justify-center">
+                Generate Payment Links
+              </h2>
+            </div>
             <form className="flex flex-col" onSubmit={createPaymentPlan}>
               <input
                 type="text"
