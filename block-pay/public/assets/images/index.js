@@ -31,6 +31,7 @@ import kaiyaPfp from "./kaiya.svg";
 import chancePfp from "./chance.svg";
 import cristoferPfp from "./cristofer.svg";
 import abramPfp from "./abram.svg";
+import copyIcon from "./copy.svg";
 
 
 
@@ -67,5 +68,6 @@ export {
     kaiyaPfp, 
     chancePfp, 
     cristoferPfp, 
-    abramPfp
+    abramPfp,
+    copyIcon,
 };

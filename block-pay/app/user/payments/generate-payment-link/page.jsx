@@ -1,6 +1,7 @@
 "use client";
 
 import { SideNav } from "@/components";
+import copyIcon from "@/constants"
 import { useState } from "react";
 import setContract from "../../setContract";
 import connectWallet from "../../connect";
@@ -57,7 +58,7 @@ const GenPaymentLink = () => {
           <SideNavToggle openView={openView} />
         </div>
         <div className="flex justify-center items-center p-12">
-          <div className="grid justify-center items-center bg-[#f7f7f7] p-7">
+          <div className="flex flex-row justify-center items-center bg-[#f7f7f7] p-7">
             <form className="space-y-2" onSubmit={createPaymentPlan}>
               <input
                 type="text"
