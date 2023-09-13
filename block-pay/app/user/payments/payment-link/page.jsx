@@ -48,9 +48,9 @@ const PaymentLinkPage = () => {
 
     return (
       <Flex>
-         <SideNav view={view} closeView={closeView}/>
+          <SideNav view={view} closeView={closeView}/>
 
-         <Flex p={20} bgColor={'white'} justifyContent={'center'}  w={'100vw'}>
+          <Flex p={20} bgColor={'white'} justifyContent={'center'}  w={'100vw'}>
           <Flex direction={'column'} bgColor={'#F7F7F7'} w={'70vw'} borderRadius={'2xl'} boxShadow={'md'}>
             
             <Flex p={['10px', '2px', '20px']} justifyContent={'space-between'}  alignItems={'center'} w={['95vw', '95vw', '70vw']}>
@@ -98,7 +98,7 @@ const PaymentLinkPage = () => {
                     <Td>Cayadi Megantara </Td>
                     <Td>389500</Td>
                     <Td>USD 98.00</Td>
-                    <Td color={'#1A57F3'} textDecor={'underline'}><Link href={'#'}>Preview Page</Link></Td>
+                    <Td color={'#1A57F3'} textDecor={'underline'}><Link href={'/user/payments/payment-link/preview-page/'}>Preview Page</Link></Td>
                     <Td>18 minutes ago</Td>
                     <Td><Button borderRadius={'md'} variant={'outline'}>Edit Link</Button></Td>
                     <Td><Text color={'#1856F3'}>Copy Link</Text></Td>
@@ -160,7 +160,7 @@ const PaymentLinkPage = () => {
         </ModalContent>
       </Modal>
           </Flex>
-         </Flex>
+          </Flex>
       </Flex>
     )
 }

@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import connectWallet from "../connect";
 import setContract from "../setContract";
 import {Spinner, Flex} from "@chakra-ui/react"
+import Link from "next/link";
 
 const Dashboard = () => {
   const [view, setView] = useState(false);
@@ -126,7 +127,6 @@ emptyColor='gray.200' />
                 >
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
-                  <option value="eth">ETH</option>
                 </select>
               </div>
             </div>
@@ -173,7 +173,6 @@ emptyColor='gray.200' />
                 >
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
-                  <option value="eth">ETH</option>
                 </select>
                 <Image
                   src={convertIcon}
@@ -186,7 +185,6 @@ emptyColor='gray.200' />
                 >
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
-                  <option value="eth">ETH</option>
                 </select>
               </div>
               <p className="text-[#bebebe] mt-2 text-[13px]">
@@ -269,7 +267,6 @@ emptyColor='gray.200' />
                 >
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
-                  <option value="eth">ETH</option>
                 </select>
               </div>
             </div>
@@ -324,7 +321,6 @@ emptyColor='gray.200' />
                     >
                       <option value="usdc">USDC</option>
                       <option value="matic">MATIC</option>
-                      <option value="eth">ETH</option>
                     </select>
                     <Image
                       src={convertIcon}
@@ -337,7 +333,6 @@ emptyColor='gray.200' />
                     >
                       <option value="usdc">USDC</option>
                       <option value="matic">MATIC</option>
-                      <option value="eth">ETH</option>
                     </select>
                   </div>
                   <p className="text-[#bebebe] mt-2 text-[13px]">
@@ -372,12 +367,12 @@ emptyColor='gray.200' />
                     </ul>
                   </div>
                   <div className="flex flex-col justify-center items-center">
-                    <button
+                    <Link href="/user/transactions"
                       type="button"
-                      className=" font-medium mt-30 md:mt-48 hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 cursor-pointer"
+                      className="text-center font-medium mt-30 md:mt-48 hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 cursor-pointer"
                     >
                       Load more
-                    </button>
+                    </Link>
                   </div>
                 </div>
 
