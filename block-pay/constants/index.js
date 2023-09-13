@@ -196,6 +196,25 @@ export const dashData = [
   },
 ];
 
+export const setting = [
+  {
+    head: "Profile",
+    details: "Name, Surname, Email Address"
+  },
+  {
+    head: "Notifications",
+    details: "Notifications Settings"
+  },
+  {
+    head: "Theme",
+    details: "Enter to switch modes"
+  },
+  {
+    head: "Verification and Security",
+    details: "Password, Biometrics"
+  },
+]
+
 /*
 export const dashData = [
     {

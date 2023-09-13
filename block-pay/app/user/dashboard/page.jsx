@@ -135,7 +135,6 @@ const Dashboard = () => {
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
                   <option value="eth">ETH</option>
-                  <option value="bsc">BSC</option>
                 </select>
               </div>
             </div>
@@ -183,7 +182,6 @@ const Dashboard = () => {
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
                   <option value="eth">ETH</option>
-                  <option value="bsc">BSC</option>
                 </select>
                 <Image
                   src={convertIcon}
@@ -197,7 +195,6 @@ const Dashboard = () => {
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
                   <option value="eth">ETH</option>
-                  <option value="bsc">BSC</option>
                 </select>
               </div>
               <p className="text-[#bebebe] mt-2 text-[13px]">
@@ -281,7 +278,6 @@ const Dashboard = () => {
                   <option value="usdc">USDC</option>
                   <option value="matic">MATIC</option>
                   <option value="eth">ETH</option>
-                  <option value="bsc">BSC</option>
                 </select>
               </div>
             </div>
@@ -337,7 +333,6 @@ const Dashboard = () => {
                       <option value="usdc">USDC</option>
                       <option value="matic">MATIC</option>
                       <option value="eth">ETH</option>
-                      <option value="bsc">BSC</option>
                     </select>
                     <Image
                       src={convertIcon}
@@ -351,7 +346,6 @@ const Dashboard = () => {
                       <option value="usdc">USDC</option>
                       <option value="matic">MATIC</option>
                       <option value="eth">ETH</option>
-                      <option value="bsc">BSC</option>
                     </select>
                   </div>
                   <p className="text-[#bebebe] mt-2 text-[13px]">

@@ -93,7 +93,7 @@ const SideNav = ({ view, closeView }) => {
               href={`/${dashboard.id}`}
               className="flex py-3 px-11 hover:bg-[#1856F3] hover:text-white cursor-pointer"
             >
-              <div className="w-6 h-6 mr-2 ">
+              <div className="w-6 h-6 mr-2">
                 {dashboard.icon === transactIcon && (
                   <Image src={transactIcon} alt="Transaction Icon" />
                 )}

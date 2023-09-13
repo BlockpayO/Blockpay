@@ -98,10 +98,9 @@ Note: The styles for this gradient grid background is heavily inspired by the cr
   line-height: 20px;
 }
 
-.nk {
-  justify-content: left;
+.svg.path:hover {
+  fill: white;
 }
-
 
 .user:hover {
   color: white;

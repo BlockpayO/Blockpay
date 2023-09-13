@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Blockpay - Your personal subscription manager</title>
       </head>
-      <body>
+      <body className={`${aeonik.className}`}>
         <ProviderContext.Provider value={{ provider, setProvider }}>
           <ChakraProvider theme={theme}>
           <main>{children}</main>

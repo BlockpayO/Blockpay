@@ -21,7 +21,7 @@ const PaymentsPage = () => {
     return (
         <main className="flex">
             <SideNav view={view} closeView={closeView}/>
-            <div className="w-full">
+            <div className="w-full flex justify-center">
             <div className="flex-row mt-5 mb-5 mx-5">
                 <SideNavToggle openView={openView} />
             </div>
