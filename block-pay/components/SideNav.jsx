@@ -9,11 +9,26 @@ import {
   homeIcon,
 } from "@/public/assets/images";
 import Image from "next/image";
+import {
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Stack,
+  ModalOverlay,
+  Button,
+  Box,
+  Text,
+  Heading,
+  ModalContent
+} from '@chakra-ui/react'
 
 import { getFirestore, collection, doc, getDoc } from "firebase/firestore";
 import { app } from "@/firebase/firebase";
 import { getAuth } from "firebase/auth";
 import { useState, useEffect } from "react";
+import LogoutModal from '@/components/LogoutModal'
 
 import Link from "next/link";
 
@@ -21,6 +36,7 @@ const SideNav = ({ view, closeView }) => {
   const [username, setUsername] = useState("");
   const [generatedId, setGeneratedId] = useState("");
   const [isMobileView, setIsMobileView] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const auth = getAuth(app);
   const user = auth.currentUser;
@@ -60,6 +76,8 @@ const SideNav = ({ view, closeView }) => {
     console.log(userId);
     fetchUsername(userId);
   }, [user]);
+
+
 
   return (
     <div
@@ -113,8 +131,62 @@ const SideNav = ({ view, closeView }) => {
               </div>
               <div>{dashboard.title}</div>
             </Link>
+            
+            
           ))}
+          <LogoutModal />
         </ul>
+
+        <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <ModalOverlay />
+        <ModalContent borderRadius={'2xl'} p={4}>
+          <ModalCloseButton bg={"#1856F3"} color={"#fff"} rounded={"full"} />
+          <ModalBody>
+            <Stack gap={5}>
+              <Box alignSelf={"center"} mb={10}>
+                {" "}
+                <Heading size={"xl"} color={'#1856F3'} align={"center"} mx={10} mb={5}>
+                Are you sure?
+                </Heading>
+                <Text align={"center"}>Note: All the remaining funds will be lost.</Text>
+              </Box>
+
+              <Button
+                height={"54px"}
+                color="#fff"
+                bg="#1856F3"
+                _hover={{
+                  bg: "white",
+                  border: '1px solid #1856F3',
+                  color:'#1856F3'
+                }}
+                rounded={"2xl"}
+            
+              >
+                Yes
+              </Button>
+              <Button
+                height={"54px"}
+                color="#fff"
+                bg="rgba(80, 75, 75, 0.35);"
+                _hover={{
+                  bg: "white",
+                  border: '1px solid #1856F3',
+                  color:'#1856F3'
+                }}
+                rounded={"2xl"}
+                onClick={onClose}
+            
+              >
+                No
+              </Button>
+            </Stack>
+          </ModalBody>
+          <ModalFooter>
+            {/* <Button onClick={onClose}>Close</Button> */}
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       </div>
 
       {/**----======= MAKE THE USERNAME AND USER ID APPEAR AFTER CONNECTING WALLET =======---- */}

@@ -4,26 +4,58 @@ import { SideNav } from "@/components";
 import {copyIcon, backarrow} from "@/public/assets/images"
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import setContract from "../../setContract";
 import connectWallet from "../../connect";
 import { ethers } from "ethers";
+import crypto from 'crypto'
+import { useRouter } from "next/navigation";
+import {Flex, Spinner} from '@chakra-ui/react'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app } from "@/firebase/firebase";
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
   const [planName, setPlanName] = useState("");
   const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [paymentId, setPaymentId] = useState('')
+
+  const router = useRouter()
   const openView = (view) => {
     setView(view);
   };
 
+
+
   const closeView = (view) => {
     setView(view);
   };
+
+  function generatePaymentId() {
+    // Generate a random 16-byte buffer as a unique identifier
+    const uniqueBytes = crypto.randomBytes(6);
+    const uniqueIdentifier = uniqueBytes.toString('hex');
+  
+    // Create a timestamp to add to the unique identifier
+    const timestamp = Date.now();
+  
+    // Combine the unique identifier and timestamp to create the payment ID
+    const paymentId = `${uniqueIdentifier}-${timestamp}`;
+  
+    return paymentId;
+  }
+
   const { provider } = connectWallet();
 
   const { contract } = setContract();
+
+  useEffect(()=>{
+    const payId = generatePaymentId()
+    setPaymentId(payId)
+    console.log(paymentId)
+  }, [])
 
   const createPaymentPlan = async (e) => {
     e.preventDefault();
@@ -52,6 +84,30 @@ const GenPaymentLink = () => {
     }
   };
 
+  useEffect(() => {
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoading(false);
+      } else {
+        router.push("/sign-in");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+<Flex align="center" justify="center" height="100vh">
+<Spinner size="xl" color="#1856f3" thickness='4px'
+speed='0.65s'
+emptyColor='gray.200' />
+</Flex>
+    );
+  }
+
   return (
     <main className="flex">
       <SideNav view={view} closeView={closeView} />
@@ -78,6 +134,7 @@ const GenPaymentLink = () => {
                 placeholder="Payment Name"
                 id="payment-name"
                 name="payment-name"
+                value={planName}
                 onChange={(e) => {
                   setPlanName(e.target.value);
                 }}
@@ -90,6 +147,7 @@ const GenPaymentLink = () => {
                 placeholder="Description"
                 id="description"
                 name="description"
+                value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);
                 }}
@@ -102,6 +160,7 @@ const GenPaymentLink = () => {
                 placeholder="Amount In USD"
                 id="amount"
                 name="amount"
+                value={amount}
                 onChange={(e) => {
                   setAmount(e.target.value);
                 }}
@@ -110,12 +169,12 @@ const GenPaymentLink = () => {
               />
 
               <input
-                type="number"
+                type="text"
                 placeholder="Payment ID"
                 id="paymentID"
                 name="paymentID"
-                value={""}
-                onChange={""}
+                value={paymentId}
+                readOnly
                 required
                 className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />

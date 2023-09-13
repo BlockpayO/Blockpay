@@ -146,11 +146,6 @@ export const dashboards = [
     icon: settingsIcon,
     title: "Settings",
   },
-  {
-    id: "sign-in",
-    icon: logOut,
-    title: "Log Out",
-  },
 ];
 
 export const rates = [

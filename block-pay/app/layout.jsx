@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProviderContext from "./user/context/ProviderContext";
 import { useState } from "react";
 import { ChakraProvider  } from "@chakra-ui/react";
-import { theme } from "./chakra-ui/theme";
+import { theme } from "@/app/chakra-ui/theme";
 
 const aeonik = localFont({
   src: [
@@ -42,7 +42,7 @@ const Layout = ({ children }) => {
   const [provider, setProvider] = useState(null);
 
   return (
-    <html lang="en-US" className={`${aeonik.className}`}>
+    <html lang="en-CA" className={`${aeonik.className}`}>
       <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Blockpay - Your personal subscription manager</title>

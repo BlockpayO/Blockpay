@@ -18,6 +18,7 @@ import { Oval } from "react-loader-spinner";
 import { useRouter } from "next/navigation";
 import connectWallet from "../connect";
 import setContract from "../setContract";
+import {Spinner, Flex} from "@chakra-ui/react"
 
 const Dashboard = () => {
   const [view, setView] = useState(false);
@@ -71,20 +72,11 @@ const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Oval
-          height={80}
-          width={80}
-          color="#1856f3"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-          ariaLabel="oval-loading"
-          secondaryColor="#1856f3"
-          strokeWidth={2}
-          strokeWidthSecondary={2}
-        />
-      </div>
+<Flex align="center" justify="center" height="100vh">
+<Spinner size="xl" color="#1856f3" thickness='4px'
+speed='0.65s'
+emptyColor='gray.200' />
+</Flex>
     );
   }
 
