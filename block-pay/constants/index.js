@@ -175,19 +175,9 @@ export const dashData = [
     desc: "900.00",
   },
   {
-    id: 3,
-    title: "Payout Method",
-    desc: "Bank Transfer",
-  },
-  {
     id: 4,
     title: "Date",
     desc: "25/7/2023",
-  },
-  {
-    id: 5,
-    title: "Status",
-    desc: "Pending",
   },
 ];
 
