@@ -61,7 +61,7 @@ const PaymentLinkPage = () => {
           as={ChevronLeftIcon}
           color={'#1856F3'}
           fontSize="3xl"/>
-                <Text fontSize={'16pxpx'} color={'#1856F3'}>Back</Text>
+                <Text fontSize={'16px'} color={'#1856F3'}>Back</Text>
               </Flex>
 
               <Box>

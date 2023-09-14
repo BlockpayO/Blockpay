@@ -1,7 +1,8 @@
 "use client";
 
+import {IoCopy} from "react-icons/io5"
 import { SideNav } from "@/components";
-import {copyIcon, backarrow} from "@/public/assets/images"
+import {copyIcon, backarrow, qrCode} from "@/public/assets/images"
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -13,6 +14,7 @@ import { useRouter } from "next/navigation";
 import {Flex, Spinner} from '@chakra-ui/react'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
+import { ToastContainer, toast } from "react-toastify";
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
@@ -108,6 +110,18 @@ emptyColor='gray.200' />
     );
   }
 
+  const handleCopy = () => {
+    const input = document.getElementById("paymentID");
+    navigator.clipboard.writeText(paymentId);
+    try {
+      toast.success("Payment ID copied successfully!" , {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    } catch (error) {
+      toast.error("Failed to copy Payment ID.")
+    };
+  };
+
   return (
     <main className="flex">
       <SideNav view={view} closeView={closeView} />
@@ -115,7 +129,7 @@ emptyColor='gray.200' />
         <div className="flex-row mt-5 mx-5">
           <SideNavToggle openView={openView} />
         </div>
-        <div className="flex justify-center items-center p-12">
+        <div className="flex justify-center mt-0 items-center p-12">
           <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] p-7 w-[450px]">
             <div className="grid w-full">
               <Link href="/user/payments" className="flex-row order-first">
@@ -168,6 +182,7 @@ emptyColor='gray.200' />
                 className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
 
+              <div className="flex justify-between mb-4">
               <input
                 type="text"
                 placeholder="Payment ID"
@@ -176,8 +191,22 @@ emptyColor='gray.200' />
                 value={paymentId}
                 readOnly
                 required
-                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-              />
+                className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+                <button type="button" onClick={handleCopy}>
+                  <Image src={copyIcon} className="p-[1.2px]"/>
+                </button>
+                <ToastContainer/>
+              </div>
+
+              <div className="mb-5 flex flex-col justify-center items-center">
+                <Image src={qrCode} className="mb-1.5 h-20 w-20"/>
+                <Link
+                href={'/user/payments/payment-link/preview-page/'}
+                className="text-color text-xs underline">
+                  Preview Page
+                </Link>
+              </div>
 
               <div className="mb-2">
                 <button

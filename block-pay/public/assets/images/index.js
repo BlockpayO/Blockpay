@@ -32,6 +32,7 @@ import chancePfp from "./chance.svg";
 import cristoferPfp from "./cristofer.svg";
 import abramPfp from "./abram.svg";
 import copyIcon from "./copy.svg";
+import qrCode from "./qr.svg";
 
 
 
@@ -70,4 +71,5 @@ export {
     cristoferPfp, 
     abramPfp,
     copyIcon,
+    qrCode
 };
