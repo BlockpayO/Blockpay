@@ -298,16 +298,20 @@ emptyColor='gray.200' />
                     </p>
                   </div>
                 </div>
-                <div className="grid bg-[#f7f7f7] w-[339px] px-12 py-6 mt-5 rounded-lg w-full">
+                <div className="grid bg-[#f7f7f7] px-12 py-6 mt-5 rounded-lg w-full">
                   <h2 className="text-color text-xl font-medium mb-4">
                     Quick Links
                   </h2>
-                  <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer">
-                    Generate Payment Link
-                  </p>
-                  <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mt-2">
-                    Withdrawal
-                  </p>
+                  <Link href="/user/payments/generate-payment-link">
+                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-4">
+                      Generate Payment Link
+                    </p>
+                  </Link>
+                  <Link href="/user/dashboard">
+                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-2">
+                      Withdrawal
+                    </p>
+                  </Link>
                 </div>
                 <div className="grid bg-[#f7f7f7] px-11 py-6 mt-5 rounded-lg">
                   <h2 className="text-color text-xl font-medium mb-4">

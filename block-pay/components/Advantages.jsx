@@ -4,13 +4,13 @@ import Button from "@/components/Button";
 import "@/styles/globals.css";
 
 const Cards = () => (
-  <div className="flex flex-col sm:flex-row pt-6 mb-6 justify-center items-center">
+  <div className="flex flex-col sm:flex-row pt-6 mb-8 justify-center items-center">
     {advantages.map((advantage, index) => (
       <div key={index} className="card mx-4 flex flex-col items-center">
         <div className="card-icon mx-auto mb-4">
           <Image src={advantage.img} alt={advantage.id} />
         </div>
-        <div className="rounded-[15px] w-full px-4 py-6 bg-[#F7F7F7] text-center">
+        <div className="rounded-[15px] w-full px-4 py-6 bg-[#F7F7F7] text-center shadow-md">
           <h2 className="card-head mb-3">{advantage.id}</h2>
           <p className="card-desc">{advantage.desc}</p>
         </div>

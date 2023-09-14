@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const TrustedBy = () => {
   return (
-    <section className="w-full px-4 md:px-6 lg:px-16 xl:px-20 mt-8 text-center">
+    <section className="w-full px-4 md:px-6 lg:px-16 xl:px-20 mt-12 text-center">
       <h2 className="trust text-color text-2xl md:text-3xl font-semibold mb-4">
         Trusted By
       </h2>
