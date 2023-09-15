@@ -16,6 +16,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import QRCode from "qrcode.react";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
@@ -25,6 +26,7 @@ const GenPaymentLink = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [paymentId, setPaymentId] = useState('')
   const [paymentLink, setPaymentLink]= useState('')
+  const [userId, setUserId] = useState('')
 
 
   const router = useRouter();
@@ -48,6 +50,24 @@ const GenPaymentLink = () => {
     const paymentId = `${uniqueIdentifier}-${timestamp}`;
 
     return paymentId;
+  }
+
+  const db = getFirestore(app);
+  const saveToDB= async()=>{
+    try {
+      const docRef = await addDoc(collection(db, `users/${userId}/paymentPlans`), {
+        amount: amount,
+        planName: planName,
+        paymentId: paymentId,
+        paymentLink: paymentLink,
+        Description: description
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+    } catch (error) {
+      console.log(`Error adding document : `,   error)
+      toast.error(error.message)
+    }
   }
 
 
@@ -93,8 +113,13 @@ const GenPaymentLink = () => {
             contractIndex,
             payId,
           });
+
+          const savedDocument =  saveToDB(userId)
+          console.log(savedDocument)
+          toast.success('Link generated')
         }
       );
+     
     } catch (err) {
       console.log("Error from generate payment links: ", err.message);
     }
@@ -106,6 +131,7 @@ const GenPaymentLink = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoading(false);
+        setUserId(user.uid)
       } else {
         router.push("/sign-in");
       }
