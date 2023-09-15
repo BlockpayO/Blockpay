@@ -29,8 +29,8 @@ const SettingsPage = () => {
                   Settings
                 </h1>
                 <div className="flex flex-col">{setting.map((settings) => (
-                  <Link href="/" key={settings.head} >
-                    <div className="flex flex-col bg-[#f7f7f7] w-full justify-start rounded-2xl cursor-pointer p-5 mb-5 hover:scale-[100.75%]">
+                  <Link href="" key={settings.head} >
+                    <div className="flex flex-col bg-[#f7f7f7] w-full justify-start rounded-2xl cursor-pointer p-5 mb-5 hover:scale-[100.5%]">
                       <h2 className="text-lg font-medium">{settings.head}</h2>
                       <p className="text-xs text-[#808080]">{settings.details}</p>
                     </div>
@@ -39,7 +39,7 @@ const SettingsPage = () => {
                 <h2 className="flex justify-end text-lg font-medium text-blue-500 hover:text-[#1856F3] mr-2 cursor-pointer">Delete Account</h2>
               </div>
             </div>
-
+{/*
             <div className="mt-10 space-y-10">
             <fieldset>
               <legend className="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
@@ -94,7 +94,7 @@ const SettingsPage = () => {
                 </div>
               </div>
             </fieldset>
-            </div>
+                </div>*/}
         </main>
     )
 }
