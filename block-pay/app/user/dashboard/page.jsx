@@ -16,7 +16,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import { Oval } from "react-loader-spinner";
 import { useRouter } from "next/navigation";
-import connectWallet from "../connect";
+import connectWallet from "@/app/user/connect";
 import setContract from "../setContract";
 import {Spinner, Flex} from "@chakra-ui/react"
 import Link from "next/link";
@@ -103,8 +103,8 @@ emptyColor='gray.200' />
                       connecting
                         ? "bg-gray-500"
                         : wallet
-                        ? "bg-red-500 border border-none hover:bg-red-700"
-                        : "bg-blue-500 border border-none hover:bg-blue-700"
+                        ? "bg-red-500 border hover:border-red-500 hover:bg-white hover:text-black"
+                        : "bg-blue-600 border hover:border-blue-600 hover:bg-white"
                     }`}
                     disabled={connecting}
                     onClick={() => (wallet ? disconnect(wallet) : connect())}

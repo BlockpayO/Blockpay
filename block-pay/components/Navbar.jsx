@@ -14,10 +14,10 @@ const Navbar = () => {
 
   return (
     <nav>
-      <div className="w-full px-4 sm:px-24 pt-4 pb-2 flex justify-between items-center border border-4-gray">
+      <div className="w-full px-3 sm:px-24 pt-2 pb-3 flex justify-between items-center border border-4-gray">
         <div className="flex items-center">
           <Link href="/">
-            <Image src={logo} alt="logo" className="w-24 h-12" />
+            <Image src={logo} alt="logo" className="w-28 h-20" />
           </Link>
         </div>
 
@@ -48,7 +48,7 @@ const Navbar = () => {
             <Link
               key={nav.id}
               href={`/${nav.id}`}
-              className="text-[#4f7df2e6] hover:text-gray-300 hover:bg-[#1856F3] px-3 py-2 rounded-md text-lg font-medium"
+              className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] px-3 py-2 rounded-md text-lg font-medium"
             >
               {nav.title}
             </Link>

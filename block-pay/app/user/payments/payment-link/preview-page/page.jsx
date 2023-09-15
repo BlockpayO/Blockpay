@@ -23,16 +23,19 @@ const PreviewPage = () => {
         <main className="flex justify-center h-full bg-[#1856F3]">
         <div className="flex justify-center max-h-full items-center p-12">
             <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] py-7 px-6 w-[525px]">
-                <div className="grid w-full">
+                <div className="grid w-full mb-8">
                     <Link href="/user/payments/payment-link" className="flex-row order-first">
                         <div className="flex justify-start cursor-pointer">
                             <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
                             <p className="ml-2 text-sm text-color">Back</p>
                         </div>
                     </Link>
-                    <h2 className="text-3xl font-medium text-color mt-[25px] mb-8 flex justify-center">
+                    <h2 className="text-3xl font-medium text-color mt-[25px] flex justify-center">
                         defamatory
                     </h2>
+                    <p className="text-xs mt-2 flex justify-center">
+                    Payment for Land rent and cleaning of environment 
+                    </p>
                 </div>
                 <form className="flex flex-col justify-center items-center px-10">
                 <input

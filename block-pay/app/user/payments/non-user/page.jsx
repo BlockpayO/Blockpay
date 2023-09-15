@@ -1,7 +1,6 @@
 
 'use client'
-
-import SideNav from "@/components/SideNav";
+import connectWallet from "@/app/user/connect";
 import {backarrow} from "@/public/assets/images"
 import Link from "next/link";
 import Image from "next/image"
@@ -9,6 +8,8 @@ import { useState } from "react";
 
 const PreviewPage = () => {
     const [view,setView] = useState(false);
+
+    const { provider, wallet, connecting, connect, disconnect } = connectWallet();
 
     const openView = (view) => {
         setView(view);
@@ -23,18 +24,40 @@ const PreviewPage = () => {
         <main className="flex justify-center h-full bg-[#1856F3]">
         <div className="flex justify-center max-h-full items-center p-12">
             <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] py-7 px-6 w-[525px]">
-                <div className="grid w-full">
+                <div className="grid w-full mb-3">
+                    <div className="flex justify-between">
                     <Link href="/user/payments" className="flex-row order-first">
                         <div className="flex justify-start cursor-pointer">
                             <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
                             <p className="ml-2 text-sm text-color">Back</p>
                         </div>
                     </Link>
-                    <h2 className="text-3xl font-medium text-color mt-[25px] mb-8 flex justify-center">
+                    <button
+                    className={`flex-row order-last border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
+                        connecting
+                        ? "bg-gray-500"
+                        : wallet
+                        ? "bg-red-500 border hover:border-red-500 hover:bg-white hover:text-black"
+                        : "bg-blue-600 border hover:bg-white hover:text-black hover:border-blue-600"
+                    }`}
+                    disabled={connecting}
+                    onClick={() => (wallet ? disconnect(wallet) : connect())}
+                    >
+                    {connecting
+                        ? "Connecting"
+                        : wallet
+                        ? "Disconnect"
+                        : "Connect Wallet"}
+                        </button>
+                        </div>
+                    <h2 className="text-3xl mb-3 font-medium text-color mt-[25px] flex justify-center">
                         defamatory
                     </h2>
+                    <p className="text-xs flex justify-center">
+                        Payment for Land rent and cleaning of environment 
+                    </p>
                 </div>
-                <form className="flex flex-col justify-center items-center px-10">
+                <form className="flex flex-col mt-2 justify-center items-center px-10">
                 <input
                 type="number"
                 placeholder="500 USD"
@@ -45,10 +68,10 @@ const PreviewPage = () => {
                     setPlanName(e.target.value);
                 }}
                 required
-                className="w-[380px] mb-9 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                className="w-[380px] mb-6 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
 
-                <div className="flex flex-row justify-between w-[380px] mb-9">
+                <div className="flex flex-row justify-between w-[380px] mb-6">
                 <input
                 type="text"
                 placeholder="John"
@@ -84,18 +107,24 @@ const PreviewPage = () => {
                 value=""
                 readOnly
                 required
-                className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                className="w-[380px] mb-8 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
 
-                <div className="mb-2">
-                <button
-                    type="submit"
-                    className="w-[380px] mb-12 p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-                >
-                    Pay
-                </button>
+                <div className="mb-10">
+                    <button
+                        type="submit"
+                        className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                    >
+                        Pay
+                    </button>
+                </div>
+                <div className="w-full flex justify-between ">
+                    <p className="text-sm">Enjoy Seamless tracking of finances <br /> using blockpay</p>
+                    <Button />
                 </div>
                 </form>
+
+                
             </div>
         </div>
     </main>
@@ -103,3 +132,17 @@ const PreviewPage = () => {
 };
 
 export default PreviewPage
+
+
+const Button = () => {
+    return (
+        <Link href="/sign-up">
+        <button
+            type="button"
+            className="rounded-md bg-blue-600 border text-white hover:text-black hover:bg-white hover:border-blue-600 py-2 px-4"
+        >
+            Get Started
+        </button>
+        </Link>
+    );
+};
