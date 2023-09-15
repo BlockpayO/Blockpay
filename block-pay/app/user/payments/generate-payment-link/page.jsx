@@ -70,12 +70,13 @@ const GenPaymentLink = () => {
       );
       contract.on(
         "CreatedPaymentPlanBpF",
-        (blockpayContract, planName, amount, contractIndex, event) => {
+        (blockpayContract, planName, amount, contractIndex, payId, event) => {
           console.log("CreatedPaymentPlan Event", {
             blockpayContract,
             planName,
             amount,
             contractIndex,
+            payId,
           });
         }
       );
