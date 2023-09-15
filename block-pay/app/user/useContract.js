@@ -6,7 +6,7 @@ import {
   blockpayFactoryContractABI,
 } from "@/constants";
 
-const setContract = () => {
+const useContract = () => {
   const { provider } = connectWallet();
   const [contract, setContract] = useState();
   useEffect(() => {
@@ -27,4 +27,4 @@ const setContract = () => {
   return { contract };
 };
 
-export default setContract;
+export default useContract;

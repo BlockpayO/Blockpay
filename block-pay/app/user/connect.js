@@ -5,7 +5,7 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import trustModule from "@web3-onboard/trust";
 import ProviderContext from "./context/ProviderContext";
 import { ethers } from "ethers";
-import setContract from "./setContract";
+import setContract from "./useContract";
 
 const HELP = `<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 704.01 159.42">
 <defs>
@@ -91,6 +91,7 @@ init({
     ],
   },
 });
+
 const connectWallet = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const signerContext = useContext(ProviderContext);
