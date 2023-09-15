@@ -15,6 +15,7 @@ import {Flex, Spinner} from '@chakra-ui/react'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import { ToastContainer, toast } from "react-toastify";
+import QRCode from "qrcode.react";
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
@@ -23,6 +24,8 @@ const GenPaymentLink = () => {
   const [amount, setAmount] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [paymentId, setPaymentId] = useState('')
+  const [paymentLink, setPaymentLink]= useState('')
+
 
   const router = useRouter()
   const openView = (view) => {
@@ -49,6 +52,8 @@ const GenPaymentLink = () => {
     return paymentId;
   }
 
+
+
   const { provider } = connectWallet();
 
   const { contract } = setContract();
@@ -58,6 +63,16 @@ const GenPaymentLink = () => {
     setPaymentId(payId)
     console.log(paymentId)
   }, [])
+
+  useEffect(()=>{
+    setPaymentLink(`http://localhost:3000/user/payments/payment-link/preview-page?paymentId=${paymentId}`)
+  }, [paymentId])
+
+  useEffect(() => {
+    console.log(paymentLink);
+  }, [paymentLink]);
+
+
 
   const createPaymentPlan = async (e) => {
     e.preventDefault();
@@ -199,14 +214,14 @@ emptyColor='gray.200' />
                 <ToastContainer/>
               </div>
 
-              <div className="mb-5 flex flex-col justify-center items-center">
-                <Image src={qrCode} className="mb-1.5 h-20 w-20"/>
+              {paymentLink && (<div className="mb-5 flex flex-col justify-center items-center">
+              <QRCode value={paymentLink} className="mb-1.5 h-20 w-20" /> 
                 <Link
-                href={'/user/payments/payment-link/preview-page/'}
+                href={paymentLink}
                 className="text-color text-xs underline">
                   Preview Page
                 </Link>
-              </div>
+              </div>)}
 
               <div className="mb-2">
                 <button
