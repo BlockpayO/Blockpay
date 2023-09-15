@@ -191,7 +191,7 @@ emptyColor='gray.200' />
                 value={paymentId}
                 readOnly
                 required
-                className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                className="w-[265px] text-left px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
                 <button type="button" onClick={handleCopy}>
                   <Image src={copyIcon} className="p-[1.2px]"/>
@@ -199,6 +199,7 @@ emptyColor='gray.200' />
                 <ToastContainer/>
               </div>
 
+              {/**---======= QR CODE & PREVIEW PAGE LINK =======---
               <div className="mb-5 flex flex-col justify-center items-center">
                 <Image src={qrCode} className="mb-1.5 h-20 w-20"/>
                 <Link
@@ -206,8 +207,8 @@ emptyColor='gray.200' />
                 className="text-color text-xs underline">
                   Preview Page
                 </Link>
-              </div>
-
+              </div>*/}
+              
               <div className="mb-2">
                 <button
                   type="submit"
