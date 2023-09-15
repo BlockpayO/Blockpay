@@ -11,6 +11,7 @@ import connectWallet from "../../connect";
 
 const PreviewPage = () => {
   const [view, setView] = useState(false);
+  const [connecting, setConnecting] = useState(false)
   
   const openView = (view) => {
     setView(view);
