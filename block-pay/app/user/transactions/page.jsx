@@ -18,11 +18,11 @@ const TransactionsPage = () => {
 
     const openView = (view) => {
         setView(view);
-      };
+    };
     
-      const closeView = (view) => {
+    const closeView = (view) => {
         setView(view);
-      };
+    };
     
 
     return (
@@ -41,7 +41,7 @@ const TransactionsPage = () => {
                     </select>*/}
                     <SearchBar/>
                 </div>
-                <div className="p-7 border-2 border-[#bebebe] rounded-lg flex h-screen">
+                <div className="p-7 border-2 border-[#bebebe] rounded-lg flex-auto h-screen">
                     <div className="space-x-2 > * + * top-0 mt-0">
                         <button type="button" className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2">
                             All
@@ -56,7 +56,13 @@ const TransactionsPage = () => {
                             Failed
                         </button>
                     </div>
-                    <div className="h-100"></div>
+
+                    {/**--==== BEFORE WALLET CONNECT ====--*/}
+                    <div className="sticky flex items-center justify-center mt-[12.5rem]">
+                        <h1 className="font-medium text-3xl text-gray-300 flex">
+                            No transaction history
+                        </h1>
+                    </div>
                     {/**<ul>
                         {transactions.map((transaction, index) => (
                             <li key={index}>

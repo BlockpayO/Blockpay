@@ -184,21 +184,21 @@ export const dashData = [
 export const setting = [
   {
     head: "Profile",
-    details: "Name, Surname, Email Address"
+    details: "Name, Surname, Email Address",
   },
   {
     head: "Notifications",
-    details: "Notifications Settings"
+    details: "Notifications Settings",
   },
   {
     head: "Theme",
-    details: "Enter to switch modes"
+    details: "Enter to switch modes",
   },
   {
     head: "Verification and Security",
-    details: "Password, Biometrics"
+    details: "Password, Biometrics",
   },
-]
+];
 
 /*
 export const dashData = [
@@ -334,7 +334,7 @@ export const paymentCards = [
 ];
 
 export const blockpayFactoryContractAddress =
-  "0xEBc3f18d62013Bc8ece573eC984738bc82f45E19";
+  "0x25561d2Dbc8810833280Aed6092A358A37DB5360";
 export const blockpayFactoryContractABI = [
   {
     inputs: [
@@ -371,6 +371,12 @@ export const blockpayFactoryContractABI = [
         name: "contractIndex",
         type: "uint256",
       },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "paymentId",
+        type: "string",
+      },
     ],
     name: "CreatedPaymentPlanBpF",
     type: "event",
@@ -386,9 +392,9 @@ export const blockpayFactoryContractABI = [
       },
       {
         indexed: false,
-        internalType: "uint256",
-        name: "contractIndex",
-        type: "uint256",
+        internalType: "string",
+        name: "paymentId",
+        type: "string",
       },
       {
         indexed: false,
@@ -403,6 +409,12 @@ export const blockpayFactoryContractABI = [
         type: "string",
       },
       { indexed: false, internalType: "string", name: "email", type: "string" },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "timeStamp",
+        type: "uint256",
+      },
     ],
     name: "ReceivedPAymentBpF",
     type: "event",
@@ -447,7 +459,7 @@ export const blockpayFactoryContractABI = [
   },
   {
     inputs: [{ internalType: "uint256", name: "_maticInWEI", type: "uint256" }],
-    name: "conversionRateBpf",
+    name: "conversionRateBpF",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -456,6 +468,7 @@ export const blockpayFactoryContractABI = [
     inputs: [
       { internalType: "string", name: "_planName", type: "string" },
       { internalType: "uint256", name: "_amountInUSD", type: "uint256" },
+      { internalType: "string", name: "_paymentId", type: "string" },
     ],
     name: "createPaymentBpF",
     outputs: [],
@@ -482,6 +495,16 @@ export const blockpayFactoryContractABI = [
   {
     inputs: [
       { internalType: "address", name: "_contractCreator", type: "address" },
+      { internalType: "string", name: "_paymentId", type: "string" },
+    ],
+    name: "getContractById",
+    outputs: [{ internalType: "contract Blockpay", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_contractCreator", type: "address" },
       { internalType: "address", name: "blockpayAddress", type: "address" },
     ],
     name: "getContractIndex",
@@ -492,7 +515,16 @@ export const blockpayFactoryContractABI = [
   {
     inputs: [
       { internalType: "address", name: "_contractCreator", type: "address" },
-      { internalType: "uint256", name: "_contractIndex", type: "uint256" },
+    ],
+    name: "getContractsLength",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_contractCreator", type: "address" },
+      { internalType: "string", name: "_paymentId", type: "string" },
     ],
     name: "getPaymentPlanBpF",
     outputs: [
@@ -531,10 +563,10 @@ export const blockpayFactoryContractABI = [
   {
     inputs: [
       { internalType: "address", name: "_contractCreator", type: "address" },
-      { internalType: "uint256", name: "_contractIndex", type: "uint256" },
+      { internalType: "string", name: "_paymentId", type: "string" },
       { internalType: "address", name: "_user", type: "address" },
     ],
-    name: "getPaymentsPerAddressBpf",
+    name: "getPaymentsPerAddressBpF",
     outputs: [
       {
         components: [
@@ -542,6 +574,7 @@ export const blockpayFactoryContractABI = [
           { internalType: "string", name: "firstName", type: "string" },
           { internalType: "string", name: "lastName", type: "string" },
           { internalType: "string", name: "email", type: "string" },
+          { internalType: "uint256", name: "timeStamp", type: "uint256" },
         ],
         internalType: "struct Payments[]",
         name: "",
@@ -556,7 +589,7 @@ export const blockpayFactoryContractABI = [
       { internalType: "address", name: "_contractCreator", type: "address" },
       { internalType: "uint256", name: "_contractIndex", type: "uint256" },
     ],
-    name: "getTotalPaymentsBpf",
+    name: "getTotalPaymentsBpF",
     outputs: [
       {
         components: [
@@ -564,6 +597,7 @@ export const blockpayFactoryContractABI = [
           { internalType: "string", name: "firstName", type: "string" },
           { internalType: "string", name: "lastName", type: "string" },
           { internalType: "string", name: "email", type: "string" },
+          { internalType: "uint256", name: "timeStamp", type: "uint256" },
         ],
         internalType: "struct Payments[]",
         name: "",
@@ -589,7 +623,7 @@ export const blockpayFactoryContractABI = [
   {
     inputs: [
       { internalType: "address", name: "_contractCreator", type: "address" },
-      { internalType: "uint256", name: "_contractIndex", type: "uint256" },
+      { internalType: "string", name: "_paymentId", type: "string" },
       { internalType: "string", name: "_firstName", type: "string" },
       { internalType: "string", name: "_lastname", type: "string" },
       { internalType: "string", name: "_email", type: "string" },
@@ -600,11 +634,8 @@ export const blockpayFactoryContractABI = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "address", name: "_contractCreator", type: "address" },
-      { internalType: "uint256", name: "_contractIndex", type: "uint256" },
-    ],
-    name: "withdrawBpf",
+    inputs: [],
+    name: "withdrawBpF",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

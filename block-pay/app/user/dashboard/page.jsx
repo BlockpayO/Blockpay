@@ -17,9 +17,10 @@ import { app } from "@/firebase/firebase";
 import { Oval } from "react-loader-spinner";
 import { useRouter } from "next/navigation";
 import connectWallet from "../connect";
-import setContract from "../setContract";
-import {Spinner, Flex} from "@chakra-ui/react"
+import useContract from "../useContract";
+import { Spinner, Flex } from "@chakra-ui/react";
 import Link from "next/link";
+import useBlockpayTxs from "../useBlockpayTxs";
 
 const Dashboard = () => {
   const [view, setView] = useState(false);
@@ -48,36 +49,24 @@ const Dashboard = () => {
   const closeView = (view) => {
     setView(view);
   };
-
+  const { contract } = useContract();
+  const { txs } = useBlockpayTxs();
   useEffect(() => {
     console.log("Effective!!");
-    getPaymentPlans();
+    console.log(txs);
   }, []);
-
-  const { contract } = setContract();
-
-  const getPaymentPlans = async () => {
-    if (provider) {
-      let signerAddress;
-      let signer = await provider.getSigner();
-      signerAddress = signer.address;
-      console.log("signer", signerAddress, typeof signerAddress);
-      try {
-        const paymentPlans = await contract.getPaymentplans(signerAddress);
-        console.log("paymentplans", paymentPlans);
-      } catch (err) {
-        console.log("error from getPaymentPlans: ", err.message);
-      }
-    }
-  };
 
   if (isLoading) {
     return (
-<Flex align="center" justify="center" height="100vh">
-<Spinner size="xl" color="#1856f3" thickness='4px'
-speed='0.65s'
-emptyColor='gray.200' />
-</Flex>
+      <Flex align="center" justify="center" height="100vh">
+        <Spinner
+          size="xl"
+          color="#1856f3"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+        />
+      </Flex>
     );
   }
 
@@ -103,8 +92,8 @@ emptyColor='gray.200' />
                       connecting
                         ? "bg-gray-500"
                         : wallet
-                        ? "bg-red-500 border border-none hover:bg-red-700"
-                        : "bg-blue-500 border border-none hover:bg-blue-700"
+                        ? "bg-red-500 border hover:border-red-500 hover:bg-white hover:text-black"
+                        : "bg-blue-600 border hover:border-blue-600 hover:bg-white"
                     }`}
                     disabled={connecting}
                     onClick={() => (wallet ? disconnect(wallet) : connect())}
@@ -371,7 +360,8 @@ emptyColor='gray.200' />
                     </ul>
                   </div>
                   <div className="flex flex-col justify-center items-center">
-                    <Link href="/user/transactions"
+                    <Link
+                      href="/user/transactions"
                       type="button"
                       className="text-center font-medium mt-30 md:mt-48 hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 cursor-pointer"
                     >
