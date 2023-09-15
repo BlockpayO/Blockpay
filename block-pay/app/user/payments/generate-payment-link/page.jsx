@@ -23,13 +23,9 @@ const GenPaymentLink = () => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-<<<<<<< HEAD
   const [paymentId, setPaymentId] = useState('')
   const [paymentLink, setPaymentLink]= useState('')
 
-=======
-  const [paymentId, setPaymentId] = useState("");
->>>>>>> 0dcb5992b4885d8527c28b77dfa2076df49d2e1b
 
   const router = useRouter();
   const openView = (view) => {
@@ -221,20 +217,11 @@ const GenPaymentLink = () => {
                 <ToastContainer />
               </div>
 
-<<<<<<< HEAD
               {paymentLink && (<div className="mb-5 flex flex-col justify-center items-center">
               <QRCode value={paymentLink} className="mb-1.5 h-20 w-20" /> 
                 <Link
                 href={paymentLink}
                 className="text-color text-xs underline">
-=======
-              <div className="mb-5 flex flex-col justify-center items-center">
-                <Image src={qrCode} className="mb-1.5 h-20 w-20" />
-                <Link
-                  href={"/user/payments/payment-link/preview-page/"}
-                  className="text-color text-xs underline"
-                >
->>>>>>> 0dcb5992b4885d8527c28b77dfa2076df49d2e1b
                   Preview Page
                 </Link>
               </div>)}
