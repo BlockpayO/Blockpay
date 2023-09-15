@@ -1,17 +1,17 @@
 "use client";
 
-import {IoCopy} from "react-icons/io5"
+import { IoCopy } from "react-icons/io5";
 import { SideNav } from "@/components";
-import {copyIcon, backarrow, qrCode} from "@/public/assets/images"
+import { copyIcon, backarrow, qrCode } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import setContract from "../../setContract";
+import useContract from "../../useContract";
 import connectWallet from "../../connect";
 import { ethers } from "ethers";
-import crypto from 'crypto'
+import crypto from "crypto";
 import { useRouter } from "next/navigation";
-import {Flex, Spinner} from '@chakra-ui/react'
+import { Flex, Spinner } from "@chakra-ui/react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,14 +22,12 @@ const GenPaymentLink = () => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [paymentId, setPaymentId] = useState('')
+  const [paymentId, setPaymentId] = useState("");
 
-  const router = useRouter()
+  const router = useRouter();
   const openView = (view) => {
     setView(view);
   };
-
-
 
   const closeView = (view) => {
     setView(view);
@@ -38,51 +36,52 @@ const GenPaymentLink = () => {
   function generatePaymentId() {
     // Generate a random 16-byte buffer as a unique identifier
     const uniqueBytes = crypto.randomBytes(6);
-    const uniqueIdentifier = uniqueBytes.toString('hex');
-  
+    const uniqueIdentifier = uniqueBytes.toString("hex");
+
     // Create a timestamp to add to the unique identifier
     const timestamp = Date.now();
-  
+
     // Combine the unique identifier and timestamp to create the payment ID
     const paymentId = `${uniqueIdentifier}-${timestamp}`;
-  
+
     return paymentId;
   }
 
   const { provider } = connectWallet();
 
-  const { contract } = setContract();
+  const { contract } = useContract();
 
-  useEffect(()=>{
-    const payId = generatePaymentId()
-    setPaymentId(payId)
-    console.log(paymentId)
-  }, [])
+  useEffect(() => {
+    const payId = generatePaymentId();
+    setPaymentId(payId);
+    console.log(paymentId);
+  }, []);
 
   const createPaymentPlan = async (e) => {
     e.preventDefault();
-    if (provider) {
-      try {
-        if (contract) {
-          contract.createPaymentBpF(
+    if (!provider) return;
+    if (!contract) return;
+    if (!paymentId) return;
+    try {
+      contract.createPaymentBpF(
+        planName,
+        ethers.parseEther(String(amount)),
+        paymentId
+      );
+      contract.on(
+        "CreatedPaymentPlanBpF",
+        (blockpayContract, planName, amount, contractIndex, payId, event) => {
+          console.log("CreatedPaymentPlan Event", {
+            blockpayContract,
             planName,
-            ethers.parseEther(String(amount))
-          );
-          contract.on(
-            "CreatedPaymentPlanBpF",
-            (blockpayContract, planName, amount, contractIndex, event) => {
-              console.log("CreatedPaymentPlan Event", {
-                blockpayContract,
-                planName,
-                amount,
-                contractIndex,
-              });
-            }
-          );
+            amount,
+            contractIndex,
+            payId,
+          });
         }
-      } catch (err) {
-        console.log("Error from generate payment links: ", err.message);
-      }
+      );
+    } catch (err) {
+      console.log("Error from generate payment links: ", err.message);
     }
   };
 
@@ -102,11 +101,15 @@ const GenPaymentLink = () => {
 
   if (isLoading) {
     return (
-<Flex align="center" justify="center" height="100vh">
-<Spinner size="xl" color="#1856f3" thickness='4px'
-speed='0.65s'
-emptyColor='gray.200' />
-</Flex>
+      <Flex align="center" justify="center" height="100vh">
+        <Spinner
+          size="xl"
+          color="#1856f3"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+        />
+      </Flex>
     );
   }
 
@@ -114,12 +117,12 @@ emptyColor='gray.200' />
     const input = document.getElementById("paymentID");
     navigator.clipboard.writeText(paymentId);
     try {
-      toast.success("Payment ID copied successfully!" , {
-        position: toast.POSITION.BOTTOM_RIGHT
+      toast.success("Payment ID copied successfully!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
       });
     } catch (error) {
-      toast.error("Failed to copy Payment ID.")
-    };
+      toast.error("Failed to copy Payment ID.");
+    }
   };
 
   return (
@@ -183,27 +186,28 @@ emptyColor='gray.200' />
               />
 
               <div className="flex justify-between mb-4">
-              <input
-                type="text"
-                placeholder="Payment ID"
-                id="paymentID"
-                name="paymentID"
-                value={paymentId}
-                readOnly
-                required
-                className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                <input
+                  type="text"
+                  placeholder="Payment ID"
+                  id="paymentID"
+                  name="paymentID"
+                  value={paymentId}
+                  readOnly
+                  required
+                  className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
                 <button type="button" onClick={handleCopy}>
-                  <Image src={copyIcon} className="p-[1.2px]"/>
+                  <Image src={copyIcon} className="p-[1.2px]" />
                 </button>
-                <ToastContainer/>
+                <ToastContainer />
               </div>
 
               <div className="mb-5 flex flex-col justify-center items-center">
-                <Image src={qrCode} className="mb-1.5 h-20 w-20"/>
+                <Image src={qrCode} className="mb-1.5 h-20 w-20" />
                 <Link
-                href={'/user/payments/payment-link/preview-page/'}
-                className="text-color text-xs underline">
+                  href={"/user/payments/payment-link/preview-page/"}
+                  className="text-color text-xs underline"
+                >
                   Preview Page
                 </Link>
               </div>

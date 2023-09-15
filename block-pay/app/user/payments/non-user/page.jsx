@@ -1,24 +1,67 @@
 
-'use client'
-import connectWallet from "@/app/user/connect";
-import {backarrow} from "@/public/assets/images"
+"use client";
+
+import SideNav from "@/components/SideNav";
+import { backarrow } from "@/public/assets/images";
 import Link from "next/link";
-import Image from "next/image"
+import Image from "next/image";
 import { useState } from "react";
+import useContract from "../../useContract";
+import connectWallet from "../../connect";
 
 const PreviewPage = () => {
-    const [view,setView] = useState(false);
-
-    const { provider, wallet, connecting, connect, disconnect } = connectWallet();
-
-    const openView = (view) => {
-        setView(view);
-    };
-    
-    const closeView = (view) => {
-        setView(view);
-    };
-
+  const [view, setView] = useState(false);
+  
+  const openView = (view) => {
+    setView(view);
+  };
+  
+  const closeView = (view) => {
+    setView(view);
+  };
+  const { contract } = useContract();
+  const { provider } = connectWallet();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [paymentId, setPaymentId] = useState("");
+  // get payment plan info with payment id
+  // make payment with info
+  const makePayment = async (paymentId) => {
+    if (!provider) return;
+    if (!contract) return;
+    if (!paymentId) return;
+    const signer = await provider.getSigner();
+    const signerAddress = signer.address;
+    const pay = await contract.receivePaymentBpF(
+      signerAddress,
+      paymentId,
+      firstName,
+      lastName,
+      email
+    );
+    contract.on(
+      "ReceivedPaymentBpF",
+      (
+        _creator,
+        _paymentId,
+        _firstName,
+        _lastName,
+        _email,
+        _timestamp,
+        event
+      ) => {
+        console.log({
+          _creator,
+          _paymentId,
+          _firstName,
+          _lastName,
+          _email,
+          _timestamp,
+        });
+      }
+    );
+  };
 
     return (
         <main className="flex justify-center h-full bg-[#1856F3]">
@@ -57,82 +100,85 @@ const PreviewPage = () => {
                         Payment for Land rent and cleaning of environment 
                     </p>
                 </div>
-                <form className="flex flex-col mt-2 justify-center items-center px-10">
+                <form className="flex flex-col mt-2 justify-center items-center px-10" onSubmit={makePayment}>
                 <input
                 type="number"
                 placeholder="500 USD"
                 id="payment-amount"
                 name="payment-amount"
-                value=""
-                onChange={(e) => {
-                    setPlanName(e.target.value);
-                }}
-                required
+                value={""}
+                readOnly
                 className="w-[380px] mb-6 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
 
                 <div className="flex flex-row justify-between w-[380px] mb-6">
                 <input
                 type="text"
-                placeholder="John"
+                placeholder="first name"
                 id="first-name"
                 name="first-name"
-                value=""
                 onChange={(e) => {
-                    setAmount(e.target.value);
+                  setFirstName(e.target.value);
                 }}
                 required
                 className="w-[180px] mr-2 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-                />
+              />
 
-                <input
+              <input
                 type="text"
-                placeholder="Doe"
+                placeholder="last name"
                 id="last-name"
                 name="last-name"
-                value=""
                 onChange={(e) => {
-                    setAmount(e.target.value);
+                  setLastName(e.target.value);
                 }}
                 required
                 className="w-[180px] px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-                />
-                </div>
-
-                <input
-                type="text"
-                placeholder="Payment ID"
-                id="paymentID"
-                name="paymentID"
-                value=""
-                readOnly
+              />
+              <input
+                type="email"
+                placeholder="email"
+                id="email"
+                name="email"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
                 required
-                className="w-[380px] mb-8 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-                />
-
-                <div className="mb-10">
-                    <button
-                        type="submit"
-                        className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-                    >
-                        Pay
-                    </button>
-                </div>
-                <div className="w-full flex justify-between ">
-                    <p className="text-sm">Enjoy Seamless tracking of finances <br /> using blockpay</p>
-                    <Button />
-                </div>
-                </form>
-
-                
+                className="w-[180px] px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+              />
             </div>
+
+            <input
+              type="text"
+              placeholder="Payment ID"
+              id="paymentID"
+              name="paymentID"
+              value={""}
+              readOnly
+              required
+              className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+            />
+
+              <div className="mb-10">
+                  <button
+                      type="submit"
+                      className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                  >
+                      Pay
+                  </button>
+              </div>
+              <div className="w-full flex justify-between ">
+                  <p className="text-sm">Enjoy Seamless tracking of finances <br /> using blockpay</p>
+                  <Button />
+              </div>
+              </form>
         </div>
+      </div>
     </main>
-    );
+  );
 };
 
 export default PreviewPage
-
 
 const Button = () => {
     return (

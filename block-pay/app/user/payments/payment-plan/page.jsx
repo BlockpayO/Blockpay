@@ -1,11 +1,11 @@
 "use client";
 
 import { SideNav } from "@/components";
-import {copyIcon, backarrow} from "@/public/assets/images"
+import { copyIcon, backarrow } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import setContract from "../../setContract";
+import useContract from "../../useContract";
 import connectWallet from "../../connect";
 import { ethers } from "ethers";
 
@@ -23,7 +23,7 @@ const GenPaymentLink = () => {
   };
   const { provider } = connectWallet();
 
-  const { contract } = setContract();
+  const { contract } = useContract();
 
   const createPaymentPlan = async (e) => {
     e.preventDefault();
@@ -72,8 +72,13 @@ const GenPaymentLink = () => {
                 Payment Plan
               </h2>
             </div>
-            <h1 className="flex justify-center mt-7 font-medium z-50 text-3xl">Coming Soon</h1>
-            <form className="flex flex-col blur-lg z--10" onSubmit={createPaymentPlan}>
+            <h1 className="flex justify-center mt-7 font-medium z-50 text-3xl">
+              Coming Soon
+            </h1>
+            <form
+              className="flex flex-col blur-lg z--10"
+              onSubmit={createPaymentPlan}
+            >
               <input
                 type="text"
                 placeholder="Payment Name"
@@ -85,7 +90,7 @@ const GenPaymentLink = () => {
                 required
                 className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
-                
+
               <input
                 type="text"
                 placeholder="Description"
