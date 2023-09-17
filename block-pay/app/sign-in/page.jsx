@@ -73,7 +73,7 @@ const SignIn = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
-                placeholder="E-mail Or Username"
+                placeholder="E-mail Address"
                 id="email"
                 name="email"
                 value={email}

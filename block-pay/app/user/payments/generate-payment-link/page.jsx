@@ -83,7 +83,7 @@ const GenPaymentLink = () => {
 
   useEffect(() => {
     setPaymentLink(
-      `https://blockpayo.vercel.app/user/payments/payment-link/preview-page?paymentId=${paymentId}`
+      `https://blockpayo.vercel.app/user/payments/non-user?paymentId=${paymentId}`
     );
   }, [paymentId]);
 
