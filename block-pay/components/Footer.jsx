@@ -5,7 +5,7 @@ import { footerLinks } from "@/constants";
 
 const Footer = () => {
   return (
-    <section className="flex flex-col w-full justify-between items-center bg-[#F7F7F7] py-8 px-4 sm:py-12 sm:px-8">
+    <section className="flex flex-col w-full justify-between items-center bg-[#F7F7F7] py-5 px-4 sm:py-12 sm:px-8">
       <div className="flex flex-col sm:flex-row justify-between items-center w-full max-w-screen-xl mx-auto">
         <div className="flex flex-col mb-8 sm:w-[45%]">
           <h2 className="text-3xl sm:text-4xl mb-5">

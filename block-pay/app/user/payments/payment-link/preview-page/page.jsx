@@ -6,8 +6,8 @@ import { backarrow } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import useContract from "../../useContract";
-import connectWallet from "../../connect";
+import useContract from "@/app/user/useContract";
+import connectWallet from "@/app/user/connect";
 
 const PreviewPage = () => {
   const [view, setView] = useState(false);
