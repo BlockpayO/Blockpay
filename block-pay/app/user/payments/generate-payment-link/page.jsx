@@ -24,10 +24,9 @@ const GenPaymentLink = () => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [paymentId, setPaymentId] = useState('')
-  const [paymentLink, setPaymentLink]= useState('')
-  const [userId, setUserId] = useState('')
-  const [showModal, setShowModal] = useState(false);
+  const [paymentId, setPaymentId] = useState("");
+  const [paymentLink, setPaymentLink] = useState("");
+  const [userId, setUserId] = useState("");  const [showModal, setShowModal] = useState(false);
 
 
   const router = useRouter();
@@ -48,49 +47,50 @@ const GenPaymentLink = () => {
     const timestamp = Date.now();
 
     // Combine the unique identifier and timestamp to create the payment ID
-    const paymentId = `${uniqueIdentifier}-${timestamp}`;
-
-    return paymentId;
+    const payId = `${uniqueIdentifier}-${timestamp}`;
+    setPaymentId(payId);
+    return payId;
   }
 
   const db = getFirestore(app);
-  const saveToDB= async()=>{
+  const saveToDB = async () => {
     try {
-      const docRef = await addDoc(collection(db, `users/${userId}/paymentPlans`), {
-        amount: amount,
-        planName: planName,
-        paymentId: paymentId,
-        paymentLink: paymentLink,
-        Description: description
-      });
+      const docRef = await addDoc(
+        collection(db, `users/${userId}/paymentPlans`),
+        {
+          amount: amount,
+          planName: planName,
+          paymentId: paymentId,
+          paymentLink: paymentLink,
+          Description: description,
+        }
+      );
 
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
-      console.log(`Error adding document : `,   error)
-      toast.error(error.message)
+      console.log(`Error adding document : `, error);
+      toast.error(error.message);
     }
-  }
-
+  };
 
   const { provider } = connectWallet();
 
   const { contract } = useContract();
 
   useEffect(() => {
-    const payId = generatePaymentId();
-    setPaymentId(payId);
+    generatePaymentId();
     console.log(paymentId);
   }, []);
 
-  useEffect(()=>{
-    setPaymentLink(`http://localhost:3000/user/payments/payment-link/preview-page?paymentId=${paymentId}`)
-  }, [paymentId])
+  useEffect(() => {
+    setPaymentLink(
+      `https://blockpayo.vercel.app/user/payments/non-user?paymentId=${paymentId}`
+    );
+  }, [paymentId]);
 
   useEffect(() => {
     console.log(paymentLink);
   }, [paymentLink]);
-
-
 {/**----======= GENERATE PAYMENT LINK =======---- */}
   const createPaymentPlan = async (e) => {
     e.preventDefault();
@@ -98,14 +98,21 @@ const GenPaymentLink = () => {
     if (!contract) return;
     if (!paymentId) return;
     try {
-      contract.createPaymentBpF(
+      await contract.createPaymentBpF(
         planName,
         ethers.parseEther(String(amount)),
         paymentId
       );
       contract.on(
         "CreatedPaymentPlanBpF",
-        (blockpayContract, planName, amount, contractIndex, payId, event) => {
+        async (
+          blockpayContract,
+          planName,
+          amount,
+          contractIndex,
+          payId,
+          event
+        ) => {
           console.log("CreatedPaymentPlan Event", {
             blockpayContract,
             planName,
@@ -114,12 +121,11 @@ const GenPaymentLink = () => {
             payId,
           });
 
-          const savedDocument =  saveToDB(userId)
-          console.log(savedDocument)
-          toast.success('Link generated')
+          const savedDocument = await saveToDB(userId);
+          console.log("saved documents", savedDocument);
+          toast.success("Link generated");
         }
       );
-    
     } catch (err) {
       console.log("Error from generate payment links: ", err.message);
     }
@@ -132,7 +138,7 @@ const GenPaymentLink = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoading(false);
-        setUserId(user.uid)
+        setUserId(user.uid);
       } else {
         router.push("/sign-in");
       }

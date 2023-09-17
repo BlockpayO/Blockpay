@@ -334,7 +334,7 @@ export const paymentCards = [
 ];
 
 export const blockpayFactoryContractAddress =
-  "0x25561d2Dbc8810833280Aed6092A358A37DB5360";
+  "0x05A4c18Eb2C3D9f84A1B8FA8379409a331C9cE3f";
 export const blockpayFactoryContractABI = [
   {
     inputs: [
@@ -392,6 +392,12 @@ export const blockpayFactoryContractABI = [
       },
       {
         indexed: false,
+        internalType: "address",
+        name: "payer",
+        type: "address",
+      },
+      {
+        indexed: false,
         internalType: "string",
         name: "paymentId",
         type: "string",
@@ -416,7 +422,7 @@ export const blockpayFactoryContractABI = [
         type: "uint256",
       },
     ],
-    name: "ReceivedPAymentBpF",
+    name: "ReceivedPaymentBpF",
     type: "event",
   },
   {
@@ -531,7 +537,9 @@ export const blockpayFactoryContractABI = [
       {
         components: [
           { internalType: "string", name: "planName", type: "string" },
+          { internalType: "string", name: "paymentId", type: "string" },
           { internalType: "uint256", name: "amountInUSD", type: "uint256" },
+          { internalType: "uint256", name: "timeCreated", type: "uint256" },
         ],
         internalType: "struct PaymentPlan",
         name: "",
@@ -550,7 +558,9 @@ export const blockpayFactoryContractABI = [
       {
         components: [
           { internalType: "string", name: "planName", type: "string" },
+          { internalType: "string", name: "paymentId", type: "string" },
           { internalType: "uint256", name: "amountInUSD", type: "uint256" },
+          { internalType: "uint256", name: "timeCreated", type: "uint256" },
         ],
         internalType: "struct PaymentPlan[]",
         name: "",
@@ -575,6 +585,8 @@ export const blockpayFactoryContractABI = [
           { internalType: "string", name: "lastName", type: "string" },
           { internalType: "string", name: "email", type: "string" },
           { internalType: "uint256", name: "timeStamp", type: "uint256" },
+          { internalType: "string", name: "paymentId", type: "string" },
+          { internalType: "address", name: "payer", type: "address" },
         ],
         internalType: "struct Payments[]",
         name: "",
@@ -598,6 +610,8 @@ export const blockpayFactoryContractABI = [
           { internalType: "string", name: "lastName", type: "string" },
           { internalType: "string", name: "email", type: "string" },
           { internalType: "uint256", name: "timeStamp", type: "uint256" },
+          { internalType: "string", name: "paymentId", type: "string" },
+          { internalType: "address", name: "payer", type: "address" },
         ],
         internalType: "struct Payments[]",
         name: "",
