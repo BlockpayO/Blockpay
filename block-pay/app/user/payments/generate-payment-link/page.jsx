@@ -24,10 +24,9 @@ const GenPaymentLink = () => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [paymentId, setPaymentId] = useState('')
-  const [paymentLink, setPaymentLink]= useState('')
-  const [userId, setUserId] = useState('')
-
+  const [paymentId, setPaymentId] = useState("");
+  const [paymentLink, setPaymentLink] = useState("");
+  const [userId, setUserId] = useState("");
 
   const router = useRouter();
   const openView = (view) => {
@@ -47,50 +46,50 @@ const GenPaymentLink = () => {
     const timestamp = Date.now();
 
     // Combine the unique identifier and timestamp to create the payment ID
-    const paymentId = `${uniqueIdentifier}-${timestamp}`;
-
-    return paymentId;
+    const payId = `${uniqueIdentifier}-${timestamp}`;
+    setPaymentId(payId);
+    return payId;
   }
 
   const db = getFirestore(app);
-  const saveToDB= async()=>{
+  const saveToDB = async () => {
     try {
-      const docRef = await addDoc(collection(db, `users/${userId}/paymentPlans`), {
-        amount: amount,
-        planName: planName,
-        paymentId: paymentId,
-        paymentLink: paymentLink,
-        Description: description
-      });
+      const docRef = await addDoc(
+        collection(db, `users/${userId}/paymentPlans`),
+        {
+          amount: amount,
+          planName: planName,
+          paymentId: paymentId,
+          paymentLink: paymentLink,
+          Description: description,
+        }
+      );
 
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
-      console.log(`Error adding document : `,   error)
-      toast.error(error.message)
+      console.log(`Error adding document : `, error);
+      toast.error(error.message);
     }
-  }
-
-
+  };
 
   const { provider } = connectWallet();
 
   const { contract } = useContract();
 
   useEffect(() => {
-    const payId = generatePaymentId();
-    setPaymentId(payId);
+    generatePaymentId();
     console.log(paymentId);
   }, []);
 
-  useEffect(()=>{
-    setPaymentLink(`http://localhost:3000/user/payments/payment-link/preview-page?paymentId=${paymentId}`)
-  }, [paymentId])
+  useEffect(() => {
+    setPaymentLink(
+      `http://localhost:3000/user/payments/payment-link/preview-page?paymentId=${paymentId}`
+    );
+  }, [paymentId]);
 
   useEffect(() => {
     console.log(paymentLink);
   }, [paymentLink]);
-
-
 
   const createPaymentPlan = async (e) => {
     e.preventDefault();
@@ -98,14 +97,21 @@ const GenPaymentLink = () => {
     if (!contract) return;
     if (!paymentId) return;
     try {
-      contract.createPaymentBpF(
+      await contract.createPaymentBpF(
         planName,
         ethers.parseEther(String(amount)),
         paymentId
       );
       contract.on(
         "CreatedPaymentPlanBpF",
-        (blockpayContract, planName, amount, contractIndex, payId, event) => {
+        async (
+          blockpayContract,
+          planName,
+          amount,
+          contractIndex,
+          payId,
+          event
+        ) => {
           console.log("CreatedPaymentPlan Event", {
             blockpayContract,
             planName,
@@ -114,12 +120,11 @@ const GenPaymentLink = () => {
             payId,
           });
 
-          const savedDocument =  saveToDB(userId)
-          console.log(savedDocument)
-          toast.success('Link generated')
+          const savedDocument = await saveToDB(userId);
+          console.log("saved documents", savedDocument);
+          toast.success("Link generated");
         }
       );
-    
     } catch (err) {
       console.log("Error from generate payment links: ", err.message);
     }
@@ -131,7 +136,7 @@ const GenPaymentLink = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoading(false);
-        setUserId(user.uid)
+        setUserId(user.uid);
       } else {
         router.push("/sign-in");
       }
@@ -235,39 +240,31 @@ const GenPaymentLink = () => {
                   value={paymentId}
                   readOnly
                   required
-                  className="w-[265px] text-left px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-                  />
-
-                  <input
-                    type="text"
-                    placeholder="Payment ID"
-                    id="paymentID"
-                    name="paymentID"
-                    value={paymentId}
-                    readOnly
-                    required
-                    className="w-[265px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-                  />
-                  
-                  <button type="button" onClick={handleCopy}>
-                    <Image src={copyIcon} className="p-[1.2px]" />
-                  </button>
-                  <ToastContainer />
+                  className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+                <button type="button" onClick={handleCopy}>
+                  <Image src={copyIcon} className="p-[1.2px]" />
+                </button>
+                <ToastContainer />
               </div>
 
-              {paymentLink && (<div className="mb-5 flex flex-col justify-center items-center">
-                <QRCode value={paymentLink} className="mb-1.5 h-20 w-20" /> 
-                <Link
-                href={paymentLink}
-                className="text-color text-xs underline">
-                  Preview Page
-                </Link>
-              </div>)}
+              {paymentLink && (
+                <div className="mb-5 flex flex-col justify-center items-center">
+                  <QRCode value={paymentLink} className="mb-1.5 h-20 w-20" />
+                  <Link
+                    href={paymentLink}
+                    className="text-color text-xs underline"
+                  >
+                    Preview Page
+                  </Link>
+                </div>
+              )}
 
               <div className="mb-2">
                 <button
                   type="submit"
                   className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                  onClick={generatePaymentId}
                 >
                   Create Link
                 </button>

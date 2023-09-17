@@ -19,7 +19,7 @@ const useBlockpayTxs = () => {
           );
           const allPayments = [];
           for (let i = 0; i < total; i++) {
-            const payments = await contract.getTotalPaymentsBpf(
+            const payments = await contract.getTotalPaymentsBpF(
               signerAddress,
               i
             );
