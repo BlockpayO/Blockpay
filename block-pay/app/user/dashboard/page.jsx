@@ -21,6 +21,7 @@ import useContract from "../useContract";
 import { Spinner, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import useBlockpayTxs from "../useBlockpayTxs";
+import Transactions from "../payments/Transactions";
 
 const Dashboard = () => {
   const [view, setView] = useState(false);
@@ -53,7 +54,7 @@ const Dashboard = () => {
   const { txs } = useBlockpayTxs();
   useEffect(() => {
     console.log("Effective!!");
-    console.log(txs);
+    console.log("The transactions", txs);
   }, []);
 
   if (isLoading) {
@@ -347,18 +348,7 @@ const Dashboard = () => {
                   <h2 className="text-color text-l md:text-xl md:font-medium text-color">
                     Recent Transactions
                   </h2>
-                  <div className="mt-1">
-                    <ul className="flex flex-col md:flex-row justify-between mb-2 md:mb-4">
-                      {dashData.map((dashDatum) => (
-                        <li key={dashDatum.id} className="mb-4">
-                          <div className="text-[#727272] text-sm mb-1">
-                            {dashDatum.title}
-                          </div>
-                          <div className="text-black">{dashDatum.desc}</div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <div className="mt-1">{<Transactions />}</div>
                   <div className="flex flex-col justify-center items-center">
                     <Link
                       href="/user/transactions"
