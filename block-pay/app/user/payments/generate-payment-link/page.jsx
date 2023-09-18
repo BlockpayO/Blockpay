@@ -2,7 +2,7 @@
 
 import { IoCopy } from "react-icons/io5";
 import { SideNav } from "@/components";
-import { copyIcon, backarrow, qrCode } from "@/public/assets/images";
+import { backarrow } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -11,12 +11,27 @@ import connectWallet from "../../connect";
 import { ethers } from "ethers";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Flex, Input, InputGroup, InputRightElement, Spinner } from "@chakra-ui/react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import QRCode from "qrcode.react";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {copyIcon} from '@chakra-ui/icons'
+import {
+  Box,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Stack,
+  ModalOverlay,
+  Heading,
+  ModalContent,
+} from "@chakra-ui/react";
+import LogoutModal from "@/components/LogoutModal";
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
@@ -27,6 +42,7 @@ const GenPaymentLink = () => {
   const [paymentId, setPaymentId] = useState("");
   const [paymentLink, setPaymentLink] = useState("");
   const [userId, setUserId] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
   const openView = (view) => {
@@ -72,7 +88,7 @@ const GenPaymentLink = () => {
     }
   };
 
-  const { provider } = connectWallet();
+  const { provider, connected } = connectWallet();
 
   const { contract } = useContract();
 
@@ -93,42 +109,66 @@ const GenPaymentLink = () => {
 
   const createPaymentPlan = async (e) => {
     e.preventDefault();
+    console.log('fired plan creation');
+  
+    if (!connected) {
+      toast.error('Please connect wallet');
+      return;
+    }
+  
     if (!provider) return;
     if (!contract) return;
     if (!paymentId) return;
-    try {
-      await contract.createPaymentBpF(
-        planName,
-        ethers.parseEther(String(amount)),
-        paymentId
-      );
-      contract.on(
-        "CreatedPaymentPlanBpF",
-        async (
-          blockpayContract,
-          planName,
-          amount,
-          contractIndex,
-          payId,
-          event
-        ) => {
-          console.log("CreatedPaymentPlan Event", {
-            blockpayContract,
+  
+    // Use toast.promise to show processing and completion states
+    const promise = await toast.promise(
+      async () => {
+        try {
+          console.log('Running contract');
+          await contract.createPaymentBpF(
             planName,
-            amount,
-            contractIndex,
-            payId,
-          });
-
-          const savedDocument = await saveToDB(userId);
-          console.log("saved documents", savedDocument);
-          toast.success("Link generated");
+            ethers.parseEther(String(amount)),
+            paymentId
+          );
+          contract.on(
+            "CreatedPaymentPlanBpF",
+            async (
+              blockpayContract,
+              planName,
+              amount,
+              contractIndex,
+              payId,
+              event
+            ) => {
+              console.log("CreatedPaymentPlan Event", {
+                blockpayContract,
+                planName,
+                amount,
+                contractIndex,
+                payId,
+              });
+  
+              const savedDocument = await saveToDB(userId);
+              console.log("Saved documents", savedDocument);
+              onOpen();
+  
+            }
+          );
+        } catch (err) {
+          console.log("Error from generate payment links: ", err.message);
         }
-      );
-    } catch (err) {
-      console.log("Error from generate payment links: ", err.message);
-    }
+      } ,  {
+        pending: "Generating Link...", // Displayed while the promise is pending
+        success: "Link generated ", // Displayed when the promise resolves successfully
+        error: "Upload failed", // Displayed when the promise rejects with an error
+        autoClose: 5000, // Close after 5 seconds
+      }
+    );
+  
+    // Use the `promise` variable in your component to display toast messages
   };
+
+  
 
   useEffect(() => {
     const auth = getAuth(app);
@@ -243,12 +283,46 @@ const GenPaymentLink = () => {
                   className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
                 <button type="button" onClick={handleCopy}>
-                  <Image src={copyIcon} className="p-[1.2px]" />
+                  <copyIcon />
                 </button>
                 <ToastContainer />
               </div>
 
-              {paymentLink && (
+              <div className="mb-2">
+                <button
+                  type="submit"
+                  className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                >
+                  Create Link
+                </button>
+              </div>
+            </form>
+
+            <Modal onClose={onClose} isOpen={isOpen} closeOnOverlayClick={false} isCentered>
+            <ModalOverlay />
+            <ModalContent borderRadius={"2xl"} p={4}>
+              <ModalCloseButton
+                bg={"#1856F3"}
+                color={"#fff"}
+                rounded={"full"}
+              />
+              <ModalBody>
+                <Stack gap={5}>
+                  <Box alignSelf={"center"} mb={10}>
+                    {" "}
+                    <Heading
+                      size={"xl"}
+                      color={"#1856F3"}
+                      align={"center"}
+                      mx={10}
+                      mb={5}
+                    >
+                      Payment Link Generated
+                    </Heading>
+                  </Box>
+
+                  <Box>
+                  {paymentLink && (
                 <div className="mb-5 flex flex-col justify-center items-center">
                   <QRCode value={paymentLink} className="mb-1.5 h-20 w-20" />
                   <Link
@@ -259,17 +333,40 @@ const GenPaymentLink = () => {
                   </Link>
                 </div>
               )}
+                  </Box>
 
-              <div className="mb-2">
-                <button
-                  type="submit"
-                  className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-                  onClick={generatePaymentId}
-                >
-                  Create Link
-                </button>
-              </div>
-            </form>
+                  <Box>
+                    <InputGroup>
+                    <Input type="text" value={paymentLink} disabled />
+                    <InputRightElement onClick={navigator.clipboard.writeText(paymentLink)}>
+                    <copyIcon />
+                    </InputRightElement>
+                    </InputGroup>
+                  </Box>
+                  <Button
+                    height={"54px"}
+                    color="#fff"
+                    bg="#1856F3"
+                    _hover={{
+                      bg: "white",
+                      border: "1px solid #1856F3",
+                      color: "#1856F3",
+                    }}
+                    rounded={"2xl"}
+                    onClick={()=>{
+                      onClose()
+                      router.push('/user/payments/payment-link')
+                    }}
+                  >
+                    Ok
+                  </Button>
+                </Stack>
+              </ModalBody>
+              <ModalFooter>
+                {/* <Button onClick={onClose}>Close</Button> */}
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
           </div>
         </div>
       </div>

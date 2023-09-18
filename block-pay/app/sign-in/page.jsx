@@ -36,6 +36,7 @@ const SignIn = () => {
       router.push("/user/dashboard");
     } catch (error) {
       console.log(error);
+      // toast.error(error.message)
       if (error.code === "auth/user-not-found") {
         console.log("User not found. ");
         toast.error("user not found");
