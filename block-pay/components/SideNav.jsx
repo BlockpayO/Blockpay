@@ -95,11 +95,13 @@ const SideNav = ({ view, closeView }) => {
         <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
       </svg>
       <div className="flex justify-center my-7">
-        <Image
-          src={logo}
-          className="w-[10rem] h-[5rem] cursor-pointer"
-          alt="Logo"
-        />
+        <Link href="/user/dashboard/">
+          <Image
+            src={logo}
+            className="w-[10rem] h-[5rem] cursor-pointer"
+            alt="Logo"
+          />
+        </Link>
       </div>
       <div className="flex">
         <ul className=" flex flex-col space-y-5">

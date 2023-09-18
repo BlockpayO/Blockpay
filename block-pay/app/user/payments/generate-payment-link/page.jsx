@@ -1,22 +1,22 @@
 "use client";
 
-import { IoCopy } from "react-icons/io5";
+import { Fragment } from "react";
 import { SideNav } from "@/components";
 import { backarrow } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import useContract from "../../useContract";
-import connectWallet from "../../connect";
+import useContract from "@/app/user/useContract";
+import connectWallet from "/app/user/connect";
 import { ethers } from "ethers";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
 import { Flex, Input, InputGroup, InputRightElement, Spinner } from "@chakra-ui/react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
-import { ToastContainer, toast } from "react-toastify";
-import QRCode from "qrcode.react";
+import { Toaster, toast } from "react-hot-toast";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+
 import {copyIcon} from '@chakra-ui/icons'
 import {
   Box,
@@ -32,6 +32,8 @@ import {
   ModalContent,
 } from "@chakra-ui/react";
 import LogoutModal from "@/components/LogoutModal";
+import Modal from "@/components/Modal";
+
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
@@ -43,6 +45,8 @@ const GenPaymentLink = () => {
   const [paymentLink, setPaymentLink] = useState("");
   const [userId, setUserId] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [showModal, setShowModal] = useState(false);
+
 
   const router = useRouter();
   const openView = (view) => {
@@ -106,7 +110,7 @@ const GenPaymentLink = () => {
   useEffect(() => {
     console.log(paymentLink);
   }, [paymentLink]);
-
+{/**----======= GENERATE PAYMENT LINK =======---- */}
   const createPaymentPlan = async (e) => {
     e.preventDefault();
     console.log('fired plan creation');
@@ -200,93 +204,53 @@ const GenPaymentLink = () => {
   }
 
   const handleCopy = () => {
-    const input = document.getElementById("paymentID");
     navigator.clipboard.writeText(paymentId);
     try {
-      toast.success("Payment ID copied successfully!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      toast.success("Payment ID copied successfully!");
     } catch (error) {
-      toast.error("Failed to copy Payment ID.");
+      toast.error("Payment ID not copied!");
     }
   };
 
+
   return (
     <main className="flex">
-      <SideNav view={view} closeView={closeView} />
-      <div className="w-full">
-        <div className="flex-row mt-5 mx-5">
-          <SideNavToggle openView={openView} />
-        </div>
-        <div className="flex justify-center mt-0 items-center p-12">
-          <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] p-7 w-[450px]">
-            <div className="grid w-full">
-              <Link href="/user/payments" className="flex-row order-first">
-                <div className="flex justify-start items-start cursor-pointer">
-                  <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
-                  <p className="ml-2 text-sm text-color">Back</p>
-                </div>
-              </Link>
-              <h2 className="h2 text-color mt-2 mb-5 flex justify-center">
-                Generate Payment Links
-              </h2>
-            </div>
-            <form className="flex flex-col" onSubmit={createPaymentPlan}>
-              <input
-                type="text"
-                placeholder="Payment Name"
-                id="payment-name"
-                name="payment-name"
-                value={planName}
-                onChange={(e) => {
-                  setPlanName(e.target.value);
-                }}
-                required
-                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-              />
-
-              <input
-                type="text"
-                placeholder="Description"
-                id="description"
-                name="description"
-                value={description}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-                required
-                className="w-[310px] h-[77px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-              />
-
-              <input
-                type="number"
-                placeholder="Amount In USD"
-                id="amount"
-                name="amount"
-                value={amount}
-                onChange={(e) => {
-                  setAmount(e.target.value);
-                }}
-                required
-                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-              />
-
-              <div className="flex justify-between mb-4">
+      <Fragment>
+        <SideNav view={view} closeView={closeView} />
+        <div className="w-full">
+          <div className="flex-row mt-5 mx-5">
+            <SideNavToggle openView={openView} />
+          </div>
+          <div className="flex justify-center mt-0 items-center p-12">
+            <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] p-7 w-[450px]">
+              <div className="grid w-full">
+                <Link href="/user/payments" className="flex-row order-first">
+                  <div className="flex justify-start items-start cursor-pointer">
+                    <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
+                    <p className="ml-2 text-sm text-color">Back</p>
+                  </div>
+                </Link>
+                <h2 className="h2 text-color mt-2 mb-5 flex justify-center">
+                  Generate Payment Links
+                </h2>
+              </div>
+              <form className="flex flex-col" onSubmit={createPaymentPlan}>
                 <input
                   type="text"
-                  placeholder="Payment ID"
-                  id="paymentID"
-                  name="paymentID"
-                  value={paymentId}
-                  readOnly
+                  placeholder="Payment Name"
+                  id="payment-name"
+                  name="payment-name"
+                  value={planName}
+                  onChange={(e) => {
+                    setPlanName(e.target.value);
+                  }}
                   required
-                  className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
                 <button type="button" onClick={handleCopy}>
                   <copyIcon />
                 </button>
-                <ToastContainer />
-              </div>
+              
 
               <div className="mb-2">
                 <button
@@ -369,7 +333,7 @@ const GenPaymentLink = () => {
           </Modal>
           </div>
         </div>
-      </div>
+      </Fragment>
     </main>
   );
 };
