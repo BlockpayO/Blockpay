@@ -1,6 +1,5 @@
 
 "use client";
-//LHZ57KHZ4182646BAB55A23640.12342539
 import SideNav from "@/components/SideNav";
 import { backarrow } from "@/public/assets/images";
 import Link from "next/link";

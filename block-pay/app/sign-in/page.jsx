@@ -99,6 +99,7 @@ const SignIn = () => {
               >
                 Login
               </button>
+              <Toaster position="top-right" reverseOrder={false}/>
               <p className="text-sm font-medium flex justify-start ml-2 text-gray-500 hover:text-black">Forgot Password?</p>
             </form>
           </>
