@@ -5,7 +5,7 @@ import Image from "next/image";
 import { backarrow } from "@/public/assets/images";
 import {app} from '../../firebase/firebase'
 import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 
@@ -32,7 +32,7 @@ const SignIn = () => {
       );
       const user = userCredentials.user;
       console.log(user);
-      toast.success("login successful");
+      toast.success("Login successful");
       router.push("/user/dashboard");
     } catch (error) {
       console.log(error);
@@ -40,7 +40,7 @@ const SignIn = () => {
         console.log("User not found. ");
         toast.error("user not found");
       } else if (error.code === "auth/wrong-password") {
-        toast.error("Incorrect password");
+        toast.error("Incorrect email or password");
       } else {
         toast.error(error.message);
       }

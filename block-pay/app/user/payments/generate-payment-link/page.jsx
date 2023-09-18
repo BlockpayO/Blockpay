@@ -258,8 +258,8 @@ const GenPaymentLink = () => {
                   <button
                     type="submit"
                     className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-                    onSubmit={() => setShowModal(true)}
-                  >
+                    >
+                    {/*onSubmit={() => setShowModal(true)*/}
                     Create Link
                   </button>
                 </div>
