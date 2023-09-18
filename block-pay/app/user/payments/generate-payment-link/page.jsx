@@ -251,7 +251,7 @@ const GenPaymentLink = () => {
                 </div>
 
                 {/**---=========== MODAL ===========--- */}
-                <Modal isShown={showModal} onClose={() => setShowModal(false)}/>
+                {/*<Modal isShown={showModal} onClose={() => setShowModal(false)}/>*/}
 
 
                 <div className="mb-2">
