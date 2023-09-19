@@ -14,10 +14,9 @@ import { useRouter } from "next/navigation";
 import { Flex, Input, InputGroup, InputRightElement, Spinner } from "@chakra-ui/react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
-import { Toaster, toast } from "react-hot-toast";
+import {  toast } from "react-toastify";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
-
-import {copyIcon} from '@chakra-ui/icons'
+import QRCode from "qrcode.react";
 import {
   Box,
   Button,
@@ -31,8 +30,9 @@ import {
   Heading,
   ModalContent,
 } from "@chakra-ui/react";
-import LogoutModal from "@/components/LogoutModal";
-import Modal from "@/components/Modal";
+import { CopyIcon } from "@chakra-ui/icons";
+
+
 
 
 const GenPaymentLink = () => {
@@ -45,7 +45,6 @@ const GenPaymentLink = () => {
   const [paymentLink, setPaymentLink] = useState("");
   const [userId, setUserId] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [showModal, setShowModal] = useState(false);
 
 
   const router = useRouter();
@@ -247,6 +246,41 @@ const GenPaymentLink = () => {
                   required
                   className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
+                 <input
+                  type="text"
+                  placeholder="Payment Description"
+                  id="payment-description"
+                  name="payment-description"
+                  value={description}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                  required
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+                 <input
+                  type="number"
+                  placeholder="Amount in USD"
+                  id="amount"
+                  name="amount"
+                  value={amount}
+                  onChange={(e) => {
+                    setAmount(e.target.value);
+                  }}
+                  required
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+                <input
+                  type="text"
+                  placeholder="PaymentId"
+                  id="payment-id"
+                  name="payment-id"
+                  value={paymentId}
+                  disabled
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+                
+                
                 <button type="button" onClick={handleCopy}>
                   <copyIcon />
                 </button>
@@ -302,8 +336,9 @@ const GenPaymentLink = () => {
                   <Box>
                     <InputGroup>
                     <Input type="text" value={paymentLink} disabled />
-                    <InputRightElement onClick={navigator.clipboard.writeText(paymentLink)}>
-                    <copyIcon />
+                    <InputRightElement onClick={()=>{
+                      navigator.clipboard.writeText(paymentLink)}}>
+                    <CopyIcon />
                     </InputRightElement>
                     </InputGroup>
                   </Box>
@@ -332,6 +367,7 @@ const GenPaymentLink = () => {
             </ModalContent>
           </Modal>
           </div>
+        </div>
         </div>
       </Fragment>
     </main>
