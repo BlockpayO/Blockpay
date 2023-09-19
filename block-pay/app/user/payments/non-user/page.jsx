@@ -20,7 +20,7 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-  const { provider, wallet, connecting, connect, disconnect } = connectWallet();
+  const { provider, wallet, connecting, connected, connect, disconnect } = connectWallet();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -111,22 +111,22 @@ const PreviewPage = () => {
                 </div>
               </Link>
               <button
-                className={`flex-row order-last border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                  connecting
-                    ? "bg-gray-500"
-                    : wallet
-                    ? "bg-red-500 border hover:border-red-500 hover:bg-white hover:text-black"
-                    : "bg-blue-600 border hover:bg-white hover:text-black hover:border-blue-600"
-                }`}
-                disabled={connecting}
-                onClick={() => (wallet ? disconnect(wallet) : connect())}
-              >
-                {connecting
-                  ? "Connecting"
-                  : wallet
-                  ? "Disconnect"
-                  : "Connect Wallet"}
-              </button>
+               className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
+                 connecting
+                   ? "bg-gray-500"
+                   : wallet
+                   ? "bg-red-500 border border-none hover:bg-red-700"
+                   : "bg-blue-500 border border-none hover:bg-blue-700"
+               }`}
+               disabled={connecting}
+               onClick={() => (wallet ? disconnect(wallet) : connect())}
+             >
+               {connecting
+                 ? "Connecting"
+                 : wallet
+                 ? "Disconnect"
+                 : "Connect Wallet"}
+             </button>
             </div>
             <h2 className="text-3xl mb-3 font-medium text-color mt-[25px] flex justify-center">
               defamatory
