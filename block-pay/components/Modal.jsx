@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
 import { app } from "@/firebase/firebase";
-import { Toaster, toast } from "react-hot-toast";
+import {  toast } from "react-toastify";
 import QRCode from "qrcode.react";
 import { copyIcon } from "@/public/assets/images";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
@@ -159,7 +159,7 @@ const Modal = ({ isShown, onClose }) => {
                         <button type="button" onClick={handleCopy}>
                             <Image src={copyIcon} className="p-[1.2px] ml-3" />
                         </button>
-                        <Toaster position="top-right" reverseOrder={false}/>
+                       
                     </div>
                 </div>
             </div>

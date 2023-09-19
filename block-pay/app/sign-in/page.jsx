@@ -5,8 +5,9 @@ import Image from "next/image";
 import { backarrow } from "@/public/assets/images";
 import {app} from '../../firebase/firebase'
 import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+
 
 
 
@@ -100,7 +101,6 @@ const SignIn = () => {
               >
                 Login
               </button>
-              <Toaster position="top-right" reverseOrder={false}/>
               <p className="text-sm font-medium flex justify-start ml-2 text-gray-500 hover:text-black">Forgot Password?</p>
             </form>
           </>
