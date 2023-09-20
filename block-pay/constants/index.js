@@ -50,19 +50,20 @@ export const advantages = [
   {
     img: shield1,
     id: "Security",
-    desc: "Lorem ipsum dolor sit amet consectetur. Consectetur quis suspendisse netus iaculis semper commodo viverra eget. Tincidunt eget vestibulum fringilla urna eget. Leo scelerisque adipiscing dignissim sed commodo mauris mattis tempor. Odio velit turpis ac nibh.",
+    desc: "Our platform prioritizes the security of your data. We employ state-of-the-art encryption techniques and robust access controls to ensure that your information remains confidential and protected from unauthorized access."
   },
   {
     img: shield2,
     id: "Transparency",
-    desc: "Lorem ipsum dolor sit amet consectetur. Consectetur quis suspendisse netus iaculis semper commodo viverra eget. Tincidunt eget vestibulum fringilla urna eget. Leo scelerisque adipiscing dignissim sed commodo mauris mattis tempor. Odio velit turpis ac nibh.",
+    desc: "We believe in transparency in all our operations. You can trust us to provide clear and honest communication regarding our services, pricing, and policies. We're committed to building trust with our clients."
   },
   {
     img: shield3,
     id: "Low Cost Transaction",
-    desc: "Lorem ipsum dolor sit amet consectetur. Consectetur quis suspendisse netus iaculis semper commodo viverra eget. Tincidunt eget vestibulum fringilla urna eget. Leo scelerisque adipiscing dignissim sed commodo mauris mattis tempor. Odio velit turpis ac nibh.",
+    desc: "Save money with our low-cost transaction solutions. We offer competitive rates and efficient processes to minimize transaction costs for our clients. Enjoy the benefits of cost savings without compromising on quality."
   },
 ];
+
 
 export const trusts = [
   {
