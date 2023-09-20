@@ -16,6 +16,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
 import {  toast } from "react-toastify";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import QRCode from "qrcode.react";
 import {
   Box,
@@ -29,8 +30,9 @@ import {
   ModalOverlay,
   Heading,
   ModalContent,
+  Icon,
 } from "@chakra-ui/react";
-import { CopyIcon } from "@chakra-ui/icons";
+import { CopyIcon, CheckIcon  } from "@chakra-ui/icons";
 
 
 
@@ -45,6 +47,8 @@ const GenPaymentLink = () => {
   const [paymentLink, setPaymentLink] = useState("");
   const [userId, setUserId] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isgenerating, setIsGenerating] = useState(false)
+  const [clicked, setClicked] = useState(false)
 
 
   const router = useRouter();
@@ -55,6 +59,8 @@ const GenPaymentLink = () => {
   const closeView = (view) => {
     setView(view);
   };
+
+  const timestamp = Timestamp.now()
 
   function generatePaymentId() {
     // Generate a random 16-byte buffer as a unique identifier
@@ -81,6 +87,7 @@ const GenPaymentLink = () => {
           paymentId: paymentId,
           paymentLink: paymentLink,
           Description: description,
+          Timestamp: timestamp
         }
       );
 
@@ -102,9 +109,9 @@ const GenPaymentLink = () => {
 
   useEffect(() => {
     setPaymentLink(
-      `https://blockpayo.vercel.app/user/payments/non-user?paymentId=${paymentId}`
+      `https://blockpayo.vercel.app/user/payments/non-user?paymentId=${paymentId}&amount=${amount}`
     );
-  }, [paymentId]);
+  }, [paymentId, amount]);
 
   useEffect(() => {
     console.log(paymentLink);
@@ -128,6 +135,7 @@ const GenPaymentLink = () => {
       async () => {
         try {
           console.log('Running contract');
+          setIsGenerating(true)
           await contract.createPaymentBpF(
             planName,
             ethers.parseEther(String(amount)),
@@ -154,6 +162,7 @@ const GenPaymentLink = () => {
               const savedDocument = await saveToDB(userId);
               console.log("Saved documents", savedDocument);
               onOpen();
+              setIsGenerating(false)
   
             }
           );
@@ -162,7 +171,7 @@ const GenPaymentLink = () => {
         }
       } ,  {
         pending: "Generating Link...", // Displayed while the promise is pending
-        success: "Link generated ", // Displayed when the promise resolves successfully
+        success: "Transaction approved ", // Displayed when the promise resolves successfully
         error: "Upload failed", // Displayed when the promise rejects with an error
         autoClose: 5000, // Close after 5 seconds
       }
@@ -290,8 +299,9 @@ const GenPaymentLink = () => {
                 <button
                   type="submit"
                   className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                  disabled={isgenerating}
                 >
-                  Create Link
+                 {isgenerating ? 'Generating...' :  "Create Link"}
                 </button>
               </div>
             </form>
@@ -337,8 +347,9 @@ const GenPaymentLink = () => {
                     <InputGroup>
                     <Input type="text" value={paymentLink} disabled />
                     <InputRightElement onClick={()=>{
+                      setClicked(true)
                       navigator.clipboard.writeText(paymentLink)}}>
-                    <CopyIcon />
+                    {clicked ? <Icon as={CheckIcon} boxSize={5} color={'green.400'}/> :<CopyIcon />}
                     </InputRightElement>
                     </InputGroup>
                   </Box>
