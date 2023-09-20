@@ -9,6 +9,9 @@ import useContract from "../../useContract";
 import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import { app } from "@/firebase/firebase";
+import { collection, query, where, getDocs, getFirestore } from "firebase/firestore";
 
 const PreviewPage = () => {
   const [view, setView] = useState(false);
@@ -26,6 +29,38 @@ const PreviewPage = () => {
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState();
   const [paymentId, setPaymentId] = useState("");
+  const [paymentDetails, setPaymentDetails] = useState(null);
+
+  const db = getFirestore(app)
+  useEffect(() => {
+    if (paymentId) {
+      // Reference to the top-level collection where payment plans are stored
+      const paymentPlansRef = collection(db, "paymentPlans");
+      
+      // Query Firestore for the payment plan document with the matching paymentId
+      const paymentQuery = query(paymentPlansRef, where("paymentId", "==", paymentId));
+
+      getDocs(paymentQuery)
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            // Extract the payment details from the first matching document
+            const paymentPlan = querySnapshot.docs[0].data();
+            setPaymentDetails(paymentPlan);
+            console.log(paymentPlan)
+            console.log(paymentDetails);
+          } else {
+            // Handle the case where no matching document is found
+            setPaymentDetails(null);
+          }
+        })
+        .catch((error) => {
+          // Handle any errors that may occur during the query
+          console.error("Error fetching payment plan:", error);
+          setPaymentDetails(null); // Set paymentDetails to null in case of an error
+        })
+    }
+  }, [paymentId]);
+
   // get payment plan info with payment id
   // make payment with info
   let maticAmount;
@@ -129,10 +164,10 @@ const PreviewPage = () => {
              </button>
             </div>
             <h2 className="text-3xl mb-3 font-medium text-color mt-[25px] flex justify-center">
-              defamatory
+              {paymentDetails?.planName}
             </h2>
             <p className="text-xs flex justify-center">
-              Payment for Land rent and cleaning of environment
+              {paymentDetails?.Description}
             </p>
           </div>
           <form
@@ -144,7 +179,7 @@ const PreviewPage = () => {
               placeholder="500 USD"
               id="payment-amount"
               name="payment-amount"
-              value={amount}
+              value={`$ ${amount}`}
               readOnly
               className="w-[380px] mb-6 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />

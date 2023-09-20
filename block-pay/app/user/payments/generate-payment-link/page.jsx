@@ -77,26 +77,25 @@ const GenPaymentLink = () => {
   }
 
   const db = getFirestore(app);
-  const saveToDB = async () => {
+  const saveToDB = async (userId) => {
     try {
-      const docRef = await addDoc(
-        collection(db, `users/${userId}/paymentPlans`),
-        {
-          amount: amount,
-          planName: planName,
-          paymentId: paymentId,
-          paymentLink: paymentLink,
-          Description: description,
-          Timestamp: timestamp
-        }
-      );
-
+      const docRef = await addDoc(collection(db, "paymentPlans"), {
+        amount: amount,
+        planName: planName,
+        paymentId: paymentId,
+        paymentLink: paymentLink,
+        Description: description,
+        Timestamp: timestamp,
+        creatorId: userId, // Add the creatorId to the document
+      });
+  
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
-      console.log(`Error adding document : `, error);
+      console.log(`Error adding document: `, error);
       toast.error(error.message);
     }
   };
+  
 
   const { provider, connected } = connectWallet();
 

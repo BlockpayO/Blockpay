@@ -84,11 +84,11 @@ const PaymentLinkPage = () => {
 
   const fetchPaymentPlans = async (userId) => {
     try {
-      // Create a reference to the user's paymentPlans collection
-      const paymentPlansRef = collection(db, `users/${userId}/paymentPlans`);
+      // Create a reference to the paymentPlans collection
+      const paymentPlansRef = collection(db, "paymentPlans");
   
-      // Query for the documents in the collection
-      const q = query(paymentPlansRef);
+      // Query for the documents where the creatorId matches the user's ID
+      const q = query(paymentPlansRef, where("creatorId", "==", userId));
   
       // Fetch the documents
       const querySnapshot = await getDocs(q);
@@ -98,7 +98,18 @@ const PaymentLinkPage = () => {
   
       // Loop through the documents and extract the data
       querySnapshot.forEach((doc) => {
-        paymentPlans.push(doc.data());
+        // Extract relevant fields from the document data
+        const { amount, planName, paymentId, paymentLink, Description, Timestamp } = doc.data();
+  
+        // Add the extracted fields to the paymentPlans array
+        paymentPlans.push({
+          amount,
+          planName,
+          paymentId,
+          paymentLink,
+          Description,
+          Timestamp,
+        });
       });
   
       // Now you have an array of payment plans for the user
@@ -108,6 +119,7 @@ const PaymentLinkPage = () => {
       console.error("Error fetching payment plans: ", error);
     }
   };
+  
 
   useEffect(()=>{
     console.log(paymentPlans)
