@@ -105,7 +105,7 @@ const Transactions = () => {
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, [router, provider]);
 
   const formatTransactionHash = (hash, length = 10) => {
     if (hash && hash.length > length) {
