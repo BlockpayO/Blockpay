@@ -136,10 +136,10 @@ const Transactions = () => {
     <table className=" mb-2 md:mb-4 w-[100%]">
       <thead>
         <tr className=" text-[#727272] font-bold text-sm mb-1">
-          <th className="text-left w-[40%]">Name</th>
+          <th className="text-left w-[30%]">Name</th>
           <th className="text-left w-[20%]">Amount</th>
           <th className="text-left w-[20%]">Date</th>
-          <th className="text-left w-[40%]">Tx Hash</th>
+          <th className="text-left w-[30%]">Tx Hash</th>
           <th className="text-left w-[30%]">PaymentId</th>
         </tr>
       </thead>
