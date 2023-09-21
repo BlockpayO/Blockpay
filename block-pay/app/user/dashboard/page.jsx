@@ -14,7 +14,6 @@ import ProviderContext from "../context/ProviderContext";
 import { ethers } from "ethers";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
-import { Oval } from "react-loader-spinner";
 import { useRouter } from "next/navigation";
 import connectWallet from "../connect";
 import useContract from "../useContract";
@@ -31,6 +30,7 @@ const Dashboard = () => {
   const [maticPrice, setMaticPrice] = useState("0.00");
   const [withdrawalStatus, setWithdrawalStatus] = useState(false);
   const router = useRouter();
+
   useEffect(() => {
     const auth = getAuth(app);
 
@@ -414,7 +414,7 @@ const Dashboard = () => {
                   <h2 className="text-color text-l md:text-xl md:font-medium text-color">
                     Recent Transactions
                   </h2>
-                  <div className="mt-1">{<Transactions max={7} />}</div>
+                  <div className="mt-1">{<Transactions />}</div>
                   <div className="flex flex-col justify-center items-center mt-[150px]">
                     <Link
                       href="/user/transactions"

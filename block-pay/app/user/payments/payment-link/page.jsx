@@ -38,13 +38,11 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { getAuth, onAuthStateChanged  } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const PaymentLinkPage = () => {
   const [view, setView] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-
 
   const openView = (view) => {
     setView(view);
@@ -61,8 +59,10 @@ const PaymentLinkPage = () => {
 
   const [paymentPlans, setPaymentPlans] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [userId, setUserId] = useState('');
-  const [copiedStatus, setCopiedStatus] = useState(Array(paymentPlans.length).fill(false));
+  const [userId, setUserId] = useState("");
+  const [copiedStatus, setCopiedStatus] = useState(
+    Array(paymentPlans.length).fill(false)
+  );
 
   const db = getFirestore(app);
 
@@ -73,7 +73,7 @@ const PaymentLinkPage = () => {
       if (user) {
         setUserId(user.uid);
         fetchPaymentPlans(user.uid);
-        setIsLoading(false); 
+        setIsLoading(false);
       } else {
         router.push("/sign-in");
       }
@@ -86,21 +86,28 @@ const PaymentLinkPage = () => {
     try {
       // Create a reference to the paymentPlans collection
       const paymentPlansRef = collection(db, "paymentPlans");
-  
+
       // Query for the documents where the creatorId matches the user's ID
       const q = query(paymentPlansRef, where("creatorId", "==", userId));
-  
+
       // Fetch the documents
       const querySnapshot = await getDocs(q);
-  
+
       // Initialize an array to store the payment plans
       const paymentPlans = [];
-  
+
       // Loop through the documents and extract the data
       querySnapshot.forEach((doc) => {
         // Extract relevant fields from the document data
-        const { amount, planName, paymentId, paymentLink, Description, Timestamp } = doc.data();
-  
+        const {
+          amount,
+          planName,
+          paymentId,
+          paymentLink,
+          Description,
+          Timestamp,
+        } = doc.data();
+
         // Add the extracted fields to the paymentPlans array
         paymentPlans.push({
           amount,
@@ -111,7 +118,7 @@ const PaymentLinkPage = () => {
           Timestamp,
         });
       });
-  
+
       // Now you have an array of payment plans for the user
       console.log(paymentPlans);
       setPaymentPlans(paymentPlans); // Set the payment plans in your component state
@@ -119,11 +126,10 @@ const PaymentLinkPage = () => {
       console.error("Error fetching payment plans: ", error);
     }
   };
-  
 
-  useEffect(()=>{
-    console.log(paymentPlans)
-  }, [paymentPlans])
+  useEffect(() => {
+    console.log(paymentPlans);
+  }, [paymentPlans]);
 
   if (isLoading) {
     return (
@@ -138,9 +144,6 @@ const PaymentLinkPage = () => {
       </Flex>
     );
   }
-
-
- 
 
   return (
     <Flex>
@@ -198,22 +201,23 @@ const PaymentLinkPage = () => {
           </Flex>
 
           <TableContainer>
-          {paymentPlans.length > 0 ? (<Table borderTop={"1px solid #838383 "} size={"sm"}>
-              <Thead>
-                <Tr w={"100vw"} color={"#838383"}>
-                  <Th>Payment Name</Th>
-                  <Th>Payment ID</Th>
-                  <Th>Amount</Th>
-                  <Th>Actions</Th>
-                  <Th>Date Created</Th>
-                  <Th></Th>
-                  <Th></Th>
-                  <Th></Th>
-                </Tr>
-              </Thead>
+            {paymentPlans.length > 0 ? (
+              <Table borderTop={"1px solid #838383 "} size={"sm"}>
+                <Thead>
+                  <Tr w={"100vw"} color={"#838383"}>
+                    <Th>Payment Name</Th>
+                    <Th>Payment ID</Th>
+                    <Th>Amount</Th>
+                    <Th>Actions</Th>
+                    <Th>Date Created</Th>
+                    <Th></Th>
+                    <Th></Th>
+                    <Th></Th>
+                  </Tr>
+                </Thead>
 
-              <Tbody>
-                {/* <Tr>
+                <Tbody>
+                  {/* <Tr>
                   <Td>Cayadi Megantara </Td>
                   <Td>389500</Td>
                   <Td>USD 98.00</Td>
@@ -243,38 +247,44 @@ const PaymentLinkPage = () => {
                     />
                   </Td>
                 </Tr> */}
-                {paymentPlans.map((paymentPlan, index) => (
+                  {paymentPlans.map((paymentPlan, index) => (
                     <Tr key={index}>
                       <Td>{paymentPlan.planName}</Td>
                       <Td>{paymentPlan.paymentId}</Td>
                       <Td>{`$ ${paymentPlan.amount}`}</Td>
-                      <Td color={"#1A57F3"} textDecor={"underline"} >
+                      <Td color={"#1A57F3"} textDecor={"underline"}>
                         <Link
-                          href={`/user/payments/non-user?paymentId=${paymentPlan.paymentId
-                        }&amount=${paymentPlan.amount}`}
+                          href={`/user/payments/non-user?paymentId=${paymentPlan.paymentId}&amount=${paymentPlan.amount}`}
                         >
                           Preview Page
                         </Link>
                       </Td>
                       <Td>
-                      {new Date(paymentPlan.Timestamp.seconds * 1000).toLocaleString()}
+                        {new Date(
+                          paymentPlan.Timestamp.seconds * 1000
+                        ).toLocaleString()}
                       </Td>
-                      <Td cursor={'pointer'}
-      onClick={() => {
-        navigator.clipboard.writeText(paymentPlan.paymentLink);
-        const newCopiedStatus = [...copiedStatus];
-        newCopiedStatus[index] = true;
-        setCopiedStatus(newCopiedStatus);
+                      <Td
+                        cursor={"pointer"}
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            paymentPlan.paymentLink
+                          );
+                          const newCopiedStatus = [...copiedStatus];
+                          newCopiedStatus[index] = true;
+                          setCopiedStatus(newCopiedStatus);
 
-        // Reset the copied status after a certain delay (e.g., 2 seconds)
-        setTimeout(() => {
-          newCopiedStatus[index] = false;
-          setCopiedStatus(newCopiedStatus);
-        }, 2000); // Adjust the delay as needed
-      }}
-    >
-      <Text color={"#1856F3"}>{copiedStatus[index] ? 'Copied' : "Copy Link"}</Text>
-    </Td>
+                          // Reset the copied status after a certain delay (e.g., 2 seconds)
+                          setTimeout(() => {
+                            newCopiedStatus[index] = false;
+                            setCopiedStatus(newCopiedStatus);
+                          }, 2000); // Adjust the delay as needed
+                        }}
+                      >
+                        <Text color={"#1856F3"}>
+                          {copiedStatus[index] ? "Copied" : "Copy Link"}
+                        </Text>
+                      </Td>
                       <Td>
                         <Icon
                           cursor={"pointer"}
@@ -288,12 +298,11 @@ const PaymentLinkPage = () => {
                       </Td>
                     </Tr>
                   ))}
-              </Tbody>
-            </Table>
+                </Tbody>
+              </Table>
             ) : (
-
-              <Flex alignItems={'center'} justifyContent={'center'}  h={'50vh'}>
-              <Text fontSize={'xl'}>No Payment Links Created Yet</Text>
+              <Flex alignItems={"center"} justifyContent={"center"} h={"50vh"}>
+                <Text fontSize={"xl"}>No Payment Links Created Yet</Text>
               </Flex>
             )}
           </TableContainer>

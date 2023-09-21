@@ -9,7 +9,6 @@ import useContract from "../../useContract";
 import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
 import { ethers } from "ethers";
-import { useRouter } from "next/router";
 import { app } from "@/firebase/firebase";
 import {
   collection,
@@ -18,7 +17,7 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { addDoc, serverTimestamp } from "firebase/firestore";
 import { convertIcon } from "@/public/assets/images";
 import { toast } from "react-toastify";
 const PreviewPage = () => {
@@ -91,11 +90,12 @@ const PreviewPage = () => {
     if (!provider) return;
     if (!contract) return;
     if (!paymentId) return;
+
+    // Display a loading message
     const promise = await toast.promise(
       async () => {
-        setPaymentStatus(true);
         try {
-          // await convertUSDToMatic(amount);
+          // Your existing payment logic
           const signer = await provider.getSigner();
           const signerAddress = signer.address;
           const pay = await contract.receivePaymentBpF(
@@ -107,43 +107,71 @@ const PreviewPage = () => {
             { value: ethers.parseEther(maticAmount) }
           );
           const hash = pay.hash;
-          contract.on(
-            "ReceivedPaymentBpF",
-            (
-              _creator,
-              _paymentId,
-              _firstName,
-              _lastName,
-              _email,
-              _timestamp,
-              event
-            ) => {
-              const paymentDets = [
-                _creator,
-                _paymentId,
-                _firstName,
-                _lastName,
-                _email,
-                _timestamp,
-                hash,
-              ];
-              setPaymentStatus(false);
-            }
+
+          // Create a reference to the Firestore database
+          const paymentPlanQuery = query(
+            collection(db, "paymentPlans"),
+            where("paymentId", "==", paymentId)
           );
+
+          const paymentPlanQuerySnapshot = await getDocs(paymentPlanQuery);
+
+          if (paymentPlanQuerySnapshot.empty) {
+            // Handle the case where no matching payment plan is found
+            console.error("No payment plan found with paymentId: ", paymentId);
+            return;
+          }
+
+          // Assuming there is only one matching payment plan, use the first document in the snapshot
+          const paymentPlanDocRef = paymentPlanQuerySnapshot.docs[0].ref;
+
+          // Create an object with payment details
+          const paymentData = {
+            creator: signerAddress,
+            paymentId,
+            firstName,
+            lastName,
+            email,
+            amount,
+            timestamp: serverTimestamp(),
+            transactionHash: hash,
+          };
+
+          // Reference to the "transactions" subcollection within the payment plan
+          const transactionsCollectionRef = collection(
+            paymentPlanDocRef,
+            "transactions"
+          );
+
+          // Use `addDoc` to save the payment data to the "transactions" subcollection
+          const transactionDocRef = await addDoc(
+            transactionsCollectionRef,
+            paymentData
+          );
+          console.log(
+            "Transaction document written with ID: ",
+            transactionDocRef.id
+          );
+
+          // Set the payment status to false when the payment is received
+          setPaymentStatus(false);
+
+          // Display a success message
+          toast.success(`Payment made for paymentId: ${paymentId}`);
         } catch (err) {
           toast.error(`Unable to complete payment. PaymentId: ${paymentId}`);
-          setPaymentStatus(false);
           console.log("Error from non-user page: ", err);
         }
       },
       {
         pending: "Making Payment...", // Displayed while the promise is pending
-        success: "Transaction approved ", // Displayed when the promise resolves successfully
+        success: "Transaction approved", // Displayed when the promise resolves successfully
         error: "Payment failed", // Displayed when the promise rejects with an error
         autoClose: 5000, // Close after 5 seconds
       }
     );
   };
+
   const searchParams = useSearchParams();
   useEffect(() => {
     console.log(searchParams.get("paymentId"));
