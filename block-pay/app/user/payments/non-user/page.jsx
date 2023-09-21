@@ -10,7 +10,6 @@ import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
-import {toast} from 'react-toastify'
 import { app } from "@/firebase/firebase";
 import {
   collection,
@@ -82,8 +81,6 @@ const PreviewPage = () => {
     setMaticAmount(String(usdToMatic + 0.000001));
     console.log("matic", usdToMatic);
   };
-
-  
 
   const makePayment = async (e) => {
     e.preventDefault();
@@ -202,10 +199,9 @@ const PreviewPage = () => {
           >
             <input
               type="text"
-              placeholder="500 USD"
               id="payment-amount"
               name="payment-amount"
-              value={`$${amount.toFixed(2)}`}
+              value={amount}
               readOnly
               className="w-[380px] mb-6 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
@@ -270,7 +266,12 @@ const PreviewPage = () => {
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
               >
-               {` Pay ${Number(maticAmount).toFixed(3)} MATIC`}
+                {paymentStatus
+                  ? ` Making payment for... ${Number(maticAmount).toFixed(
+                      3
+                    )} MATIC`
+                  : ` Pay ${Number(maticAmount).toFixed(3)} MATIC`}
+                {/* {` Pay ${Number(maticAmount).toFixed(3)} MATIC`} */}
               </button>
             </div>
             <div className="w-full flex justify-between ">

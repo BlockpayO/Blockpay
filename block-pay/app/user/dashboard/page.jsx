@@ -22,12 +22,14 @@ import { Spinner, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import useBlockpayTxs from "../useBlockpayTxs";
 import Transactions from "../payments/Transactions";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const [view, setView] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [totalBalance, setTotalBalance] = useState("0.00");
   const [maticPrice, setMaticPrice] = useState("0.00");
+  const [withdrawalStatus, setWithdrawalStatus] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const auth = getAuth(app);
@@ -58,7 +60,7 @@ const Dashboard = () => {
   useEffect(() => {
     getTotalBalance();
     getMaticPrice();
-  }, [provider, contract]);
+  }, [provider, contract, withdrawalStatus]);
 
   const getTotalBalance = async () => {
     if (!provider) return;
@@ -83,6 +85,32 @@ const Dashboard = () => {
     const res = await price.json();
     setMaticPrice(res["matic-network"]["usd"]);
     console.log("matic pricee", res["matic-network"]["usd"]);
+  };
+
+  const handleWithdrawal = async () => {
+    if (!provider) return;
+    if (!contract) return;
+    try {
+      setWithdrawalStatus(true);
+      const withdraw = await contract.withdrawBpF();
+      await contract.on(
+        "WithdrawnBpF",
+        (sender, contractIndex, blocpayContract, balance, event) => {
+          console.log("Withdrawn", [
+            sender,
+            contractIndex,
+            blocpayContract,
+            balance,
+          ]);
+          setWithdrawalStatus(false);
+          toast.success("Withdrawal successful");
+        }
+      );
+    } catch (err) {
+      setWithdrawalStatus(false);
+      toast.error("Withdrawal unsuccessful");
+      console.log("Error from dashboard withdraw func:", err.message);
+    }
   };
 
   if (isLoading) {
@@ -162,7 +190,7 @@ const Dashboard = () => {
                   </div>
 
                   <h1 className="flex-col text-2xl font-medium mt-1">
-                    USD 0.00
+                    USD 0.000
                   </h1>
 
                   <div className="flex flex-row mt-2">
@@ -181,12 +209,12 @@ const Dashboard = () => {
                     Quick Links
                   </h2>
                   <Link href="/user/payments/generate-payment-link">
-                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-4">
+                    <p className="p-1 text-[13px] border border-gray-500 rounded text-center text-gray-500 cursor-pointer mb-4 hover:bg-[#1856f3] hover:text-white hover:border-none">
                       Generate Payment Link
                     </p>
                   </Link>
                   <Link href="/user/dashboard">
-                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-2">
+                    <p className="p-1 text-[13px] border border-gray-500 rounded text-center text-gray-500 cursor-pointer mb-2 hover:bg-[#1856f3] hover:text-white hover:border-none">
                       Withdrawal
                     </p>
                   </Link>
@@ -201,7 +229,7 @@ const Dashboard = () => {
                       name="convertFrom"
                       className="p-1 border border-[#1856f3] w-24 rounded mr-1 cursor-pointer"
                     >
-                      <option value="usdc">USDC</option>
+                      {/* <option value="usdc">USDC</option> */}
                       <option value="matic">MATIC</option>
                     </select>
                     <Image
@@ -213,8 +241,8 @@ const Dashboard = () => {
                       name="convertTo"
                       className="p-1 border border-[#1856f3] w-24 rounded ml-1 cursor-pointer"
                     >
-                      <option value="usdc">USDC</option>
-                      <option value="matic">MATIC</option>
+                      <option value="usdc">USD</option>
+                      {/* <option value="matic">MATIC</option> */}
                     </select>
                   </div>
                   <p className="text-[#bebebe] mt-2 text-[13px]">
@@ -224,7 +252,7 @@ const Dashboard = () => {
                     {rates.map((rate) => (
                       <li key={rate.desc} className="flex text-[13px]">
                         <div className="text-color mr-2">{rate.desc}</div>
-                        <div className="text-[#bebebe]">{rate.rate}</div>
+                        <div>{rate.rate}</div>
                       </li>
                     ))}
                   </ul>
@@ -232,7 +260,7 @@ const Dashboard = () => {
               </div>
 
               <div className="flex flex-col md:w-3/5 w-full">
-                <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg h-[340px]">
+                <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg h-[375px]">
                   <h2 className="text-color text-l md:text-xl md:font-medium text-color">
                     Recent Transactions
                   </h2>
@@ -244,7 +272,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="bg-[#f7f7f7] px-12 py-7 mt-5 rounded-lg ">
-                  <h2>Generate Invoice</h2>
+                  <h2>Generate Receipt</h2>
                   <SearchBar />
                 </div>
               </div>
@@ -291,7 +319,7 @@ const Dashboard = () => {
                   name="userBalance"
                   className="p-1 border border-[#1856f3] rounded cursor-pointer"
                 >
-                  <option value="usdc">USDC</option>
+                  <option value="usdc">USD</option>
                   <option value="matic">MATIC</option>
                 </select>
               </div>
@@ -329,15 +357,15 @@ const Dashboard = () => {
                     Quick Links
                   </h2>
                   <Link href="/user/payments/generate-payment-link">
-                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-4">
+                    <p className="p-1 text-[13px] border border-gray-500 rounded text-center text-gray-500 cursor-pointer mb-4  hover:bg-[#1856F3] hover:text-white hover:border-none">
                       Generate Payment Link
                     </p>
                   </Link>
-                  <Link href="/user/dashboard">
-                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-2">
-                      Withdrawal
+                  <button onClick={handleWithdrawal}>
+                    <p className="p-1 text-[13px] border border-gray-500 rounded text-center text-gray-500 cursor-pointer mb-2 hover:bg-[#1856F3] hover:text-white hover:border-none">
+                      {withdrawalStatus ? "Withdrawing..." : "Withdrawal"}
                     </p>
-                  </Link>
+                  </button>
                 </div>
                 <div className="grid bg-[#f7f7f7] px-11 py-6 mt-5 rounded-lg">
                   <h2 className="text-color text-xl font-medium mb-4">
@@ -361,30 +389,28 @@ const Dashboard = () => {
                       name="convertTo"
                       className="p-1 border border-[#1856f3] w-24 rounded ml-1 cursor-pointer"
                     >
-                      <option value="usdc">USDC</option>
+                      <option value="usdc">USD</option>
                       {/* <option value="matic">MATIC</option> */}
                     </select>
                   </div>
-                  <p className="text-[#bebebe] mt-2 text-[13px]">
+                  <p className="text-gray-700 mt-2 text-[13px]">
                     Updated 15 secs ago
                   </p>
                   <ul className="mt-2">
                     <li className="flex text-[13px]">
                       <div className="text-color mr-2">Last Price:</div>
-                      <div className="text-[#bebebe]">
-                        {Number(maticPrice).toFixed(3)}
-                      </div>
+                      <div>${Number(maticPrice).toFixed(3)}</div>
                     </li>
                   </ul>
                 </div>
               </div>
 
               <div className="flex flex-col md:w-3/5 w-full">
-                <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg h-[340px]">
+                <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg h-[340px] overflow-y:scroll">
                   <h2 className="text-color text-l md:text-xl md:font-medium text-color">
                     Recent Transactions
                   </h2>
-                  <div className="mt-1">{<Transactions />}</div>
+                  <div className="mt-1">{<Transactions max={9} />}</div>
                   <div className="flex flex-col justify-center items-center">
                     <Link
                       href="/user/transactions"
@@ -397,7 +423,7 @@ const Dashboard = () => {
                 </div>
 
                 <div className="bg-[#f7f7f7] px-12 py-7 mt-5 rounded-lg ">
-                  <h2>Generate Invoice</h2>
+                  <h2>Generate Receipt</h2>
                   <SearchBar />
                 </div>
               </div>
@@ -432,9 +458,9 @@ const SearchBar = () => {
     <div className="">
       <input
         type="search"
-        name="search invoice"
+        name="search-receipt"
         id=""
-        placeholder="Enter transaction ID"
+        placeholder="Enter Payment ID"
         className="w-full text-[13px] py-2 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <button

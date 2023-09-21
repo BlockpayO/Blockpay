@@ -75,7 +75,7 @@ const TransactionsPage = () => {
               Failed
             </button>
           </div>
-          {provider && <Transactions />}
+          {provider && <Transactions max={"full"} />}
           {/**--==== BEFORE WALLET CONNECT ====--*/}
           {!provider && (
             <div className="sticky flex items-center justify-center mt-[12.5rem]">

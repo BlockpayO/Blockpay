@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useContract from "../useContract";
 import connectWallet from "../connect";
 
-const Transactions = () => {
+const Transactions = ({ max }) => {
   const [txs, setTxs] = useState([]);
   const { provider } = connectWallet();
   const { contract } = useContract();
@@ -19,12 +19,21 @@ const Transactions = () => {
       allPayments.push(payments);
     }
     let allTxs = [];
-    for (let i = 0; i < allPayments.length; i++) {
+    let planLength = allPayments.length > max ? max : allPayments.length;
+
+    for (let i = 0; i < planLength; i++) {
       for (let x = 0; x < allPayments[i].length; x++) {
         allTxs.push(allPayments[i][x]);
       }
     }
-    setTxs([...allTxs]);
+    let slicedTxs =
+      max === "full"
+        ? allTxs
+        : allTxs.length > max
+        ? allTxs.slice(0, max)
+        : allTxs;
+
+    setTxs([...slicedTxs]);
     return allTxs;
   };
 
@@ -35,7 +44,7 @@ const Transactions = () => {
   if (provider && txs.length === 0) {
     return (
       <div className="flex justify-center items-center">
-        <h3 className="text-gray-300">No transactions to display currently</h3>
+        <h3 className="text-gray-500">No transactions to display currently</h3>
       </div>
     );
   }
