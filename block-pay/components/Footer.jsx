@@ -5,9 +5,9 @@ import { footerLinks } from "@/constants";
 
 const Footer = () => {
   return (
-    <section className="flex flex-col w-full justify-center items-center ">
-      <div className="flex flex-col sm:flex-row justify-between p-9 sm:py-12 sm:px-8 w-full bg-[#f7f7f7]">
-        <div className="flex flex-col sm:w-[45%] ml-[150px]">
+    <section className="flex flex-col justify-center w-full items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-center p-9  w-full bg-[#f7f7f7]">
+        <div className="flex flex-col sm:w-[45%] mb-5">
           <h2 className="text-xl font-semibold sm:text-4xl">
             Feedback and suggestions are appreciated
           </h2>
@@ -15,10 +15,10 @@ const Footer = () => {
             <Form />
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row sm:w-[55%] ml-8">
+        <div className="flex flex-col sm:flex-row sm:w-[55%]">
           {footerLinks.map((footerLink) => (
-            <ul key={footerLink.id} className="flex flex-col mx-4 mb-4 sm:mb-0">
-              <li className="mb-3">
+            <ul key={footerLink.id} className="flex flex-row sm:flex-row mx-4 sm:mb-0">
+              <li className="mb-3 flex flex-col">
                 <h2 className="text-xl font-semibold sm:text-4xl">{footerLink.name}</h2>
                 <p className="text-lg">
                   {footerLink.desc1}
@@ -47,7 +47,7 @@ function Form() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-[500px] ">
+    <form onSubmit={handleSubmit} className="flex flex-col w-[500px]">
       <input
         type="text"
         placeholder="Name"
