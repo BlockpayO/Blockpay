@@ -14,7 +14,6 @@ import ProviderContext from "../context/ProviderContext";
 import { ethers } from "ethers";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
-import { Oval } from "react-loader-spinner";
 import { useRouter } from "next/navigation";
 import connectWallet from "../connect";
 import useContract from "../useContract";
@@ -29,12 +28,18 @@ const Dashboard = () => {
   const [totalBalance, setTotalBalance] = useState("0.00");
   const [maticPrice, setMaticPrice] = useState("0.00");
   const router = useRouter();
+
+
+ 
+
+  
   useEffect(() => {
     const auth = getAuth(app);
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoading(false);
+        
       } else {
         router.push("/sign-in");
       }
