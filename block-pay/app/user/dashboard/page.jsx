@@ -415,7 +415,7 @@ const Dashboard = () => {
                     Recent Transactions
                   </h2>
                   <div className="mt-1">{<Transactions />}</div>
-                  <div className="flex flex-col justify-center items-center mt-[150px]">
+                  <div className="flex flex-col justify-center items-center mt-[180px]">
                     <Link
                       href="/user/transactions"
                       type="button"
