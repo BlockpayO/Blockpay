@@ -6,9 +6,9 @@ import { footerLinks } from "@/constants";
 const Footer = () => {
   return (
     <section className="flex flex-col justify-center w-full bg-[#f7f7f7] items-center sm:py-12 sm:px-8">
-      <div className="flex flex-col sm:flex-row justify-between  p-9  w-full bg-[#f7f7f7]">
+      <div className="flex flex-col sm:flex-row justify-between  p-9 w-full bg-[#f7f7f7]">
         <div className="flex flex-col sm:w-[45%] mb-5">
-          <h2 className="text-xl font-semibold sm:text-4xl w-[31.25rem]">
+          <h2 className="text-xl font-semibold sm:text-4xl mb-3">
             Feedback and suggestions <br /> are appreciated
           </h2>
           <div className="flex flex-col">
