@@ -300,12 +300,12 @@ const Dashboard = () => {
                     Quick Links
                   </h2>
                   <Link href="/user/payments/generate-payment-link">
-                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-4">
+                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center hover:border-blue-600 hover:text-blue-600 text-[#bebebe] cursor-pointer mb-4">
                       Generate Payment Link
                     </p>
                   </Link>
                   <Link href="/user/dashboard">
-                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-2">
+                    <p className="p-1 text-[13px] border border-[#bebebe] hover:border-blue-600 hover:text-blue-600 rounded text-center text-[#bebebe] cursor-pointer mb-2">
                       Withdrawal
                     </p>
                   </Link>
