@@ -26,6 +26,8 @@ import Transactions from "../payments/Transactions";
 const Dashboard = () => {
   const [view, setView] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalBalance, setTotalBalance] = useState("0.00");
+  const [maticPrice, setMaticPrice] = useState("0.00");
   const router = useRouter();
   useEffect(() => {
     const auth = getAuth(app);
@@ -41,7 +43,8 @@ const Dashboard = () => {
     return () => unsubscribe();
   }, [router]);
 
-  const { provider, wallet, connecting, connect, connected, disconnect } = connectWallet();
+  const { provider, wallet, connecting, connect, connected, disconnect } =
+    connectWallet();
 
   const openView = (view) => {
     setView(view);
@@ -53,9 +56,34 @@ const Dashboard = () => {
   const { contract } = useContract();
   // const { txs } = useBlockpayTxs();
   useEffect(() => {
-    console.log("Effective!!");
-    // console.log("The transactions", txs);
-  }, []);
+    getTotalBalance();
+    getMaticPrice();
+  }, [provider, contract]);
+
+  const getTotalBalance = async () => {
+    if (!provider) return;
+    if (!contract) return;
+    try {
+      const signer = await provider.getSigner();
+      let signerAddress = signer.address;
+      const balance = await contract.getContractsBalanceBpF(signerAddress);
+      const maticToUSD = await contract.conversionRateBpF(balance);
+      console.log("balancce", Number(maticToUSD) / 10 ** 18);
+      setTotalBalance((Number(maticToUSD) / 10 ** 18).toFixed(3));
+    } catch (err) {
+      console.log("error from dashboard balancee: ", err.message);
+    }
+  };
+
+  const getMaticPrice = async () => {
+    if (!provider) return;
+    const price = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd"
+    );
+    const res = await price.json();
+    setMaticPrice(res["matic-network"]["usd"]);
+    console.log("matic pricee", res["matic-network"]["usd"]);
+  };
 
   if (isLoading) {
     return (
@@ -76,153 +104,6 @@ const Dashboard = () => {
       {/**-------======== BEFORE CONNECTING WALLET =======------ */}
 
       {!connected ? (
-     <>
-     <SideNav view={view} closeView={closeView} />
-     <div className="flex flex-col p-5 w-full">
-       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-         <div className="flex flex-row justify-between md:order-last">
-           <SideNavToggle openView={openView} />
-           <div className="flex self-end order-last">
-             <Image
-               src={notiIcon}
-               alt="Noti Icon"
-               className="w-7 h-7 p-1 pb-0 cursor-pointer"
-             />
-             <button
-               className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                 connecting
-                   ? "bg-gray-500"
-                   : wallet
-                   ? "bg-red-500 border border-none hover:bg-red-700"
-                   : "bg-blue-500 border border-none hover:bg-blue-700"
-               }`}
-               disabled={connecting}
-               onClick={() => (wallet ? disconnect(wallet) : connect())}
-             >
-               {connecting
-                 ? "Connecting"
-                 : wallet
-                 ? "Disconnect"
-                 : "Connect Wallet"}
-             </button>
-           </div>
-         </div>
-         <div className="flex flex-col md:flex-row gap-4 md:items-center p-4 mt-4 mb-2 md:mt-9 md:mb-4">
-           <h1 className="text-2xl text-color font-semibold text-left">
-             Dashboard
-           </h1>
-           <select
-             name="userBalance"
-             className="p-1 border border-[#1856f3] rounded cursor-pointer"
-           >
-             <option value="usdc">USDC</option>
-             <option value="matic">MATIC</option>
-           </select>
-         </div>
-       </div>
-
-       <div className="flex flex-col md:flex-row w-full justify-center items-center">
-         <div className="flex-none py-7 md:p-7 flex-col md:flex-row md:w-2/5 w-full">
-           <div className="grid bg-[#f7f7f7] px-11 py-6 rounded-lg">
-             <div className="flex flex-row">
-               <h2 className="font-medium mr-1 font-base">Total Value</h2>
-               <Image
-                 src={viewBalance}
-                 alt="icon"
-                 className="w-6 h-6 p-1"
-               />
-             </div>
-
-             <h1 className="flex-col text-2xl font-medium mt-1">
-               USD 0.00
-             </h1>
-
-             <div className="flex flex-row mt-2">
-               <Image
-                 src={periodIcon}
-                 alt="icon"
-                 className="mt-1 w-3 h-3 p-1"
-               />
-               <p className="ml-1 text-[#727272] text-xs">
-                 Updated 5 secs ago
-               </p>
-             </div>
-           </div>
-           <div className="grid bg-[#f7f7f7] px-12 py-6 mt-5 rounded-lg w-full">
-             <h2 className="text-color text-xl font-medium mb-4">
-               Quick Links
-             </h2>
-             <Link href="/user/payments/generate-payment-link">
-               <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-4">
-                 Generate Payment Link
-               </p>
-             </Link>
-             <Link href="/user/dashboard">
-               <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-2">
-                 Withdrawal
-               </p>
-             </Link>
-           </div>
-           <div className="grid bg-[#f7f7f7] px-11 py-6 mt-5 rounded-lg">
-             <h2 className="text-color text-xl font-medium mb-4">
-               Conversion Rates
-             </h2>
-
-             <div className="flex flex-row">
-               <select
-                 name="convertFrom"
-                 className="p-1 border border-[#1856f3] w-24 rounded mr-1 cursor-pointer"
-               >
-                 <option value="usdc">USDC</option>
-                 <option value="matic">MATIC</option>
-               </select>
-               <Image
-                 src={convertIcon}
-                 alt="icon"
-                 className="w-5 h-5 pt-[6px]"
-               />
-               <select
-                 name="convertTo"
-                 className="p-1 border border-[#1856f3] w-24 rounded ml-1 cursor-pointer"
-               >
-                 <option value="usdc">USDC</option>
-                 <option value="matic">MATIC</option>
-               </select>
-             </div>
-             <p className="text-[#bebebe] mt-2 text-[13px]">
-               Updated 15 secs ago
-             </p>
-             <ul className="mt-2">
-               {rates.map((rate) => (
-                 <li key={rate.desc} className="flex text-[13px]">
-                   <div className="text-color mr-2">{rate.desc}</div>
-                   <div className="text-[#bebebe]">{rate.rate}</div>
-                 </li>
-               ))}
-             </ul>
-           </div>
-         </div>
-
-         <div className="flex flex-col md:w-3/5 w-full">
-           <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg">
-             <h2 className="text-color text-l md:text-xl md:font-medium text-color">
-               Recent Transactions
-             </h2>
-             <div className="flex flex-col justify-center items-center h-80">
-              <h2 className="text-2xl">Connect wallet to show transactions</h2>
-              </div>
-
-           </div>
-
-           <div className="bg-[#f7f7f7] px-12 py-7 mt-5 rounded-lg ">
-             <h2>Generate Invoice</h2>
-             <SearchBar />
-           </div>
-         </div>
-       </div>
-     </div>
-   </>
-      ) : (
         <>
           <SideNav view={view} closeView={closeView} />
           <div className="flex flex-col p-5 w-full">
@@ -281,7 +162,7 @@ const Dashboard = () => {
                   </div>
 
                   <h1 className="flex-col text-2xl font-medium mt-1">
-                    USD 75,690.73
+                    USD 0.00
                   </h1>
 
                   <div className="flex flex-row mt-2">
@@ -351,7 +232,155 @@ const Dashboard = () => {
               </div>
 
               <div className="flex flex-col md:w-3/5 w-full">
-                <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg">
+                <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg h-[340px]">
+                  <h2 className="text-color text-l md:text-xl md:font-medium text-color">
+                    Recent Transactions
+                  </h2>
+                  <div className="flex flex-col justify-center items-center h-80">
+                    <h2 className="text-2xl">
+                      Connect wallet to show transactions
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="bg-[#f7f7f7] px-12 py-7 mt-5 rounded-lg ">
+                  <h2>Generate Invoice</h2>
+                  <SearchBar />
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <SideNav view={view} closeView={closeView} />
+          <div className="flex flex-col p-5 w-full">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-row justify-between md:order-last">
+                <SideNavToggle openView={openView} />
+                <div className="flex self-end order-last">
+                  <Image
+                    src={notiIcon}
+                    alt="Noti Icon"
+                    className="w-7 h-7 p-1 pb-0 cursor-pointer"
+                  />
+                  <button
+                    className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
+                      connecting
+                        ? "bg-gray-500"
+                        : wallet
+                        ? "bg-red-500 border border-none hover:bg-red-700"
+                        : "bg-blue-500 border border-none hover:bg-blue-700"
+                    }`}
+                    disabled={connecting}
+                    onClick={() => (wallet ? disconnect(wallet) : connect())}
+                  >
+                    {connecting
+                      ? "Connecting"
+                      : wallet
+                      ? "Disconnect"
+                      : "Connect Wallet"}
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-col md:flex-row gap-4 md:items-center p-4 mt-4 mb-2 md:mt-9 md:mb-4">
+                <h1 className="text-2xl text-color font-semibold text-left">
+                  Dashboard
+                </h1>
+                <select
+                  name="userBalance"
+                  className="p-1 border border-[#1856f3] rounded cursor-pointer"
+                >
+                  <option value="usdc">USDC</option>
+                  <option value="matic">MATIC</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row w-full justify-center items-center">
+              <div className="flex-none py-7 md:p-7 flex-col md:flex-row md:w-2/5 w-full">
+                <div className="grid bg-[#f7f7f7] px-11 py-6 rounded-lg">
+                  <div className="flex flex-row">
+                    <h2 className="font-medium mr-1 font-base">Total Value</h2>
+                    <Image
+                      src={viewBalance}
+                      alt="icon"
+                      className="w-6 h-6 p-1"
+                    />
+                  </div>
+
+                  <h1 className="flex-col text-2xl font-medium mt-1">
+                    USD {totalBalance}
+                  </h1>
+
+                  <div className="flex flex-row mt-2">
+                    <Image
+                      src={periodIcon}
+                      alt="icon"
+                      className="mt-1 w-3 h-3 p-1"
+                    />
+                    <p className="ml-1 text-[#727272] text-xs">
+                      Updated 5 secs ago
+                    </p>
+                  </div>
+                </div>
+                <div className="grid bg-[#f7f7f7] px-12 py-6 mt-5 rounded-lg w-full">
+                  <h2 className="text-color text-xl font-medium mb-4">
+                    Quick Links
+                  </h2>
+                  <Link href="/user/payments/generate-payment-link">
+                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-4">
+                      Generate Payment Link
+                    </p>
+                  </Link>
+                  <Link href="/user/dashboard">
+                    <p className="p-1 text-[13px] border border-[#bebebe] rounded text-center text-[#bebebe] cursor-pointer mb-2">
+                      Withdrawal
+                    </p>
+                  </Link>
+                </div>
+                <div className="grid bg-[#f7f7f7] px-11 py-6 mt-5 rounded-lg">
+                  <h2 className="text-color text-xl font-medium mb-4">
+                    Conversion Rates
+                  </h2>
+
+                  <div className="flex flex-row">
+                    <select
+                      name="convertFrom"
+                      className="p-1 border border-[#1856f3] w-24 rounded mr-1 cursor-pointer"
+                    >
+                      {/* <option value="usdc">USDC</option> */}
+                      <option value="matic">MATIC</option>
+                    </select>
+                    <Image
+                      src={convertIcon}
+                      alt="icon"
+                      className="w-5 h-5 pt-[6px]"
+                    />
+                    <select
+                      name="convertTo"
+                      className="p-1 border border-[#1856f3] w-24 rounded ml-1 cursor-pointer"
+                    >
+                      <option value="usdc">USDC</option>
+                      {/* <option value="matic">MATIC</option> */}
+                    </select>
+                  </div>
+                  <p className="text-[#bebebe] mt-2 text-[13px]">
+                    Updated 15 secs ago
+                  </p>
+                  <ul className="mt-2">
+                    <li className="flex text-[13px]">
+                      <div className="text-color mr-2">Last Price:</div>
+                      <div className="text-[#bebebe]">
+                        {Number(maticPrice).toFixed(3)}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex flex-col md:w-3/5 w-full">
+                <div className="bg-[#f7f7f7] p-10 pt-8 rounded-lg h-[340px]">
                   <h2 className="text-color text-l md:text-xl md:font-medium text-color">
                     Recent Transactions
                   </h2>
