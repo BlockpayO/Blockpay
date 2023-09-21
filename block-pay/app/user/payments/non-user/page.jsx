@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useContract from "../../useContract";
+import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
 import { ethers } from "ethers";
 import { app } from "@/firebase/firebase";
@@ -19,11 +20,6 @@ import {
 import { addDoc, serverTimestamp } from "firebase/firestore";
 import { convertIcon } from "@/public/assets/images";
 import { toast } from "react-toastify";
-import { init, useConnectWallet } from "@web3-onboard/react";
-import walletConnectModule from "@web3-onboard/walletconnect";
-import injectedModule from "@web3-onboard/injected-wallets";
-import trustModule from "@web3-onboard/trust";
-
 const PreviewPage = () => {
   const [view, setView] = useState(false);
   const openView = (view) => {
@@ -34,7 +30,8 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-
+  const { provider, wallet, connecting, connected, connect, disconnect } =
+    connectWallet();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,54 +41,7 @@ const PreviewPage = () => {
   const [maticAmount, setMaticAmount] = useState("0");
   const [paymentStatus, setPaymentStatus] = useState(false);
   const searchParams = useSearchParams();
-
-  const [provider, setProvider] = useState();
-  const [connected, setConnected] = useState(false);
-  const [connecting, setConnnecting] = useState(false);
-  const [wallet, setWallet] = useState(false);
   const db = getFirestore(app);
-  const ethersConnectWallet = async () => {
-    try {
-      setConnnecting(true);
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = await provider.getSigner();
-      // const chainID = await signer.getChainId();
-      // if (chainID !== 80001) {
-      //   try {
-      //     await provider.send("wallet_switchEthereumChain", [
-      //       { chainId: `0x13881` },
-      //     ]);
-      //   } catch (err) {
-      //     console.log("Error requesting account switch: ", err);
-      //     return;
-      //   }
-      // }
-
-      const address = await signer.getAddress();
-      console.log("worked", address);
-      setWallet(address);
-      const truncatedAddr = address.slice(0, 4) + "..." + address.slice(-3);
-      setConnnecting(false);
-      return { truncatedAddr, signer, address };
-    } catch (err) {
-      setConnnecting(false);
-      console.log("Error connecting to metamask: ", err);
-    }
-  };
-  useEffect(() => {
-    let ethersProvider;
-    if (wallet) {
-      try {
-        ethersProvider = new ethers.BrowserProvider(wallet.provider, "any");
-        // Check if ethersProvider is valid before setting it
-        setProvider(ethersProvider);
-      } catch (error) {
-        // Handle any errors that occur during provider initialization
-        console.error("Error initializing ethers provider:", error);
-      }
-    }
-  }, [wallet, connecting]);
 
   useEffect(() => {
     if (paymentId) {
@@ -235,6 +185,7 @@ const PreviewPage = () => {
       }
     );
   };
+
   return (
     <main className="flex justify-center h-full bg-[#1856F3]">
       <div className="flex justify-center max-h-full items-center p-12">
@@ -256,7 +207,7 @@ const PreviewPage = () => {
                     : "bg-blue-500 border border-none hover:bg-blue-700"
                 }`}
                 disabled={connecting}
-                onClick={() => ethersConnectWallet()}
+                onClick={() => (wallet ? disconnect(wallet) : connect())}
               >
                 {connecting
                   ? "Connecting"
