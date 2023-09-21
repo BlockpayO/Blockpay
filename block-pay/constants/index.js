@@ -50,20 +50,19 @@ export const advantages = [
   {
     img: shield1,
     id: "Security",
-    desc: "Our platform prioritizes the security of your data. We employ state-of-the-art encryption techniques and robust access controls to ensure that your information remains confidential and protected from unauthorized access."
+    desc: "Our platform prioritizes the security of your data. We employ state-of-the-art encryption techniques and robust access controls to ensure that your information remains confidential and protected from unauthorized access.",
   },
   {
     img: shield2,
     id: "Transparency",
-    desc: "We believe in transparency in all our operations. You can trust us to provide clear and honest communication regarding our services, pricing, and policies. We're committed to building trust with our clients."
+    desc: "We believe in transparency in all our operations. You can trust us to provide clear and honest communication regarding our services, pricing, and policies. We're committed to building trust with our clients.",
   },
   {
     img: shield3,
     id: "Low Cost Transaction",
-    desc: "Save money with our low-cost transaction solutions. We offer competitive rates and efficient processes to minimize transaction costs for our clients. Enjoy the benefits of cost savings without compromising on quality."
+    desc: "Save money with our low-cost transaction solutions. We offer competitive rates and efficient processes to minimize transaction costs for our clients. Enjoy the benefits of cost savings without compromising on quality.",
   },
 ];
-
 
 export const trusts = [
   {
@@ -335,7 +334,7 @@ export const paymentCards = [
 ];
 
 export const blockpayFactoryContractAddress =
-  "0x05A4c18Eb2C3D9f84A1B8FA8379409a331C9cE3f";
+  "0xde60Db6F8bccC772fAc09b857f36908b2D52eD63";
 export const blockpayFactoryContractABI = [
   {
     inputs: [
@@ -443,6 +442,12 @@ export const blockpayFactoryContractABI = [
       },
       {
         indexed: false,
+        internalType: "contract Blockpay",
+        name: "blockpayContract",
+        type: "address",
+      },
+      {
+        indexed: false,
         internalType: "uint256",
         name: "withdrawnAmount",
         type: "uint256",
@@ -515,6 +520,15 @@ export const blockpayFactoryContractABI = [
       { internalType: "address", name: "blockpayAddress", type: "address" },
     ],
     name: "getContractIndex",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_contractCreator", type: "address" },
+    ],
+    name: "getContractsBalanceBpF",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",

@@ -10,9 +10,18 @@ import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
+import {toast} from 'react-toastify'
 import { app } from "@/firebase/firebase";
-import { collection, query, where, getDocs, getFirestore } from "firebase/firestore";
-
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { convertIcon } from "@/public/assets/images";
+import { toast } from "react-toastify";
 const PreviewPage = () => {
   const [view, setView] = useState(false);
   const openView = (view) => {
@@ -23,22 +32,27 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-  const { provider, wallet, connecting, connected, connect, disconnect } = connectWallet();
+  const { provider, wallet, connecting, connected, connect, disconnect } =
+    connectWallet();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState();
   const [paymentId, setPaymentId] = useState("");
   const [paymentDetails, setPaymentDetails] = useState(null);
-
-  const db = getFirestore(app)
+  const [maticAmount, setMaticAmount] = useState("0");
+  const [paymentStatus, setPaymentStatus] = useState(false);
+  const db = getFirestore(app);
   useEffect(() => {
     if (paymentId) {
       // Reference to the top-level collection where payment plans are stored
       const paymentPlansRef = collection(db, "paymentPlans");
-      
+
       // Query Firestore for the payment plan document with the matching paymentId
-      const paymentQuery = query(paymentPlansRef, where("paymentId", "==", paymentId));
+      const paymentQuery = query(
+        paymentPlansRef,
+        where("paymentId", "==", paymentId)
+      );
 
       getDocs(paymentQuery)
         .then((querySnapshot) => {
@@ -46,8 +60,7 @@ const PreviewPage = () => {
             // Extract the payment details from the first matching document
             const paymentPlan = querySnapshot.docs[0].data();
             setPaymentDetails(paymentPlan);
-            console.log(paymentPlan)
-            console.log(paymentDetails);
+            console.log(paymentPlan);
           } else {
             // Handle the case where no matching document is found
             setPaymentDetails(null);
@@ -57,71 +70,80 @@ const PreviewPage = () => {
           // Handle any errors that may occur during the query
           console.error("Error fetching payment plan:", error);
           setPaymentDetails(null); // Set paymentDetails to null in case of an error
-        })
+        });
     }
   }, [paymentId]);
-
-  // get payment plan info with payment id
-  // make payment with info
-  let maticAmount;
-  // const getPlan = async () => {
-  //   if (!paymentId) return;
-  //   if (!provider) return;
-  //   if (!contract) return;
-  //   const signer = await provider.getSigner();
-  //   const signerAddress = signer.address;
-  //   const plan = await contract.getPaymentPlanBpF(signerAddress, paymentId);
-  //   console.log("Plan", Math.abs(Number(plan["2"]) / 10 ** 18));
-  //   setAmount(Math.abs(Number(plan["2"]) / 10 ** 18));
-  // };
 
   const convertUSDToMatic = async (usdAmount) => {
     if (!provider) return;
     if (!contract) return;
     const maticToUSD = await contract.conversionRateBpF(String(1 * 10 ** 18));
     const usdToMatic = (usdAmount * 10 ** 18) / Number(maticToUSD);
-    maticAmount = String(usdToMatic + 0.00001);
+    setMaticAmount(String(usdToMatic + 0.000001));
     console.log("matic", usdToMatic);
   };
 
+  
+
   const makePayment = async (e) => {
     e.preventDefault();
+    if (!connected) {
+      toast.error("Please connect wallet");
+      return;
+    }
     if (!provider) return;
     if (!contract) return;
     if (!paymentId) return;
-
-    await convertUSDToMatic(amount);
-    console.log("in pay", maticAmount);
-    console.log("am in pay", amount);
-    const signer = await provider.getSigner();
-    const signerAddress = signer.address;
-    const pay = await contract.receivePaymentBpF(
-      signerAddress,
-      paymentId,
-      firstName,
-      lastName,
-      email,
-      { value: ethers.parseEther(maticAmount) }
-    );
-    contract.on(
-      "ReceivedPaymentBpF",
-      (
-        _creator,
-        _paymentId,
-        _firstName,
-        _lastName,
-        _email,
-        _timestamp,
-        event
-      ) => {
-        console.log({
-          _creator,
-          _paymentId,
-          _firstName,
-          _lastName,
-          _email,
-          _timestamp,
-        });
+    const promise = await toast.promise(
+      async () => {
+        setPaymentStatus(true);
+        try {
+          // await convertUSDToMatic(amount);
+          const signer = await provider.getSigner();
+          const signerAddress = signer.address;
+          const pay = await contract.receivePaymentBpF(
+            signerAddress,
+            paymentId,
+            firstName,
+            lastName,
+            email,
+            { value: ethers.parseEther(maticAmount) }
+          );
+          const hash = pay.hash;
+          contract.on(
+            "ReceivedPaymentBpF",
+            (
+              _creator,
+              _paymentId,
+              _firstName,
+              _lastName,
+              _email,
+              _timestamp,
+              event
+            ) => {
+              const paymentDets = [
+                _creator,
+                _paymentId,
+                _firstName,
+                _lastName,
+                _email,
+                _timestamp,
+                hash,
+              ];
+              setPaymentStatus(false);
+            }
+          );
+        } catch (err) {
+          toast.error(`Unable to complete payment. PaymentId: ${paymentId}`);
+          setPaymentStatus(false);
+          console.log("Error from non-user page: ", err);
+        }
+      },
+      {
+        pending: "Making Payment...", // Displayed while the promise is pending
+        success: "Transaction approved ", // Displayed when the promise resolves successfully
+        error: "Payment failed", // Displayed when the promise rejects with an error
+        autoClose: 5000, // Close after 5 seconds
       }
     );
   };
@@ -131,8 +153,12 @@ const PreviewPage = () => {
     console.log(searchParams.get("amount"));
     setPaymentId(searchParams.get("paymentId"));
     setAmount(Number(searchParams.get("amount")));
-  }, [provider]);
+  }, []);
 
+  useEffect(() => {
+    if (!amount) return;
+    convertUSDToMatic(amount);
+  }, [provider, contract]);
   return (
     <main className="flex justify-center h-full bg-[#1856F3]">
       <div className="flex justify-center max-h-full items-center p-12">
@@ -146,22 +172,22 @@ const PreviewPage = () => {
                 </div>
               </Link>
               <button
-               className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                 connecting
-                   ? "bg-gray-500"
-                   : wallet
-                   ? "bg-red-500 border border-none hover:bg-red-700"
-                   : "bg-blue-500 border border-none hover:bg-blue-700"
-               }`}
-               disabled={connecting}
-               onClick={() => (wallet ? disconnect(wallet) : connect())}
-             >
-               {connecting
-                 ? "Connecting"
-                 : wallet
-                 ? "Disconnect"
-                 : "Connect Wallet"}
-             </button>
+                className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
+                  connecting
+                    ? "bg-gray-500"
+                    : wallet
+                    ? "bg-red-500 border border-none hover:bg-red-700"
+                    : "bg-blue-500 border border-none hover:bg-blue-700"
+                }`}
+                disabled={connecting}
+                onClick={() => (wallet ? disconnect(wallet) : connect())}
+              >
+                {connecting
+                  ? "Connecting"
+                  : wallet
+                  ? "Disconnect"
+                  : "Connect Wallet"}
+              </button>
             </div>
             <h2 className="text-3xl mb-3 font-medium text-color mt-[25px] flex justify-center">
               {paymentDetails?.planName}
@@ -175,11 +201,11 @@ const PreviewPage = () => {
             onSubmit={makePayment}
           >
             <input
-              type="number"
+              type="text"
               placeholder="500 USD"
               id="payment-amount"
               name="payment-amount"
-              value={`$ ${amount}`}
+              value={`$${amount.toFixed(2)}`}
               readOnly
               className="w-[380px] mb-6 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
@@ -230,13 +256,21 @@ const PreviewPage = () => {
               readOnly
               className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
-
+            <div className="w-[380px] mb-11 px-3 flex justify-center py-2 rounded-xl border">
+              ${amount}{" "}
+              <Image
+                src={convertIcon}
+                alt="icon"
+                className="w-5 h-5 pt-[6px]"
+              />
+              {`${Number(maticAmount).toFixed(3)}`} MATIC
+            </div>
             <div className="mb-10">
               <button
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
               >
-                Pay
+               {` Pay ${Number(maticAmount).toFixed(3)} MATIC`}
               </button>
             </div>
             <div className="w-full flex justify-between ">
