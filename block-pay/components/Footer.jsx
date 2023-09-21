@@ -5,17 +5,17 @@ import { footerLinks } from "@/constants";
 
 const Footer = () => {
   return (
-    <section className="flex flex-col justify-center w-full items-center">
-      <div className="flex flex-col sm:flex-row justify-between items-center p-9  w-full bg-[#f7f7f7]">
+    <section className="flex flex-col justify-center w-full bg-[#f7f7f7] items-center sm:py-12 sm:px-8">
+      <div className="flex flex-col sm:flex-row justify-between  p-9  w-full bg-[#f7f7f7]">
         <div className="flex flex-col sm:w-[45%] mb-5">
-          <h2 className="text-xl font-semibold sm:text-4xl">
-            Feedback and suggestions are appreciated
+          <h2 className="text-xl font-semibold sm:text-4xl w-[31.25rem]">
+            Feedback and suggestions <br /> are appreciated
           </h2>
           <div className="flex flex-col">
             <Form />
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row sm:w-[55%]">
+        <div className="flex flex-col justify-center sm:flex-row sm:w-[55%]">
           {footerLinks.map((footerLink) => (
             <ul key={footerLink.id} className="flex flex-row sm:flex-row mx-4 sm:mb-0">
               <li className="mb-3 flex flex-col">
@@ -47,7 +47,7 @@ function Form() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col w-[500px]">
+    <form onSubmit={handleSubmit} className="flex flex-col">
       <input
         type="text"
         placeholder="Name"
