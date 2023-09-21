@@ -209,7 +209,7 @@ const PreviewPage = () => {
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState();
   const [paymentId, setPaymentId] = useState("");
-  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [paymentDetails, setPaymentDetails] = useState("");
   const [maticAmount, setMaticAmount] = useState("0");
   const [paymentStatus, setPaymentStatus] = useState(false);
   const db = getFirestore(app);
@@ -233,13 +233,13 @@ const PreviewPage = () => {
             console.log(paymentPlan);
           } else {
             // Handle the case where no matching document is found
-            setPaymentDetails(null);
+            setPaymentDetails("");
           }
         })
         .catch((error) => {
           // Handle any errors that may occur during the query
           console.error("Error fetching payment plan:", error);
-          setPaymentDetails(null); // Set paymentDetails to null in case of an error
+          setPaymentDetails(""); // Set paymentDetails to null in case of an error
         });
     }
   }, [paymentId]);
