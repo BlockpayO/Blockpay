@@ -270,11 +270,7 @@ const PreviewPage = () => {
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
               >
-<<<<<<< HEAD
                {` Pay ${Number(maticAmount).toFixed(3)} MATIC`}
-=======
-                {paymentStatus ? "Making Payment..." : "Pay"}
->>>>>>> 525419f1017dc7e7f472f2957f02276e35d8ecbd
               </button>
             </div>
             <div className="w-full flex justify-between ">
