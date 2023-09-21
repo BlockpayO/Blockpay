@@ -21,6 +21,7 @@ import {
 } from "firebase/firestore";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { convertIcon } from "@/public/assets/images";
+import { toast } from "react-toastify";
 const PreviewPage = () => {
   const [view, setView] = useState(false);
   const openView = (view) => {
@@ -40,6 +41,7 @@ const PreviewPage = () => {
   const [paymentId, setPaymentId] = useState("");
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [maticAmount, setMaticAmount] = useState("0");
+  const [paymentStatus, setPaymentStatus] = useState(false);
   const db = getFirestore(app);
   useEffect(() => {
     if (paymentId) {
@@ -85,50 +87,66 @@ const PreviewPage = () => {
 
   const makePayment = async (e) => {
     e.preventDefault();
+    if (!connected) {
+      toast.error("Please connect wallet");
+      return;
+    }
     if (!provider) return;
     if (!contract) return;
     if (!paymentId) return;
-    try {
-      // await convertUSDToMatic(amount);
-      const signer = await provider.getSigner();
-      const signerAddress = signer.address;
-      const pay = await contract.receivePaymentBpF(
-        signerAddress,
-        paymentId,
-        firstName,
-        lastName,
-        email,
-        { value: ethers.parseEther(maticAmount) }
-      );
-      const hash = pay.hash;
-      contract.on(
-        "ReceivedPaymentBpF",
-        (
-          _creator,
-          _paymentId,
-          _firstName,
-          _lastName,
-          _email,
-          _timestamp,
-          event
-        ) => {
-          const paymentDets = [
-            _creator,
-            _paymentId,
-            _firstName,
-            _lastName,
-            _email,
-            _timestamp,
-            hash,
-          ];
+    const promise = await toast.promise(
+      async () => {
+        setPaymentStatus(true);
+        try {
+          // await convertUSDToMatic(amount);
+          const signer = await provider.getSigner();
+          const signerAddress = signer.address;
+          const pay = await contract.receivePaymentBpF(
+            signerAddress,
+            paymentId,
+            firstName,
+            lastName,
+            email,
+            { value: ethers.parseEther(maticAmount) }
+          );
+          const hash = pay.hash;
+          contract.on(
+            "ReceivedPaymentBpF",
+            (
+              _creator,
+              _paymentId,
+              _firstName,
+              _lastName,
+              _email,
+              _timestamp,
+              event
+            ) => {
+              const paymentDets = [
+                _creator,
+                _paymentId,
+                _firstName,
+                _lastName,
+                _email,
+                _timestamp,
+                hash,
+              ];
+              setPaymentStatus(false);
+            }
+          );
+        } catch (err) {
+          toast.error(`Unable to complete payment. PaymentId: ${paymentId}`);
+          setPaymentStatus(false);
+          console.log("Error from non-user page: ", err);
         }
-      );
-    } catch (err) {
-      toast.error(`Error making payment for paymentId: ${paymentId}`);
-      console.log("Error from non-user page: ", err);
-    }
+      },
+      {
+        pending: "Making Payment...", // Displayed while the promise is pending
+        success: "Transaction approved ", // Displayed when the promise resolves successfully
+        error: "Payment failed", // Displayed when the promise rejects with an error
+        autoClose: 5000, // Close after 5 seconds
+      }
+    );
   };
-
   const searchParams = useSearchParams();
   useEffect(() => {
     console.log(searchParams.get("paymentId"));
@@ -252,7 +270,11 @@ const PreviewPage = () => {
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
               >
+<<<<<<< HEAD
                {` Pay ${Number(maticAmount).toFixed(3)} MATIC`}
+=======
+                {paymentStatus ? "Making Payment..." : "Pay"}
+>>>>>>> 525419f1017dc7e7f472f2957f02276e35d8ecbd
               </button>
             </div>
             <div className="w-full flex justify-between ">
