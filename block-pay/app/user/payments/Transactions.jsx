@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useContract from "../useContract";
 import connectWallet from "../connect";
+import { toast } from "react-toastify";
 
 const Transactions = ({ max }) => {
   const [txs, setTxs] = useState([]);
@@ -41,6 +42,14 @@ const Transactions = ({ max }) => {
     blockpayTxs();
   }, [provider, contract]);
 
+  const handleHashCopy = (txHash) => {
+    navigator.clipboard.writeText(txHash);
+    try {
+      toast.success("TxHash copied successfully!");
+    } catch (error) {
+      toast.error("TxHash not copied!");
+    }
+  };
   if (provider && txs.length === 0) {
     return (
       <div className="flex justify-center items-center">
@@ -53,9 +62,10 @@ const Transactions = ({ max }) => {
     <table className=" mb-2 md:mb-4 w-[100%]">
       <thead>
         <tr className=" text-[#727272] font-bold text-sm mb-1">
-          <th className="text-left w-[39%]">Name</th>
-          <th className="text-left w-[30%]">Amount</th>
-          <th className="text-left w-[30%]">Date</th>
+          <th className="text-left w-[35%]">Name</th>
+          <th className="text-left w-[20%]">Amount</th>
+          <th className="text-left w-[25%]">Date</th>
+          <th className="text-left w-[20%]">Tx Hash</th>
         </tr>
       </thead>
       <tbody>
@@ -66,7 +76,13 @@ const Transactions = ({ max }) => {
               <td className="text-black">
                 {` $${(Number(tx["0"]) / 10 ** 18).toFixed(3)}`}
               </td>
-              <td>{new Date(Number(tx["4"]) * 1000).toLocaleString()}</td>
+              <td>{new Date(Number(tx["4"]) * 1000).toLocaleDateString()}</td>
+              <td
+                className="text-color cursor-pointer"
+                onClick={() => handleHashCopy(tx["5"])}
+              >
+                {tx["5"].slice(0, 5)}...
+              </td>
             </tr>
           ))}
       </tbody>

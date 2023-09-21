@@ -79,12 +79,16 @@ const Dashboard = () => {
 
   const getMaticPrice = async () => {
     if (!provider) return;
-    const price = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd"
-    );
-    const res = await price.json();
-    setMaticPrice(res["matic-network"]["usd"]);
-    console.log("matic pricee", res["matic-network"]["usd"]);
+    try {
+      const price = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd"
+      );
+      const res = await price.json();
+      setMaticPrice(res["matic-network"]["usd"]);
+      console.log("matic pricee", res["matic-network"]["usd"]);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleWithdrawal = async () => {
@@ -410,12 +414,12 @@ const Dashboard = () => {
                   <h2 className="text-color text-l md:text-xl md:font-medium text-color">
                     Recent Transactions
                   </h2>
-                  <div className="mt-1">{<Transactions max={9} />}</div>
-                  <div className="flex flex-col justify-center items-center">
+                  <div className="mt-1">{<Transactions max={7} />}</div>
+                  <div className="flex flex-col justify-center items-center mt-[150px]">
                     <Link
                       href="/user/transactions"
                       type="button"
-                      className="text-center font-medium mt-30 md:mt-48 hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 cursor-pointer"
+                      className="text-center font-medium hover:text-white hover:bg-[#1856F3] text-[#727272] border border-[#1856f3] text-sm w-32 rounded-md py-2 px-3 cursor-pointer"
                     >
                       Load more
                     </Link>
