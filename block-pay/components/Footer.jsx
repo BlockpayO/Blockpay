@@ -17,8 +17,8 @@ const Footer = () => {
         </div>
         <div className="flex flex-col justify-center sm:flex-row sm:w-[55%]">
           {footerLinks.map((footerLink) => (
-            <ul key={footerLink.id} className="flex flex-row sm:flex-row mx-4 sm:mb-0">
-              <li className="mb-3 flex flex-col">
+            <ul key={footerLink.id} className="flex flex-row sm:flex-row mx-4 sm:mb-0 justify-center">
+              <li className="mb-3 flex flex-col ">
                 <h2 className="text-xl font-semibold sm:text-4xl">{footerLink.name}</h2>
                 <p className="text-lg">
                   {footerLink.desc1}
