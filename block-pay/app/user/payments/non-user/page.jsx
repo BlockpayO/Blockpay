@@ -10,6 +10,7 @@ import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
+import {toast} from 'react-toastify'
 import { app } from "@/firebase/firebase";
 import {
   collection,
@@ -18,6 +19,7 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { convertIcon } from "@/public/assets/images";
 const PreviewPage = () => {
   const [view, setView] = useState(false);
@@ -57,7 +59,6 @@ const PreviewPage = () => {
             const paymentPlan = querySnapshot.docs[0].data();
             setPaymentDetails(paymentPlan);
             console.log(paymentPlan);
-            console.log(paymentDetails);
           } else {
             // Handle the case where no matching document is found
             setPaymentDetails(null);
@@ -79,6 +80,8 @@ const PreviewPage = () => {
     setMaticAmount(String(usdToMatic + 0.000001));
     console.log("matic", usdToMatic);
   };
+
+  
 
   const makePayment = async (e) => {
     e.preventDefault();
@@ -180,11 +183,11 @@ const PreviewPage = () => {
             onSubmit={makePayment}
           >
             <input
-              type="number"
+              type="text"
               placeholder="500 USD"
               id="payment-amount"
               name="payment-amount"
-              value={amount}
+              value={`$${amount.toFixed(2)}`}
               readOnly
               className="w-[380px] mb-6 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
@@ -235,7 +238,7 @@ const PreviewPage = () => {
               readOnly
               className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
-            <div className="w-[380px] mb-11 px-3 py-2 rounded-xl border">
+            <div className="w-[380px] mb-11 px-3 flex justify-center py-2 rounded-xl border">
               ${amount}{" "}
               <Image
                 src={convertIcon}
@@ -249,7 +252,7 @@ const PreviewPage = () => {
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
               >
-                Pay
+               {` Pay ${Number(maticAmount).toFixed(3)} MATIC`}
               </button>
             </div>
             <div className="w-full flex justify-between ">
