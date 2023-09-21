@@ -131,7 +131,8 @@ const PreviewPage = () => {
             }
           );
         } catch (err) {
-          toast.error(`Error making payment for paymentId: ${paymentId}`);
+          toast.error(`Unable to complete payment. PaymentId: ${paymentId}`);
+          setPaymentStatus(false);
           console.log("Error from non-user page: ", err);
         }
       },
