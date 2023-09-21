@@ -74,7 +74,7 @@ const Transactions = ({ max }) => {
             <tr key={tx["4"]} className="mb-4">
               <td className="text-black">{`${tx["1"]} ${tx["2"]}`}</td>
               <td className="text-black">
-                {` $${(Number(tx["0"]) / 10 ** 18).toFixed(3)}`}
+                {`$${(Number(tx["0"]) / 10 ** 18).toFixed(3)}`}
               </td>
               <td>{new Date(Number(tx["4"]) * 1000).toLocaleDateString()}</td>
               <td
