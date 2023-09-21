@@ -104,6 +104,43 @@ const connectWallet = () => {
           setProvider(ethersProvider);
           signerContext.setProvider(ethersProvider);
           setConnected(true);
+
+          // Check the connected network
+          ethersProvider.getNetwork().then((network) => {
+            const allowedNetworks = ["matic", "mumbai"];
+            if (!allowedNetworks.includes(network.name.toLowerCase())) {
+              setNetworkError(true);
+
+              // Automatically switch to one of the accepted networks (e.g., Matic Mumbai)
+              if (wallet.provider.isMetaMask) {
+                wallet.provider
+                  .request({
+                    method: "wallet_addEthereumChain",
+                    params: [
+                      {
+                        chainId: "0x13881", // Chain ID for Matic Mumbai
+                        chainName: "Mumbai",
+                        rpcUrls: [
+                          `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
+                        ],
+                        nativeCurrency: {
+                          name: "Matic",
+                          symbol: "MATIC",
+                          decimals: 18,
+                        },
+                        blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+                      },
+                    ],
+                  })
+                  .catch((error) => {
+                    console.error("Error switching network:", error);
+                  });
+              }
+            }
+          });
+
+          // Listen for accountsChanged event
+          window.ethereum.on("accountsChanged", handleAccountsChanged);
         } else {
           // Handle the case where ethersProvider is undefined
           console.error("Ethers provider is undefined.");
@@ -115,6 +152,13 @@ const connectWallet = () => {
     } else if (!connecting) {
       setConnected(false);
     }
+
+    return () => {
+      // Cleanup: Remove accountsChanged event listener
+      if (wallet && wallet.provider && window.ethereum.off) {
+        window.ethereum.off("accountsChanged", handleAccountsChanged);
+      }
+    };
   }, [wallet, connecting, signerContext.setProvider]);
 
   if (networkError) {
