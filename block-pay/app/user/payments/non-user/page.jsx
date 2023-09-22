@@ -207,7 +207,7 @@ const PreviewPage = () => {
                     : "bg-blue-500 border border-none hover:bg-blue-700"
                 }`}
                 disabled={connecting}
-                onClick={() => (wallet ? disconnect(wallet) : connect())}
+                onClick={() => ( connect())}
               >
                 {connecting
                   ? "Connecting"
