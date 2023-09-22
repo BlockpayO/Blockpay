@@ -99,7 +99,7 @@ const PreviewPage = () => {
     e.preventDefault();
     if (!connected) {
       toast.error("Please connect wallet");
-      return;
+      connect()
     }
     if (!provider) return;
     if (!contract) return;
