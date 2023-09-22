@@ -30,8 +30,7 @@ const Dashboard = () => {
   const [maticPrice, setMaticPrice] = useState("0.00");
   const [withdrawalStatus, setWithdrawalStatus] = useState(false);
   const router = useRouter();
-  
-
+  let tether;
   useEffect(() => {
     const auth = getAuth(app);
 
