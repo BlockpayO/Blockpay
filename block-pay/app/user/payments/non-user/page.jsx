@@ -30,7 +30,7 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-  const { provider, wallet, connecting, connected, connect, disconnect } =
+  const { provider, wallet,  connected, connect, disconnect } =
     connectWallet();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -207,11 +207,10 @@ const PreviewPage = () => {
                     : "bg-blue-500 border border-none hover:bg-blue-700"
                 }`}
                 disabled={connecting}
-                onClick={() => ( connect())}
+                onClick={() => (wallet ? disconnect(wallet) : connect())}
               >
-                {connecting
-                  ? "Connecting"
-                  : wallet
+                {
+                   wallet
                   ? "Disconnect"
                   : "Connect Wallet"}
               </button>
