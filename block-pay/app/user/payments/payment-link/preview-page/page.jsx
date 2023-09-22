@@ -193,12 +193,7 @@ const PreviewPage = () => {
         <div className="flex justify-center max-h-full items-center p-12">
             <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] py-7 px-6 w-[525px]">
                 <div className="grid w-full mb-8">
-                    <Link href="/user/payments/payment-link" className="flex-row order-first">
-                        <div className="flex justify-start cursor-pointer">
-                            <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
-                            <p className="ml-2 text-sm text-color">Back</p>
-                        </div>
-                    </Link>
+                  
                     <h2 className="text-3xl font-medium text-color mt-[25px] flex justify-center">
                     {paymentDetails?.planName}
                     </h2>
