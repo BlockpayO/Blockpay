@@ -7,7 +7,7 @@ import ProviderContext from "./user/context/ProviderContext";
 import { useState } from "react";
 import { ChakraProvider  } from "@chakra-ui/react";
 import { theme } from "@/app/chakra-ui/theme";
-// import 'aos/dist/aos.css';
+import 'aos/dist/aos.css';
 import { useEffect } from "react";
 import AOS from 'aos';
 
@@ -43,25 +43,25 @@ const aeonik = localFont({
 
 const Layout = ({ children }) => {
   const [provider, setProvider] = useState(null);
-  // useEffect(() => {
-  //   // Initialize AOS with your configuration
-  //   AOS.init({
-  //     disable: false,
-  //     startEvent: 'DOMContentLoaded',
-  //     initClassName: 'aos-init',
-  //     animatedClassName: 'aos-animate',
-  //     useClassNames: false,
-  //     disableMutationObserver: false,
-  //     debounceDelay: 50,
-  //     throttleDelay: 99,
-  //     offset: 120,
-  //     delay: 0,
-  //     easing: 'ease-in-out',
-  //     once: false,
-  //     mirror: false,
-  //     anchorPlacement: 'top-bottom',
-  //   });
-  // }, []);
+  useEffect(() => {
+    // Initialize AOS with your configuration
+    AOS.init({
+      disable: false,
+      startEvent: 'DOMContentLoaded',
+      initClassName: 'aos-init',
+      animatedClassName: 'aos-animate',
+      useClassNames: false,
+      disableMutationObserver: false,
+      debounceDelay: 50,
+      throttleDelay: 99,
+      offset: 120,
+      delay: 0,
+      easing: 'ease-in-out',
+      once: false,
+      mirror: false,
+      anchorPlacement: 'top-bottom',
+    });
+  }, []);
 
   return (
     <html lang="en-CA" className={`${aeonik.className}`}>
