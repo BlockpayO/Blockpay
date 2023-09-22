@@ -202,7 +202,7 @@ const PreviewPage = () => {
                 className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
                    wallet
                     ? "bg-red-500 border border-none hover:bg-red-700"
-                    : "bg-blue-500 border border-none hover:bg-blue-700"
+                    : "bg-blue-500 border border-none hover:bg-blue-700" 
                 }`}
                 
                 onClick={() => (wallet ? disconnect(wallet) : connect())}
