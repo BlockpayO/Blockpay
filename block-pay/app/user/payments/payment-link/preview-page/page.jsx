@@ -19,7 +19,7 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-  const { provider } = connectWallet();
+  const { provider, connect } = connectWallet();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,6 +27,7 @@ const PreviewPage = () => {
   // get payment plan info with payment id
   // make payment with info
   const makePayment = async (paymentId) => {
+    connect()
     if (!provider) return;
     if (!contract) return;
     if (!paymentId) return;
