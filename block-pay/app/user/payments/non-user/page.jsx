@@ -200,13 +200,11 @@ const PreviewPage = () => {
               </Link> */}
               <button
                 className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                  connecting
-                    ? "bg-gray-500"
-                    : wallet
+                   wallet
                     ? "bg-red-500 border border-none hover:bg-red-700"
                     : "bg-blue-500 border border-none hover:bg-blue-700"
                 }`}
-                disabled={connecting}
+                
                 onClick={() => (wallet ? disconnect(wallet) : connect())}
               >
                 {
