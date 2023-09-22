@@ -9,6 +9,7 @@ import { ChakraProvider  } from "@chakra-ui/react";
 import { theme } from "@/app/chakra-ui/theme";
 import 'aos/dist/aos.css';
 import { useEffect } from "react";
+import Head from "next/head";
 import AOS from 'aos';
 
 const aeonik = localFont({
@@ -65,11 +66,11 @@ const Layout = ({ children }) => {
 
   return (
     <html lang="en-CA" className={`${aeonik.className}`}>
-      <head>
+      <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Blockpay - Your personal subscription manager</title>
      
-      </head>
+      </Head>
       <body className={`${aeonik.className}`}>
         <ProviderContext.Provider value={{ provider, setProvider }}>
           <ChakraProvider theme={theme}>
