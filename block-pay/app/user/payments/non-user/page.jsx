@@ -40,7 +40,9 @@ const PreviewPage = () => {
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [maticAmount, setMaticAmount] = useState("0");
   const [paymentStatus, setPaymentStatus] = useState(false);
+  const searchParams = useSearchParams();
   const db = getFirestore(app);
+
   useEffect(() => {
     if (paymentId) {
       // Reference to the top-level collection where payment plans are stored
@@ -71,6 +73,18 @@ const PreviewPage = () => {
         });
     }
   }, [paymentId]);
+
+  useEffect(() => {
+    console.log(searchParams.get("paymentId"));
+    console.log(searchParams.get("amount"));
+    setPaymentId(searchParams.get("paymentId"));
+    setAmount(Number(searchParams.get("amount")));
+  }, []);
+
+  useEffect(() => {
+    if (!amount) return;
+    convertUSDToMatic(amount);
+  }, [provider, contract]);
 
   const convertUSDToMatic = async (usdAmount) => {
     if (!provider) return;
@@ -172,30 +186,18 @@ const PreviewPage = () => {
     );
   };
 
-  const searchParams = useSearchParams();
-  useEffect(() => {
-    console.log(searchParams.get("paymentId"));
-    console.log(searchParams.get("amount"));
-    setPaymentId(searchParams.get("paymentId"));
-    setAmount(Number(searchParams.get("amount")));
-  }, []);
-
-  useEffect(() => {
-    if (!amount) return;
-    convertUSDToMatic(amount);
-  }, [provider, contract]);
   return (
     <main className="flex justify-center h-full bg-[#1856F3]">
       <div className="flex justify-center max-h-full items-center p-12">
         <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] py-7 px-6 w-[525px]">
           <div className="grid w-full mb-3">
             <div className="flex justify-between">
-              <Link href="/user/payments" className="flex-row order-first">
+              {/* <Link href="/user/payments" className="flex-row order-first">
                 <div className="flex justify-start cursor-pointer">
                   <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
                   <p className="ml-2 text-sm text-color">Back</p>
                 </div>
-              </Link>
+              </Link> */}
               <button
                 className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
                   connecting
