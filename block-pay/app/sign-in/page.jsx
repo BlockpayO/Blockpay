@@ -97,7 +97,7 @@ const SignIn = () => {
               </button>
 
               <div className="flex flex-col justify-between  mt-5">
-                <p className="text-sm font-medium flex justify-start ml-2 text-gray-500 hover:text-black">
+                <p className="text-sm font-medium flex justify-start ml-2 text-gray-500 hover:text-black cursor-pointer">
                   Forgot Password?
                 </p>
                 <p className="font-normal text-[14px]  ml-2 ">
