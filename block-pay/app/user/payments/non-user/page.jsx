@@ -277,9 +277,9 @@ const PreviewPage = () => {
               name="paymentID"
               value={paymentId}
               readOnly
-              className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+              className="w-[380px] mb-21 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
-            <div className="w-[380px] mb-11 px-3 flex justify-center py-2 rounded-xl border">
+            <div className="w-[380px] mb-21 px-3 flex justify-center py-2 rounded-xl border">
               ${amount}{" "}
               <Image
                 src={convertIcon}
@@ -301,7 +301,7 @@ const PreviewPage = () => {
                 {/* {` Pay ${Number(maticAmount).toFixed(3)} MATIC`} */}
               </button>
             </div>
-            <div className="w-full flex justify-between ">
+            <div className="w-full flex justify-between mb-10 ">
               <p className="text-sm">
                 Enjoy Seamless tracking of finances <br /> using blockpay
               </p>
