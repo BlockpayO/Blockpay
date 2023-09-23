@@ -42,7 +42,7 @@ const PreviewPage = () => {
   const searchParams = useSearchParams();
  
 
-  const { provider, wallet,  connected, connect, disconnect } =connectWallet();
+  const { provider, connected, connect } =connectWallet();
   const db = getFirestore(app);
   useEffect(() => {
     if (paymentId) {
@@ -206,10 +206,10 @@ const PreviewPage = () => {
                     : "bg-blue-500 border border-none hover:bg-blue-700" 
                 }`}
                 
-                onClick={() => (wallet ? disconnect(wallet) : connect())}
+                onClick={() => (connect())}
               >
                 {
-                   wallet
+                   connected
                   ? "Disconnect"
                   : "Connect Wallet"}
               </button>
