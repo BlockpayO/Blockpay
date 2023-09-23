@@ -122,52 +122,7 @@ const PreviewPage = () => {
           );
           const hash = pay.hash;
 
-          // Create a reference to the Firestore database
-          const paymentPlanQuery = query(
-            collection(db, "paymentPlans"),
-            where("paymentId", "==", paymentId)
-          );
-
-          const paymentPlanQuerySnapshot = await getDocs(paymentPlanQuery);
-
-          if (paymentPlanQuerySnapshot.empty) {
-            // Handle the case where no matching payment plan is found
-            console.error("No payment plan found with paymentId: ", paymentId);
-            return;
-          }
-
-          // Assuming there is only one matching payment plan, use the first document in the snapshot
-          const paymentPlanDocRef = paymentPlanQuerySnapshot.docs[0].ref;
-
-          // Create an object with payment details
-          const paymentData = {
-            creator: signerAddress,
-            paymentId,
-            firstName,
-            lastName,
-            email,
-            amount,
-            timestamp: serverTimestamp(),
-            transactionHash: hash,
-          };
-
-          // Reference to the "transactions" subcollection within the payment plan
-          const transactionsCollectionRef = collection(
-            paymentPlanDocRef,
-            "transactions"
-          );
-
-          // Use `addDoc` to save the payment data to the "transactions" subcollection
-          const transactionDocRef = await addDoc(
-            transactionsCollectionRef,
-            paymentData
-          );
-          console.log(
-            "Transaction document written with ID: ",
-            transactionDocRef.id
-          );
-
-          // Set the payment status to false when the payment is received
+        
           setPaymentStatus(false);
 
           // Display a success message
