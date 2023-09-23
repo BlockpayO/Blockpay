@@ -13,9 +13,15 @@ import Image from "next/image";
 import { useEffect, useContext, useState } from "react";
 import Transactions from "../payments/Transactions";
 import connectWallet from "../connect";
+import { Spinner, Flex } from "@chakra-ui/react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app } from "@/firebase/firebase";
+import { useRouter } from "next/navigation";
 
 const TransactionsPage = () => {
   const [view, setView] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   // brief illustration of how to import the provide inside a page.
 
@@ -31,6 +37,34 @@ const TransactionsPage = () => {
   const closeView = (view) => {
     setView(view);
   };
+
+  useEffect(() => {
+    const auth = getAuth(app);
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoading(false);
+      } else {
+        router.push("/sign-in");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <Flex align="center" justify="center" height="100vh">
+        <Spinner
+          size="xl"
+          color="#1856f3"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+        />
+      </Flex>
+    );
+  }
 
   return (
     <main className="flex">
@@ -80,7 +114,7 @@ const TransactionsPage = () => {
           {!provider && (
             <div className="flex items-center justify-center mt-[12.5rem]">
               <h1 className="font-medium text-3xl text-gray-300 flex">
-                No transaction history
+                Connect wallet to show transaction history
               </h1>
             </div>
           )}

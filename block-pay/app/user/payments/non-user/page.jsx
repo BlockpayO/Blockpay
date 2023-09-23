@@ -1,102 +1,73 @@
 "use client";
 
-import SideNav from "@/components/SideNav";
-import { backarrow } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useContract from "../../useContract";
 import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
-import { ethers } from "ethers";
+import { app } from "@/firebase/firebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
+
+import { convertIcon } from "@/public/assets/images";
 
 const PreviewPage = () => {
-  const [view, setView] = useState(false);
-  const openView = (view) => {
-    setView(view);
-  };
-
-  const closeView = (view) => {
-    setView(view);
-  };
   const { contract } = useContract();
-  const { provider, wallet, connecting, connect, disconnect } = connectWallet();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const { provider, wallet, connected, connect, disconnect } = connectWallet();
   const [amount, setAmount] = useState();
   const [paymentId, setPaymentId] = useState("");
-  // get payment plan info with payment id
-  // make payment with info
-  let maticAmount;
-  // const getPlan = async () => {
-  //   if (!paymentId) return;
-  //   if (!provider) return;
-  //   if (!contract) return;
-  //   const signer = await provider.getSigner();
-  //   const signerAddress = signer.address;
-  //   const plan = await contract.getPaymentPlanBpF(signerAddress, paymentId);
-  //   console.log("Plan", Math.abs(Number(plan["2"]) / 10 ** 18));
-  //   setAmount(Math.abs(Number(plan["2"]) / 10 ** 18));
-  // };
+  const [paymentDetails, setPaymentDetails] = useState(null);
 
-  const convertUSDToMatic = async (usdAmount) => {
-    if (!provider) return;
-    if (!contract) return;
-    const maticToUSD = await contract.conversionRateBpF(String(1 * 10 ** 18));
-    const usdToMatic = (usdAmount * 10 ** 18) / Number(maticToUSD);
-    maticAmount = String(usdToMatic + 0.00001);
-    console.log("matic", usdToMatic);
-  };
-
-  const makePayment = async (e) => {
-    e.preventDefault();
-    if (!provider) return;
-    if (!contract) return;
-    if (!paymentId) return;
-
-    await convertUSDToMatic(amount);
-    console.log("in pay", maticAmount);
-    console.log("am in pay", amount);
-    const signer = await provider.getSigner();
-    const signerAddress = signer.address;
-    const pay = await contract.receivePaymentBpF(
-      signerAddress,
-      paymentId,
-      firstName,
-      lastName,
-      email,
-      { value: ethers.parseEther(maticAmount) }
-    );
-    contract.on(
-      "ReceivedPaymentBpF",
-      (
-        _creator,
-        _paymentId,
-        _firstName,
-        _lastName,
-        _email,
-        _timestamp,
-        event
-      ) => {
-        console.log({
-          _creator,
-          _paymentId,
-          _firstName,
-          _lastName,
-          _email,
-          _timestamp,
-        });
-      }
-    );
-  };
   const searchParams = useSearchParams();
+  const db = getFirestore(app);
+
+  useEffect(() => {
+    if (paymentId) {
+      // Reference to the top-level collection where payment plans are stored
+      const paymentPlansRef = collection(db, "paymentPlans");
+
+      // Query Firestore for the payment plan document with the matching paymentId
+      const paymentQuery = query(
+        paymentPlansRef,
+        where("paymentId", "==", paymentId)
+      );
+
+      getDocs(paymentQuery)
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            // Extract the payment details from the first matching document
+            const paymentPlan = querySnapshot.docs[0].data();
+            setPaymentDetails(paymentPlan);
+            console.log(paymentPlan);
+          } else {
+            // Handle the case where no matching document is found
+            setPaymentDetails(null);
+          }
+        })
+        .catch((error) => {
+          // Handle any errors that may occur during the query
+          console.error("Error fetching payment plan:", error);
+          setPaymentDetails(null); // Set paymentDetails to null in case of an error
+        });
+    }
+  }, [paymentId]);
+
   useEffect(() => {
     console.log(searchParams.get("paymentId"));
     console.log(searchParams.get("amount"));
     setPaymentId(searchParams.get("paymentId"));
     setAmount(Number(searchParams.get("amount")));
-  }, [provider]);
+  }, []);
+
+  const makePayment = async (e) => {
+    e.preventDefault();
+  };
 
   return (
     <main className="flex justify-center h-full bg-[#1856F3]">
@@ -104,35 +75,15 @@ const PreviewPage = () => {
         <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] py-7 px-6 w-[525px]">
           <div className="grid w-full mb-3">
             <div className="flex justify-between">
-              <Link href="/user/payments" className="flex-row order-first">
-                <div className="flex justify-start cursor-pointer">
-                  <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
-                  <p className="ml-2 text-sm text-color">Back</p>
-                </div>
-              </Link>
-              <button
-                className={`flex-row order-last border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                  connecting
-                    ? "bg-gray-500"
-                    : wallet
-                    ? "bg-red-500 border hover:border-red-500 hover:bg-white hover:text-black"
-                    : "bg-blue-600 border hover:bg-white hover:text-black hover:border-blue-600"
-                }`}
-                disabled={connecting}
-                onClick={() => (wallet ? disconnect(wallet) : connect())}
-              >
-                {connecting
-                  ? "Connecting"
-                  : wallet
-                  ? "Disconnect"
-                  : "Connect Wallet"}
+              <button className="border border-gray-200 px-4 py-2 rounded-md text-gray-100 bg-blue-500 border border-none hover:bg-blue-700">
+                Connect Wallet
               </button>
             </div>
             <h2 className="text-3xl mb-3 font-medium text-color mt-[25px] flex justify-center">
-              defamatory
+              {paymentDetails?.planName}
             </h2>
             <p className="text-xs flex justify-center">
-              Payment for Land rent and cleaning of environment
+              {paymentDetails?.Description}
             </p>
           </div>
           <form
@@ -140,8 +91,7 @@ const PreviewPage = () => {
             onSubmit={makePayment}
           >
             <input
-              type="number"
-              placeholder="500 USD"
+              type="text"
               id="payment-amount"
               name="payment-amount"
               value={amount}
@@ -155,10 +105,7 @@ const PreviewPage = () => {
                 placeholder="first name"
                 id="first-name"
                 name="first-name"
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                }}
-                required
+                readOnly
                 className="w-[180px] mr-2 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
 
@@ -167,10 +114,7 @@ const PreviewPage = () => {
                 placeholder="last name"
                 id="last-name"
                 name="last-name"
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                }}
-                required
+                readOnly
                 className="w-[180px] px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
             </div>
@@ -179,10 +123,7 @@ const PreviewPage = () => {
               placeholder="email"
               id="email"
               name="email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              required
+              readOnly
               className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
 
@@ -195,7 +136,15 @@ const PreviewPage = () => {
               readOnly
               className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
-
+            <div className="w-[380px] mb-11 px-3 flex justify-center py-2 rounded-xl border">
+              ${amount}{" "}
+              <Image
+                src={convertIcon}
+                alt="icon"
+                className="w-5 h-5 pt-[6px]"
+              />
+              {`0.000`} MATIC
+            </div>
             <div className="mb-10">
               <button
                 type="submit"
@@ -221,7 +170,7 @@ export default PreviewPage;
 
 const Button = () => {
   return (
-    <Link href="/sign-up">
+    <Link href="#">
       <button
         type="button"
         className="rounded-md bg-blue-600 border text-white hover:text-black hover:bg-white hover:border-blue-600 py-2 px-4"

@@ -1,13 +1,28 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { navLinks } from "@/constants/index";
 import { logo } from "@/public/assets/images";
+import { app } from "@/firebase/firebase";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const auth = getAuth(app);
 
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
   function toggleMobileMenu() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   }
@@ -21,7 +36,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="sm:hidden">
+        <div className="lg:hidden">
           <button
             className="text-[#4f7df2e6] hover:bg-[#1856F3] px-3 py-2 rounded-md text-sm font-medium flex"
             onClick={toggleMobileMenu}
@@ -42,8 +57,8 @@ const Navbar = () => {
             </svg>
           </button>
         </div>
-        
-        <ul className='list-none text-[20px] sm:flex justify-end items-center hidden'>
+
+        <ul className="list-none text-[20px] lg:flex justify-end items-center hidden">
           {navLinks.map((nav) => (
             <Link
               key={nav.id}
@@ -53,21 +68,51 @@ const Navbar = () => {
               {nav.title}
             </Link>
           ))}
+          {isLoggedIn ? (
+            <Link
+              className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
+              href="/user/dashboard"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
+              href="/sign-in"
+            >
+              Login
+            </Link>
+          )}
         </ul>
       </div>
 
       {isMobileMenuOpen && (
-        <div className="sm:hidden">
+        <div className="lg:hidden">
           <div className="px-2 py-1">
             {navLinks.map((nav) => (
               <Link
                 key={nav.id}
                 href={`/${nav.id}`}
-                className="text-[#4f7df2e6] hover:text-gray-700 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
+                className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
               >
                 {nav.title}
               </Link>
             ))}
+            {isLoggedIn ? (
+              <Link
+                className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
+                href="/user/dashboard"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
+                href="/sign-in"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       )}

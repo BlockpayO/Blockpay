@@ -6,6 +6,7 @@ import trustModule from "@web3-onboard/trust";
 import ProviderContext from "./context/ProviderContext";
 import { ethers } from "ethers";
 import setContract from "./useContract";
+import { toast } from "react-toastify";
 
 const HELP = `<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 704.01 159.42">
 <defs>
@@ -42,10 +43,8 @@ const wcV2InitOptions = {
    * Project ID associated with [WalletConnect account](https://cloud.walletconnect.com)
    */
   projectId: "68e6a9128d33db007d0f2261c25a3bad",
-  /**
-   * Chains required to be supported by all wallets connecting to your DApp
-   */
-  requiredChains: [1, 56, 137, 97, 80001],
+
+  requiredChains: [137, 80001],
 };
 
 const walletConnect = walletConnectModule(wcV2InitOptions);
@@ -55,24 +54,6 @@ init({
   apiKey,
   wallets: [injected, trust, walletConnect],
   chains: [
-    {
-      id: "0x1",
-      token: "ETH",
-      label: "Ethereum Mainnet",
-      rpcUrl: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
-    },
-    {
-      id: "0x38",
-      token: "BNB",
-      label: "Binance",
-      rpcUrl: "https://bsc-dataseed.binance.org/",
-    },
-    {
-      id: "0x5",
-      token: "ETH",
-      label: "Goerli",
-      rpcUrl: `https://goerli.infura.io/v3/${INFURA_KEY}`,
-    },
     {
       id: "0x13881",
       token: "MATIC",
@@ -96,16 +77,95 @@ const connectWallet = () => {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const signerContext = useContext(ProviderContext);
   const [provider, setProvider] = useState();
+  const [connected, setConnected] = useState(false);
+  const [networkError, setNetworkError] = useState(false);
+
   useEffect(() => {
     let ethersProvider;
-    if (wallet) {
-      ethersProvider = new ethers.BrowserProvider(wallet.provider, "any");
-      setProvider(ethersProvider);
-      signerContext.setProvider(ethersProvider);
-    }
-  }, [wallet, signerContext.setProvider]);
 
-  return { provider, wallet, connecting, connect, disconnect };
+    const handleDisconnect = () => {
+      setConnected(false);
+      setProvider(undefined); // Set provider to undefined on disconnect
+    };
+
+    const handleAccountsChanged = (accounts) => {
+      // Check if the user disconnected their wallet
+      if (accounts.length === 0) {
+        handleDisconnect();
+      }
+    };
+
+    if (wallet) {
+      try {
+        ethersProvider = new ethers.BrowserProvider(wallet.provider, "any");
+
+        // Check if ethersProvider is valid before setting it
+        if (ethersProvider) {
+          setProvider(ethersProvider);
+          signerContext.setProvider(ethersProvider);
+          setConnected(true);
+
+          // Check the connected network
+          ethersProvider.getNetwork().then((network) => {
+            const allowedNetworks = ["matic", "mumbai"];
+            if (!allowedNetworks.includes(network.name.toLowerCase())) {
+              setNetworkError(true);
+
+              // Automatically switch to one of the accepted networks (e.g., Matic Mumbai)
+              if (wallet.provider.isMetaMask) {
+                wallet.provider
+                  .request({
+                    method: "wallet_addEthereumChain",
+                    params: [
+                      {
+                        chainId: "0x13881", // Chain ID for Matic Mumbai
+                        chainName: "Mumbai",
+                        rpcUrls: [
+                          `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
+                        ],
+                        nativeCurrency: {
+                          name: "Matic",
+                          symbol: "MATIC",
+                          decimals: 18,
+                        },
+                        blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+                      },
+                    ],
+                  })
+                  .catch((error) => {
+                    console.error("Error switching network:", error);
+                  });
+              }
+            }
+          });
+
+          // Listen for accountsChanged event
+          window.ethereum.on("accountsChanged", handleAccountsChanged);
+        } else {
+          // Handle the case where ethersProvider is undefined
+          console.error("Ethers provider is undefined.");
+        }
+      } catch (error) {
+        // Handle any errors that occur during provider initialization
+        console.error("Error initializing ethers provider:", error);
+      }
+    } else if (!connecting) {
+      setConnected(false);
+    }
+
+    return () => {
+      // Cleanup: Remove accountsChanged event listener
+      if (wallet && wallet.provider && window.ethereum.off) {
+        window.ethereum.off("accountsChanged", handleAccountsChanged);
+      }
+    };
+  }, [wallet, connecting, signerContext.setProvider]);
+
+  if (networkError) {
+    // Handle network error state here, e.g., show an error message to the user.
+  }
+
+  return { provider, wallet, connecting, connected, connect, disconnect };
 };
 
 export default connectWallet;

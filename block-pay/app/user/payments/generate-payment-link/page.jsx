@@ -1,22 +1,44 @@
 "use client";
 
-import { IoCopy } from "react-icons/io5";
+import { Fragment } from "react";
 import { SideNav } from "@/components";
-import { copyIcon, backarrow, qrCode } from "@/public/assets/images";
+import { backarrow } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import useContract from "../../useContract";
-import connectWallet from "../../connect";
+import useContract from "@/app/user/useContract";
+import connectWallet from "/app/user/connect";
 import { ethers } from "ethers";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
-import { Flex, Spinner } from "@chakra-ui/react";
+import {
+  Flex,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Spinner,
+} from "@chakra-ui/react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
-import { ToastContainer, toast } from "react-toastify";
-import QRCode from "qrcode.react";
+import { toast } from "react-toastify";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
+import QRCode from "qrcode.react";
+import {
+  Box,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Stack,
+  ModalOverlay,
+  Heading,
+  ModalContent,
+  Icon,
+} from "@chakra-ui/react";
+import { CopyIcon, CheckIcon } from "@chakra-ui/icons";
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
@@ -27,6 +49,9 @@ const GenPaymentLink = () => {
   const [paymentId, setPaymentId] = useState("");
   const [paymentLink, setPaymentLink] = useState("");
   const [userId, setUserId] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isgenerating, setIsGenerating] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   const router = useRouter();
   const openView = (view) => {
@@ -36,6 +61,8 @@ const GenPaymentLink = () => {
   const closeView = (view) => {
     setView(view);
   };
+
+  const timestamp = Timestamp.now();
 
   function generatePaymentId() {
     // Generate a random 16-byte buffer as a unique identifier
@@ -52,27 +79,26 @@ const GenPaymentLink = () => {
   }
 
   const db = getFirestore(app);
-  const saveToDB = async () => {
+  const saveToDB = async (userId) => {
     try {
-      const docRef = await addDoc(
-        collection(db, `users/${userId}/paymentPlans`),
-        {
-          amount: amount,
-          planName: planName,
-          paymentId: paymentId,
-          paymentLink: paymentLink,
-          Description: description,
-        }
-      );
+      const docRef = await addDoc(collection(db, "paymentPlans"), {
+        amount: amount,
+        planName: planName,
+        paymentId: paymentId,
+        paymentLink: paymentLink,
+        Description: description,
+        Timestamp: timestamp,
+        creatorId: userId, // Add the creatorId to the document
+      });
 
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
-      console.log(`Error adding document : `, error);
+      console.log(`Error adding document: `, error);
       toast.error(error.message);
     }
   };
 
-  const { provider } = connectWallet();
+  const { provider, connected } = connectWallet();
 
   const { contract } = useContract();
 
@@ -83,51 +109,77 @@ const GenPaymentLink = () => {
 
   useEffect(() => {
     setPaymentLink(
-      `https://blockpayo.vercel.app/user/payments/non-user?paymentId=${paymentId}`
+      `https://blockpay-payment-site.vercel.app/?paymentId=${paymentId}&amount=${amount}`
     );
-  }, [paymentId]);
+  }, [paymentId, amount]);
 
   useEffect(() => {
     console.log(paymentLink);
   }, [paymentLink]);
-
+  {
+    /**----======= GENERATE PAYMENT LINK =======---- */
+  }
   const createPaymentPlan = async (e) => {
     e.preventDefault();
+    console.log("fired plan creation");
+
+    if (!connected) {
+      toast.error("Please connect wallet");
+      return;
+    }
+
     if (!provider) return;
     if (!contract) return;
     if (!paymentId) return;
-    try {
-      await contract.createPaymentBpF(
-        planName,
-        ethers.parseEther(String(amount)),
-        paymentId
-      );
-      contract.on(
-        "CreatedPaymentPlanBpF",
-        async (
-          blockpayContract,
-          planName,
-          amount,
-          contractIndex,
-          payId,
-          event
-        ) => {
-          console.log("CreatedPaymentPlan Event", {
-            blockpayContract,
-            planName,
-            amount,
-            contractIndex,
-            payId,
-          });
 
-          const savedDocument = await saveToDB(userId);
-          console.log("saved documents", savedDocument);
-          toast.success("Link generated");
+    // Use toast.promise to show processing and completion states
+    const promise = await toast.promise(
+      async () => {
+        try {
+          console.log("Running contract");
+          setIsGenerating(true);
+          await contract.createPaymentBpF(
+            planName,
+            ethers.parseEther(String(amount)),
+            paymentId
+          );
+          contract.on(
+            "CreatedPaymentPlanBpF",
+            async (
+              blockpayContract,
+              planName,
+              amount,
+              contractIndex,
+              payId,
+              event
+            ) => {
+              console.log("CreatedPaymentPlan Event", {
+                blockpayContract,
+                planName,
+                amount,
+                contractIndex,
+                payId,
+              });
+
+              const savedDocument = await saveToDB(userId);
+              console.log("Saved documents", savedDocument);
+              onOpen();
+              setIsGenerating(false);
+            }
+          );
+        } catch (err) {
+          console.log("Error from generate payment links: ", err.message);
         }
-      );
-    } catch (err) {
-      console.log("Error from generate payment links: ", err.message);
-    }
+      },
+      {
+        pending: "Generating Link...", // Displayed while the promise is pending
+        success: "Transaction approved ", // Displayed when the promise resolves successfully
+        error: "Upload failed", // Displayed when the promise rejects with an error
+        autoClose: 5000, // Close after 5 seconds
+      }
+    );
+
+    // Use the `promise` variable in your component to display toast messages
   };
 
   useEffect(() => {
@@ -160,119 +212,195 @@ const GenPaymentLink = () => {
   }
 
   const handleCopy = () => {
-    const input = document.getElementById("paymentID");
     navigator.clipboard.writeText(paymentId);
     try {
-      toast.success("Payment ID copied successfully!", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      toast.success("Payment ID copied successfully!");
     } catch (error) {
-      toast.error("Failed to copy Payment ID.");
+      toast.error("Payment ID not copied!");
     }
   };
 
   return (
     <main className="flex">
-      <SideNav view={view} closeView={closeView} />
-      <div className="w-full">
-        <div className="flex-row mt-5 mx-5">
-          <SideNavToggle openView={openView} />
-        </div>
-        <div className="flex justify-center mt-0 items-center p-12">
-          <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] p-7 w-[450px]">
-            <div className="grid w-full">
-              <Link href="/user/payments" className="flex-row order-first">
-                <div className="flex justify-start items-start cursor-pointer">
-                  <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
-                  <p className="ml-2 text-sm text-color">Back</p>
-                </div>
-              </Link>
-              <h2 className="h2 text-color mt-2 mb-5 flex justify-center">
-                Generate Payment Links
-              </h2>
-            </div>
-            <form className="flex flex-col" onSubmit={createPaymentPlan}>
-              <input
-                type="text"
-                placeholder="Payment Name"
-                id="payment-name"
-                name="payment-name"
-                value={planName}
-                onChange={(e) => {
-                  setPlanName(e.target.value);
-                }}
-                required
-                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-              />
-
-              <input
-                type="text"
-                placeholder="Description"
-                id="description"
-                name="description"
-                value={description}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-                required
-                className="w-[310px] h-[77px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-              />
-
-              <input
-                type="number"
-                placeholder="Amount In USD"
-                id="amount"
-                name="amount"
-                value={amount}
-                onChange={(e) => {
-                  setAmount(e.target.value);
-                }}
-                required
-                className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
-              />
-
-              <div className="flex justify-between mb-4">
+      <Fragment>
+        <SideNav view={view} closeView={closeView} />
+        <div className="w-full">
+          <div className="flex-row mt-5 mx-5">
+            <SideNavToggle openView={openView} />
+          </div>
+          <div className="flex justify-center mt-0 items-center p-12">
+            <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] p-7 w-[450px]">
+              <div className="grid w-full">
+                <Link href="/user/payments" className="flex-row order-first">
+                  <div className="flex justify-start items-start cursor-pointer">
+                    <Image
+                      src={backarrow}
+                      alt="backarrow"
+                      className="w-6 h-6"
+                    />
+                    <p className="ml-2 text-sm text-color">Back</p>
+                  </div>
+                </Link>
+                <h2 className="h2 text-color mt-2 mb-5 flex justify-center">
+                  Generate Payment Links
+                </h2>
+              </div>
+              <form className="flex flex-col" onSubmit={createPaymentPlan}>
                 <input
                   type="text"
-                  placeholder="Payment ID"
-                  id="paymentID"
-                  name="paymentID"
-                  value={paymentId}
-                  readOnly
+                  placeholder="Payment Name"
+                  id="payment-name"
+                  name="payment-name"
+                  value={planName}
+                  onChange={(e) => {
+                    setPlanName(e.target.value);
+                  }}
                   required
-                  className="w-[260px] px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
+                <input
+                  type="text"
+                  placeholder="Payment Description"
+                  id="payment-description"
+                  name="payment-description"
+                  value={description}
+                  onChange={(e) => {
+                    setDescription(e.target.value);
+                  }}
+                  required
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+                <input
+                  type="number"
+                  placeholder="Amount in USD"
+                  id="amount"
+                  name="amount"
+                  value={amount}
+                  onChange={(e) => {
+                    setAmount(e.target.value);
+                  }}
+                  required
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+                <input
+                  type="text"
+                  placeholder="PaymentId"
+                  id="payment-id"
+                  name="payment-id"
+                  value={paymentId}
+                  disabled
+                  className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+                />
+
                 <button type="button" onClick={handleCopy}>
-                  <Image src={copyIcon} className="p-[1.2px]" />
+                  <copyIcon />
                 </button>
-                <ToastContainer />
-              </div>
 
-              {paymentLink && (
-                <div className="mb-5 flex flex-col justify-center items-center">
-                  <QRCode value={paymentLink} className="mb-1.5 h-20 w-20" />
-                  <Link
-                    href={paymentLink}
-                    className="text-color text-xs underline"
+                <div className="mb-2">
+                  <button
+                    type="submit"
+                    className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                    disabled={isgenerating}
                   >
-                    Preview Page
-                  </Link>
+                    {isgenerating ? "Generating..." : "Create Link"}
+                  </button>
                 </div>
-              )}
+              </form>
 
-              <div className="mb-2">
-                <button
-                  type="submit"
-                  className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-                  onClick={generatePaymentId}
-                >
-                  Create Link
-                </button>
-              </div>
-            </form>
+              <Modal
+                onClose={onClose}
+                isOpen={isOpen}
+                closeOnOverlayClick={false}
+                isCentered
+              >
+                <ModalOverlay />
+                <ModalContent borderRadius={"2xl"} p={4}>
+                  <ModalCloseButton
+                    bg={"#1856F3"}
+                    color={"#fff"}
+                    rounded={"full"}
+                  />
+                  <ModalBody>
+                    <Stack gap={5}>
+                      <Box alignSelf={"center"} mb={10}>
+                        {" "}
+                        <Heading
+                          size={"xl"}
+                          color={"#1856F3"}
+                          align={"center"}
+                          mx={10}
+                          mb={5}
+                        >
+                          Payment Link Generated
+                        </Heading>
+                      </Box>
+
+                      <Box>
+                        {paymentLink && (
+                          <div className="mb-5 flex flex-col justify-center items-center">
+                            <QRCode
+                              value={paymentLink}
+                              className="mb-1.5 h-20 w-20"
+                            />
+                            <Link
+                              href={paymentLink}
+                              className="text-color text-xs underline"
+                            >
+                              Preview Page
+                            </Link>
+                          </div>
+                        )}
+                      </Box>
+
+                      <Box>
+                        <InputGroup>
+                          <Input type="text" value={paymentLink} disabled />
+                          <InputRightElement
+                            onClick={() => {
+                              setClicked(true);
+                              navigator.clipboard.writeText(paymentLink);
+                            }}
+                          >
+                            {clicked ? (
+                              <Icon
+                                as={CheckIcon}
+                                boxSize={5}
+                                color={"green.400"}
+                              />
+                            ) : (
+                              <CopyIcon />
+                            )}
+                          </InputRightElement>
+                        </InputGroup>
+                      </Box>
+                      <Button
+                        height={"54px"}
+                        color="#fff"
+                        bg="#1856F3"
+                        _hover={{
+                          bg: "white",
+                          border: "1px solid #1856F3",
+                          color: "#1856F3",
+                        }}
+                        rounded={"2xl"}
+                        onClick={() => {
+                          onClose();
+                          router.push("/user/payments/payment-link");
+                        }}
+                      >
+                        Ok
+                      </Button>
+                    </Stack>
+                  </ModalBody>
+                  <ModalFooter>
+                    {/* <Button onClick={onClose}>Close</Button> */}
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </div>
           </div>
         </div>
-      </div>
+      </Fragment>
     </main>
   );
 };

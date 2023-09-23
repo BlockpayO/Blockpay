@@ -3,13 +3,10 @@ import Link from "next/link";
 import { useState } from "react";
 import Image from "next/image";
 import { backarrow } from "@/public/assets/images";
-import {app} from '../../firebase/firebase'
+import { app } from "../../firebase/firebase";
 import { signInWithEmailAndPassword, getAuth } from "@firebase/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-
-
-
 
 const SignIn = () => {
   const [password, setPassword] = useState("");
@@ -17,8 +14,7 @@ const SignIn = () => {
 
   const [loading, setLoading] = useState(false);
 
-
-  const router = useRouter()
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,23 +28,23 @@ const SignIn = () => {
       );
       const user = userCredentials.user;
       console.log(user);
-      toast.success("login successful");
+      toast.success("Login successful");
       router.push("/user/dashboard");
     } catch (error) {
       console.log(error);
+      // toast.error(error.message)
       if (error.code === "auth/user-not-found") {
         console.log("User not found. ");
         toast.error("user not found");
       } else if (error.code === "auth/wrong-password") {
-        toast.error("Incorrect password");
+        toast.error("Incorrect email or password");
       } else {
         toast.error(error.message);
       }
     } finally {
       setLoading(false);
     }
-  
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -99,7 +95,20 @@ const SignIn = () => {
               >
                 Login
               </button>
-              <p className="text-sm font-medium flex justify-start ml-2 text-gray-500 hover:text-black">Forgot Password?</p>
+
+              <div className="flex flex-col justify-between  mt-5">
+                <p className="text-sm font-medium flex justify-start ml-2 text-gray-500 hover:text-black cursor-pointer">
+                  Forgot Password?
+                </p>
+                <p className="font-normal text-[14px]  ml-2 ">
+                  Do not have an account?{" "}
+                  <span className="text-color">
+                    <Link href="/sign-up">
+                      <button type="button">Sign up</button>
+                    </Link>
+                  </span>
+                </p>
+              </div>
             </form>
           </>
         )}

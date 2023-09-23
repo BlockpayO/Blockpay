@@ -144,7 +144,7 @@ const SignUp = () => {
 
             <div className="justify-center items-center mt-5">
               <p className="font-normal text-[14px]">
-                Have an Account already?{" "}
+                Have an account already?{" "}
                 <span className="text-color">
                   <Link href="/sign-in">
                     <button type="button">Login</button>
