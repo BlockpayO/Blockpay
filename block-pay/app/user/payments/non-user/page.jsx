@@ -277,9 +277,9 @@ const PreviewPage = () => {
               name="paymentID"
               value={paymentId}
               readOnly
-              className="w-[380px] mb-21 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+              className="w-[380px] mb-7 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
-            <div className="w-[380px] mb-11 px-3 flex justify-center py-2 rounded-xl border">
+            <div className="w-[380px] mb-7 px-3 flex justify-center py-2 rounded-xl border">
               ${amount}{" "}
               <Image
                 src={convertIcon}
@@ -288,7 +288,7 @@ const PreviewPage = () => {
               />
               {`${Number(maticAmount).toFixed(3)}`} MATIC
             </div>
-            <div className="mb-10">
+            <div className="mb-7">
               <button
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
