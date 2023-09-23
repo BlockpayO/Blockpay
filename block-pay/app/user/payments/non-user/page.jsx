@@ -30,7 +30,7 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-  const { provider,   connected, connect, disconnect } =
+  const { provider, wallet,  connected, connect, disconnect } =
     connectWallet();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -81,19 +81,19 @@ const PreviewPage = () => {
     setAmount(Number(searchParams.get("amount")));
   }, []);
 
-  useEffect(() => {
-    if (!amount) return;
-    convertUSDToMatic(amount);
-  }, [provider, contract]);
+  // useEffect(() => {
+  //   if (!amount) return;
+  //   convertUSDToMatic(amount);
+  // }, [provider, contract]);
 
-  const convertUSDToMatic = async (usdAmount) => {
-    if (!provider) return;
-    if (!contract) return;
-    const maticToUSD = await contract.conversionRateBpF(String(1 * 10 ** 18));
-    const usdToMatic = (usdAmount * 10 ** 18) / Number(maticToUSD);
-    setMaticAmount(String(usdToMatic + 0.000001));
-    console.log("matic", usdToMatic);
-  };
+  // const convertUSDToMatic = async (usdAmount) => {
+  //   if (!provider) return;
+  //   if (!contract) return;
+  //   const maticToUSD = await contract.conversionRateBpF(String(1 * 10 ** 18));
+  //   const usdToMatic = (usdAmount * 10 ** 18) / Number(maticToUSD);
+  //   setMaticAmount(String(usdToMatic + 0.000001));
+  //   console.log("matic", usdToMatic);
+  // };
 
   const makePayment = async (e) => {
     e.preventDefault();
@@ -200,15 +200,15 @@ const PreviewPage = () => {
               </Link> */}
               <button
                 className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                   connected
+                   wallet
                     ? "bg-red-500 border border-none hover:bg-red-700"
                     : "bg-blue-500 border border-none hover:bg-blue-700" 
                 }`}
                 
-                onClick={() => (connected ? disconnect() : connect())}
+                onClick={() => (wallet ? disconnect(wallet) : connect())}
               >
                 {
-                   connected
+                   wallet
                   ? "Disconnect"
                   : "Connect Wallet"}
               </button>
