@@ -49,28 +49,28 @@ const TransactionsPage = () => {
           <SearchBar />
         </div>
         <div className="p-7 border-2 border-[#bebebe] rounded-lg flex-auto h-screen">
-          <div className="space-x-2 > * + * top-0 mt-0">
+          <div className="space-x-2 > * + * top-0 mt-0 flex justify-between">
             <button
               type="button"
-              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2"
+              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-1 px-2 md:py-2 md:w-24 md:mr-5 mt-2"
             >
               All
             </button>
             <button
               type="button"
-              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2"
+              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-1 px-2 md:py-2 md:w-24 md:mr-5 mt-2"
             >
               Pending
             </button>
             <button
               type="button"
-              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2"
+              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-1 px-2 md:py-2 md:w-24 md:mr-5 mt-2"
             >
               Successful
             </button>
             <button
               type="button"
-              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md p-1 md:py-2 md:w-24 md:mr-5 mt-2"
+              className=" hover:bg-[#1856F3] hover:text-white text-black text-sm self-end hover:border-0 border border-[#bebebe] rounded-md py-1 px-2 md:py-2 md:w-24 md:mr-5 mt-2"
             >
               Failed
             </button>
@@ -78,7 +78,7 @@ const TransactionsPage = () => {
           {provider && <Transactions />}
           {/**--==== BEFORE WALLET CONNECT ====--*/}
           {!provider && (
-            <div className="sticky flex items-center justify-center mt-[12.5rem]">
+            <div className="flex items-center justify-center mt-[12.5rem]">
               <h1 className="font-medium text-3xl text-gray-300 flex">
                 No transaction history
               </h1>
@@ -112,7 +112,7 @@ const TransactionsPage = () => {
                                 </div>
                             </li>
                         ))}
-                    </ul>*/}
+                                </ul>*/}
         </div>
       </div>
     </main>

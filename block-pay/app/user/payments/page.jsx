@@ -21,8 +21,8 @@ const PaymentsPage = () => {
     return (
         <main className="flex">
             <SideNav view={view} closeView={closeView}/>
-            <div className="w-full flex justify-center">
-            <div className="flex-row mt-5 mb-5 mx-5">
+            <div className="w-full flex flex-col justify-center">
+            <div className="flex-row mt-5 mx-5">
                 <SideNavToggle openView={openView} />
             </div>
             <div className="flex justify-center items-center w-full">

@@ -67,21 +67,13 @@ const PaymentLinkPage = () => {
     <Flex>
       <SideNav view={view} closeView={closeView} />
 
-      <Flex p={20} bgColor={"white"} justifyContent={"center"} w={"100vw"}>
-        <Flex
-          direction={"column"}
-          bgColor={"#F7F7F7"}
-          w={"70vw"}
-          borderRadius={"2xl"}
-          boxShadow={"md"}
-        >
-          <Flex
-            p={["10px", "2px", "20px"]}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            w={["95vw", "95vw", "70vw"]}
-          >
-            <Flex onClick={goBack} cursor={"pointer"} alignItems={"center"}>
+      <Flex p={5} bgColor={"white"} justifyContent={"center"} w={"100vw"} direction={"column"}>
+      <Flex
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      mb={5}
+      >
+      <Flex onClick={goBack} cursor={"pointer"} alignItems={"center"}>
               <Icon
                 justifySelf={"flex-end"}
                 ml={"auto"}
@@ -94,13 +86,7 @@ const PaymentLinkPage = () => {
               </Text>
             </Flex>
 
-            <Box>
-              <Heading fontSize={["16px", "18px", "25px"]} color={"#1856F3"}>
-                Payment Link
-              </Heading>
-            </Box>
-
-            <Box>
+      <Box>
               <Button
                 bgColor={"#1856F3"}
                 fontSize={["x-small", "x-small", "md"]}
@@ -115,6 +101,24 @@ const PaymentLinkPage = () => {
               >
                 Generate Payment Link
               </Button>
+            </Box>
+      </Flex>
+        <Flex
+          direction={"column"}
+          bgColor={"#F7F7F7"}
+          w={"100%"}
+          borderRadius={"2xl"}
+          boxShadow={"md"}
+        >
+          <Flex
+            p={["10px", "2px", "20px"]}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <Box>
+              <Heading fontSize={["16px", "18px", "25px"]} color={"#1856F3"}>
+                Payment Link
+              </Heading>
             </Box>
           </Flex>
 

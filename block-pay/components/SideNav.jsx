@@ -102,7 +102,7 @@ const SideNav = ({ view, closeView }) => {
         />
       </div>
       <div className="flex">
-        <ul className=" flex flex-col space-y-5">
+        <ul className=" flex flex-col space-y-5 w-full">
           {dashboards.map((dashboard) => (
             <Link
               key={dashboard.id}
