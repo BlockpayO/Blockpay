@@ -1,14 +1,11 @@
 "use client";
 
-import SideNav from "@/components/SideNav";
-import { backarrow } from "@/public/assets/images";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useContract from "../../useContract";
 import connectWallet from "../../connect";
 import { useSearchParams } from "next/navigation";
-import { ethers } from "ethers";
 import { app } from "@/firebase/firebase";
 import {
   collection,
@@ -17,29 +14,17 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import { addDoc, serverTimestamp } from "firebase/firestore";
-import { convertIcon } from "@/public/assets/images";
-import { toast } from "react-toastify";
-const PreviewPage = () => {
-  const [view, setView] = useState(false);
-  const openView = (view) => {
-    setView(view);
-  };
 
-  const closeView = (view) => {
-    setView(view);
-  };
+import { convertIcon } from "@/public/assets/images";
+
+const PreviewPage = () => {
   const { contract } = useContract();
   const { provider, wallet, connecting, connected, connect, disconnect } =
     connectWallet();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
   const [amount, setAmount] = useState();
   const [paymentId, setPaymentId] = useState("");
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const [maticAmount, setMaticAmount] = useState("0");
-  const [paymentStatus, setPaymentStatus] = useState(false);
+
   const searchParams = useSearchParams();
   const db = getFirestore(app);
 
@@ -81,109 +66,8 @@ const PreviewPage = () => {
     setAmount(Number(searchParams.get("amount")));
   }, []);
 
-  useEffect(() => {
-    if (!amount) return;
-    convertUSDToMatic(amount);
-  }, [provider, contract]);
-
-  const convertUSDToMatic = async (usdAmount) => {
-    if (!provider) return;
-    if (!contract) return;
-    const maticToUSD = await contract.conversionRateBpF(String(1 * 10 ** 18));
-    const usdToMatic = (usdAmount * 10 ** 18) / Number(maticToUSD);
-    setMaticAmount(String(usdToMatic + 0.000001));
-    console.log("matic", usdToMatic);
-  };
-
   const makePayment = async (e) => {
     e.preventDefault();
-    if (!connected) {
-      toast.error("Please connect wallet");
-      return;
-    }
-    if (!provider) return;
-    if (!contract) return;
-    if (!paymentId) return;
-
-    // Display a loading message
-    const promise = await toast.promise(
-      async () => {
-        try {
-          // Your existing payment logic
-          const signer = await provider.getSigner();
-          const signerAddress = signer.address;
-          const pay = await contract.receivePaymentBpF(
-            signerAddress,
-            paymentId,
-            firstName,
-            lastName,
-            email,
-            { value: ethers.parseEther(maticAmount) }
-          );
-          const hash = pay.hash;
-
-          // Create a reference to the Firestore database
-          const paymentPlanQuery = query(
-            collection(db, "paymentPlans"),
-            where("paymentId", "==", paymentId)
-          );
-
-          const paymentPlanQuerySnapshot = await getDocs(paymentPlanQuery);
-
-          if (paymentPlanQuerySnapshot.empty) {
-            // Handle the case where no matching payment plan is found
-            console.error("No payment plan found with paymentId: ", paymentId);
-            return;
-          }
-
-          // Assuming there is only one matching payment plan, use the first document in the snapshot
-          const paymentPlanDocRef = paymentPlanQuerySnapshot.docs[0].ref;
-
-          // Create an object with payment details
-          const paymentData = {
-            creator: signerAddress,
-            paymentId,
-            firstName,
-            lastName,
-            email,
-            amount,
-            timestamp: serverTimestamp(),
-            transactionHash: hash,
-          };
-
-          // Reference to the "transactions" subcollection within the payment plan
-          const transactionsCollectionRef = collection(
-            paymentPlanDocRef,
-            "transactions"
-          );
-
-          // Use `addDoc` to save the payment data to the "transactions" subcollection
-          const transactionDocRef = await addDoc(
-            transactionsCollectionRef,
-            paymentData
-          );
-          console.log(
-            "Transaction document written with ID: ",
-            transactionDocRef.id
-          );
-
-          // Set the payment status to false when the payment is received
-          setPaymentStatus(false);
-
-          // Display a success message
-          toast.success(`Payment made for paymentId: ${paymentId}`);
-        } catch (err) {
-          toast.error(`Unable to complete payment. PaymentId: ${paymentId}`);
-          console.log("Error from non-user page: ", err);
-        }
-      },
-      {
-        pending: "Making Payment...", // Displayed while the promise is pending
-        success: "Transaction approved", // Displayed when the promise resolves successfully
-        error: "Payment failed", // Displayed when the promise rejects with an error
-        autoClose: 5000, // Close after 5 seconds
-      }
-    );
   };
 
   return (
@@ -192,28 +76,8 @@ const PreviewPage = () => {
         <div className="flex flex-col rounded-3xl justify-center items-center bg-[#f7f7f7] py-7 px-6 w-[525px]">
           <div className="grid w-full mb-3">
             <div className="flex justify-between">
-              {/* <Link href="/user/payments" className="flex-row order-first">
-                <div className="flex justify-start cursor-pointer">
-                  <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
-                  <p className="ml-2 text-sm text-color">Back</p>
-                </div>
-              </Link> */}
-              <button
-                className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                  connecting
-                    ? "bg-gray-500"
-                    : wallet
-                    ? "bg-red-500 border border-none hover:bg-red-700"
-                    : "bg-blue-500 border border-none hover:bg-blue-700"
-                }`}
-                disabled={connecting}
-                onClick={() => (wallet ? disconnect(wallet) : connect())}
-              >
-                {connecting
-                  ? "Connecting"
-                  : wallet
-                  ? "Disconnect"
-                  : "Connect Wallet"}
+              <button className="border border-gray-200 px-4 py-2 rounded-md text-gray-100 bg-blue-500 border border-none hover:bg-blue-700">
+                Connect Wallet
               </button>
             </div>
             <h2 className="text-3xl mb-3 font-medium text-color mt-[25px] flex justify-center">
@@ -242,10 +106,7 @@ const PreviewPage = () => {
                 placeholder="first name"
                 id="first-name"
                 name="first-name"
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                }}
-                required
+                readOnly
                 className="w-[180px] mr-2 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
 
@@ -254,10 +115,7 @@ const PreviewPage = () => {
                 placeholder="last name"
                 id="last-name"
                 name="last-name"
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                }}
-                required
+                readOnly
                 className="w-[180px] px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
               />
             </div>
@@ -266,10 +124,7 @@ const PreviewPage = () => {
               placeholder="email"
               id="email"
               name="email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              required
+              readOnly
               className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
 
@@ -289,19 +144,14 @@ const PreviewPage = () => {
                 alt="icon"
                 className="w-5 h-5 pt-[6px]"
               />
-              {`${Number(maticAmount).toFixed(3)}`} MATIC
+              {`0.000`} MATIC
             </div>
             <div className="mb-10">
               <button
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
               >
-                {paymentStatus
-                  ? ` Making payment for... ${Number(maticAmount).toFixed(
-                      3
-                    )} MATIC`
-                  : ` Pay ${Number(maticAmount).toFixed(3)} MATIC`}
-                {/* {` Pay ${Number(maticAmount).toFixed(3)} MATIC`} */}
+                Pay
               </button>
             </div>
             <div className="w-full flex justify-between ">

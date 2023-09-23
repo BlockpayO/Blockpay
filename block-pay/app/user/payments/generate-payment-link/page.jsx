@@ -11,10 +11,16 @@ import connectWallet from "/app/user/connect";
 import { ethers } from "ethers";
 import crypto from "crypto";
 import { useRouter } from "next/navigation";
-import { Flex, Input, InputGroup, InputRightElement, Spinner } from "@chakra-ui/react";
+import {
+  Flex,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Spinner,
+} from "@chakra-ui/react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase/firebase";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import QRCode from "qrcode.react";
@@ -32,10 +38,7 @@ import {
   ModalContent,
   Icon,
 } from "@chakra-ui/react";
-import { CopyIcon, CheckIcon  } from "@chakra-ui/icons";
-
-
-
+import { CopyIcon, CheckIcon } from "@chakra-ui/icons";
 
 const GenPaymentLink = () => {
   const [view, setView] = useState(false);
@@ -47,9 +50,8 @@ const GenPaymentLink = () => {
   const [paymentLink, setPaymentLink] = useState("");
   const [userId, setUserId] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isgenerating, setIsGenerating] = useState(false)
-  const [clicked, setClicked] = useState(false)
-
+  const [isgenerating, setIsGenerating] = useState(false);
+  const [clicked, setClicked] = useState(false);
 
   const router = useRouter();
   const openView = (view) => {
@@ -60,7 +62,7 @@ const GenPaymentLink = () => {
     setView(view);
   };
 
-  const timestamp = Timestamp.now()
+  const timestamp = Timestamp.now();
 
   function generatePaymentId() {
     // Generate a random 16-byte buffer as a unique identifier
@@ -88,14 +90,13 @@ const GenPaymentLink = () => {
         Timestamp: timestamp,
         creatorId: userId, // Add the creatorId to the document
       });
-  
+
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
       console.log(`Error adding document: `, error);
       toast.error(error.message);
     }
   };
-  
 
   const { provider, connected } = connectWallet();
 
@@ -108,33 +109,35 @@ const GenPaymentLink = () => {
 
   useEffect(() => {
     setPaymentLink(
-      `https://blockpayo.vercel.app/user/payments/non-user?paymentId=${paymentId}&amount=${amount}`
+      `https://blockpay-payment-site.vercel.app/?paymentId=${paymentId}&amount=${amount}`
     );
   }, [paymentId, amount]);
 
   useEffect(() => {
     console.log(paymentLink);
   }, [paymentLink]);
-{/**----======= GENERATE PAYMENT LINK =======---- */}
+  {
+    /**----======= GENERATE PAYMENT LINK =======---- */
+  }
   const createPaymentPlan = async (e) => {
     e.preventDefault();
-    console.log('fired plan creation');
-  
+    console.log("fired plan creation");
+
     if (!connected) {
-      toast.error('Please connect wallet');
+      toast.error("Please connect wallet");
       return;
     }
-  
+
     if (!provider) return;
     if (!contract) return;
     if (!paymentId) return;
-  
+
     // Use toast.promise to show processing and completion states
     const promise = await toast.promise(
       async () => {
         try {
-          console.log('Running contract');
-          setIsGenerating(true)
+          console.log("Running contract");
+          setIsGenerating(true);
           await contract.createPaymentBpF(
             planName,
             ethers.parseEther(String(amount)),
@@ -157,29 +160,27 @@ const GenPaymentLink = () => {
                 contractIndex,
                 payId,
               });
-  
+
               const savedDocument = await saveToDB(userId);
               console.log("Saved documents", savedDocument);
               onOpen();
-              setIsGenerating(false)
-  
+              setIsGenerating(false);
             }
           );
         } catch (err) {
           console.log("Error from generate payment links: ", err.message);
         }
-      } ,  {
+      },
+      {
         pending: "Generating Link...", // Displayed while the promise is pending
         success: "Transaction approved ", // Displayed when the promise resolves successfully
         error: "Upload failed", // Displayed when the promise rejects with an error
         autoClose: 5000, // Close after 5 seconds
       }
     );
-  
+
     // Use the `promise` variable in your component to display toast messages
   };
-
-  
 
   useEffect(() => {
     const auth = getAuth(app);
@@ -219,7 +220,6 @@ const GenPaymentLink = () => {
     }
   };
 
-
   return (
     <main className="flex">
       <Fragment>
@@ -233,7 +233,11 @@ const GenPaymentLink = () => {
               <div className="grid w-full">
                 <Link href="/user/payments" className="flex-row order-first">
                   <div className="flex justify-start items-start cursor-pointer">
-                    <Image src={backarrow} alt="backarrow" className="w-6 h-6" />
+                    <Image
+                      src={backarrow}
+                      alt="backarrow"
+                      className="w-6 h-6"
+                    />
                     <p className="ml-2 text-sm text-color">Back</p>
                   </div>
                 </Link>
@@ -254,7 +258,7 @@ const GenPaymentLink = () => {
                   required
                   className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
-                 <input
+                <input
                   type="text"
                   placeholder="Payment Description"
                   id="payment-description"
@@ -266,7 +270,7 @@ const GenPaymentLink = () => {
                   required
                   className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
-                 <input
+                <input
                   type="number"
                   placeholder="Amount in USD"
                   id="amount"
@@ -287,97 +291,114 @@ const GenPaymentLink = () => {
                   disabled
                   className="w-[310px] mb-3 px-4 py-2 rounded-xl border focus:ring focus:ring-blue-300"
                 />
-                
-                
+
                 <button type="button" onClick={handleCopy}>
                   <copyIcon />
                 </button>
-              
 
-              <div className="mb-2">
-                <button
-                  type="submit"
-                  className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
-                  disabled={isgenerating}
-                >
-                 {isgenerating ? 'Generating...' :  "Create Link"}
-                </button>
-              </div>
-            </form>
-
-            <Modal onClose={onClose} isOpen={isOpen} closeOnOverlayClick={false} isCentered>
-            <ModalOverlay />
-            <ModalContent borderRadius={"2xl"} p={4}>
-              <ModalCloseButton
-                bg={"#1856F3"}
-                color={"#fff"}
-                rounded={"full"}
-              />
-              <ModalBody>
-                <Stack gap={5}>
-                  <Box alignSelf={"center"} mb={10}>
-                    {" "}
-                    <Heading
-                      size={"xl"}
-                      color={"#1856F3"}
-                      align={"center"}
-                      mx={10}
-                      mb={5}
-                    >
-                      Payment Link Generated
-                    </Heading>
-                  </Box>
-
-                  <Box>
-                  {paymentLink && (
-                <div className="mb-5 flex flex-col justify-center items-center">
-                  <QRCode value={paymentLink} className="mb-1.5 h-20 w-20" />
-                  <Link
-                    href={paymentLink}
-                    className="text-color text-xs underline"
+                <div className="mb-2">
+                  <button
+                    type="submit"
+                    className="w-[310px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
+                    disabled={isgenerating}
                   >
-                    Preview Page
-                  </Link>
+                    {isgenerating ? "Generating..." : "Create Link"}
+                  </button>
                 </div>
-              )}
-                  </Box>
+              </form>
 
-                  <Box>
-                    <InputGroup>
-                    <Input type="text" value={paymentLink} disabled />
-                    <InputRightElement onClick={()=>{
-                      setClicked(true)
-                      navigator.clipboard.writeText(paymentLink)}}>
-                    {clicked ? <Icon as={CheckIcon} boxSize={5} color={'green.400'}/> :<CopyIcon />}
-                    </InputRightElement>
-                    </InputGroup>
-                  </Box>
-                  <Button
-                    height={"54px"}
-                    color="#fff"
-                    bg="#1856F3"
-                    _hover={{
-                      bg: "white",
-                      border: "1px solid #1856F3",
-                      color: "#1856F3",
-                    }}
-                    rounded={"2xl"}
-                    onClick={()=>{
-                      onClose()
-                      router.push('/user/payments/payment-link')
-                    }}
-                  >
-                    Ok
-                  </Button>
-                </Stack>
-              </ModalBody>
-              <ModalFooter>
-                {/* <Button onClick={onClose}>Close</Button> */}
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+              <Modal
+                onClose={onClose}
+                isOpen={isOpen}
+                closeOnOverlayClick={false}
+                isCentered
+              >
+                <ModalOverlay />
+                <ModalContent borderRadius={"2xl"} p={4}>
+                  <ModalCloseButton
+                    bg={"#1856F3"}
+                    color={"#fff"}
+                    rounded={"full"}
+                  />
+                  <ModalBody>
+                    <Stack gap={5}>
+                      <Box alignSelf={"center"} mb={10}>
+                        {" "}
+                        <Heading
+                          size={"xl"}
+                          color={"#1856F3"}
+                          align={"center"}
+                          mx={10}
+                          mb={5}
+                        >
+                          Payment Link Generated
+                        </Heading>
+                      </Box>
+
+                      <Box>
+                        {paymentLink && (
+                          <div className="mb-5 flex flex-col justify-center items-center">
+                            <QRCode
+                              value={paymentLink}
+                              className="mb-1.5 h-20 w-20"
+                            />
+                            <Link
+                              href={paymentLink}
+                              className="text-color text-xs underline"
+                            >
+                              Preview Page
+                            </Link>
+                          </div>
+                        )}
+                      </Box>
+
+                      <Box>
+                        <InputGroup>
+                          <Input type="text" value={paymentLink} disabled />
+                          <InputRightElement
+                            onClick={() => {
+                              setClicked(true);
+                              navigator.clipboard.writeText(paymentLink);
+                            }}
+                          >
+                            {clicked ? (
+                              <Icon
+                                as={CheckIcon}
+                                boxSize={5}
+                                color={"green.400"}
+                              />
+                            ) : (
+                              <CopyIcon />
+                            )}
+                          </InputRightElement>
+                        </InputGroup>
+                      </Box>
+                      <Button
+                        height={"54px"}
+                        color="#fff"
+                        bg="#1856F3"
+                        _hover={{
+                          bg: "white",
+                          border: "1px solid #1856F3",
+                          color: "#1856F3",
+                        }}
+                        rounded={"2xl"}
+                        onClick={() => {
+                          onClose();
+                          router.push("/user/payments/payment-link");
+                        }}
+                      >
+                        Ok
+                      </Button>
+                    </Stack>
+                  </ModalBody>
+                  <ModalFooter>
+                    {/* <Button onClick={onClose}>Close</Button> */}
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+            </div>
           </div>
-        </div>
         </div>
       </Fragment>
     </main>
