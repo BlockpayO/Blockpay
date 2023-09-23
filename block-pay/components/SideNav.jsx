@@ -29,7 +29,7 @@ import { app } from "@/firebase/firebase";
 import { getAuth } from "firebase/auth";
 import { useState, useEffect } from "react";
 import LogoutModal from "@/components/LogoutModal";
-
+import { MobileLogoutModal } from "@/components/LogoutModal";
 import Link from "next/link";
 
 const SideNav = ({ view, closeView }) => {
@@ -208,7 +208,7 @@ const SideNav = ({ view, closeView }) => {
               <div>{dashboard.title}</div>
             </Link>
           ))}
-          <LogoutModal />
+          <MobileLogoutModal />
         </ul>
 
         <Modal onClose={onClose} isOpen={isOpen} isCentered>
