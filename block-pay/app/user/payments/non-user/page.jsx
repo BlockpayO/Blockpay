@@ -19,8 +19,7 @@ import { convertIcon } from "@/public/assets/images";
 
 const PreviewPage = () => {
   const { contract } = useContract();
-  const { provider, wallet, connecting, connected, connect, disconnect } =
-    connectWallet();
+  const { provider, wallet, connected, connect, disconnect } = connectWallet();
   const [amount, setAmount] = useState();
   const [paymentId, setPaymentId] = useState("");
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -171,7 +170,7 @@ export default PreviewPage;
 
 const Button = () => {
   return (
-    <Link href="/sign-up">
+    <Link href="#">
       <button
         type="button"
         className="rounded-md bg-blue-600 border text-white hover:text-black hover:bg-white hover:border-blue-600 py-2 px-4"
