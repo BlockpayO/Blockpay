@@ -30,7 +30,8 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-
+  const { provider, wallet,  connected, connect, disconnect } =
+    connectWallet();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -40,10 +41,8 @@ const PreviewPage = () => {
   const [maticAmount, setMaticAmount] = useState("0");
   const [paymentStatus, setPaymentStatus] = useState(false);
   const searchParams = useSearchParams();
- 
-
-  const { provider, connected, connect } =connectWallet();
   const db = getFirestore(app);
+
   useEffect(() => {
     if (paymentId) {
       // Reference to the top-level collection where payment plans are stored
@@ -201,15 +200,15 @@ const PreviewPage = () => {
               </Link> */}
               <button
                 className={`border border-gray-200 px-4 py-2 rounded-md text-gray-100 ${
-                   connected
+                   wallet
                     ? "bg-red-500 border border-none hover:bg-red-700"
                     : "bg-blue-500 border border-none hover:bg-blue-700" 
                 }`}
                 
-                onClick={() => (connect())}
+                onClick={() => (wallet ? disconnect(wallet) : connect())}
               >
                 {
-                   connected
+                   wallet
                   ? "Disconnect"
                   : "Connect Wallet"}
               </button>
