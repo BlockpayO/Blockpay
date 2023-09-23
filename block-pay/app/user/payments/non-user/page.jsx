@@ -30,8 +30,7 @@ const PreviewPage = () => {
     setView(view);
   };
   const { contract } = useContract();
-  const { provider, wallet,  connected, connect, disconnect } =
-    connectWallet();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -41,8 +40,10 @@ const PreviewPage = () => {
   const [maticAmount, setMaticAmount] = useState("0");
   const [paymentStatus, setPaymentStatus] = useState(false);
   const searchParams = useSearchParams();
-  const db = getFirestore(app);
+ 
 
+  const { provider, wallet,  connected, connect, disconnect } =connectWallet();
+  const db = getFirestore(app);
   useEffect(() => {
     if (paymentId) {
       // Reference to the top-level collection where payment plans are stored
@@ -81,19 +82,19 @@ const PreviewPage = () => {
     setAmount(Number(searchParams.get("amount")));
   }, []);
 
-  // useEffect(() => {
-  //   if (!amount) return;
-  //   convertUSDToMatic(amount);
-  // }, [provider, contract]);
+  useEffect(() => {
+    if (!amount) return;
+    convertUSDToMatic(amount);
+  }, [provider, contract]);
 
-  // const convertUSDToMatic = async (usdAmount) => {
-  //   if (!provider) return;
-  //   if (!contract) return;
-  //   const maticToUSD = await contract.conversionRateBpF(String(1 * 10 ** 18));
-  //   const usdToMatic = (usdAmount * 10 ** 18) / Number(maticToUSD);
-  //   setMaticAmount(String(usdToMatic + 0.000001));
-  //   console.log("matic", usdToMatic);
-  // };
+  const convertUSDToMatic = async (usdAmount) => {
+    if (!provider) return;
+    if (!contract) return;
+    const maticToUSD = await contract.conversionRateBpF(String(1 * 10 ** 18));
+    const usdToMatic = (usdAmount * 10 ** 18) / Number(maticToUSD);
+    setMaticAmount(String(usdToMatic + 0.000001));
+    console.log("matic", usdToMatic);
+  };
 
   const makePayment = async (e) => {
     e.preventDefault();
@@ -277,9 +278,9 @@ const PreviewPage = () => {
               name="paymentID"
               value={paymentId}
               readOnly
-              className="w-[380px] mb-7 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
+              className="w-[380px] mb-11 px-3 py-2 rounded-xl border focus:ring focus:ring-blue-300"
             />
-            <div className="w-[380px] mb-7 px-3 flex justify-center py-2 rounded-xl border">
+            <div className="w-[380px] mb-11 px-3 flex justify-center py-2 rounded-xl border">
               ${amount}{" "}
               <Image
                 src={convertIcon}
@@ -288,7 +289,7 @@ const PreviewPage = () => {
               />
               {`${Number(maticAmount).toFixed(3)}`} MATIC
             </div>
-            <div className="mb-7">
+            <div className="mb-10">
               <button
                 type="submit"
                 className="w-[380px] p-2 text-white text-lg bg-blue-500 rounded-lg hover:bg-blue-600"
@@ -301,7 +302,7 @@ const PreviewPage = () => {
                 {/* {` Pay ${Number(maticAmount).toFixed(3)} MATIC`} */}
               </button>
             </div>
-            <div className="w-full flex justify-between mb-14 ">
+            <div className="w-full flex justify-between ">
               <p className="text-sm">
                 Enjoy Seamless tracking of finances <br /> using blockpay
               </p>
