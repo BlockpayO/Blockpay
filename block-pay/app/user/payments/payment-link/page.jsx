@@ -149,42 +149,38 @@ const PaymentLinkPage = () => {
     <Flex>
       <SideNav view={view} closeView={closeView} />
 
-      <Flex p={5} bgColor={"white"} justifyContent={"center"} w={"100vw"} direction={"column"}>
-      <Flex
-      justifyContent={"space-between"}
-      alignItems={"center"}
-      mb={5}
-      >
-      <Flex onClick={goBack} cursor={"pointer"} alignItems={"center"}>
-              <Icon
-                justifySelf={"flex-end"}
-                ml={"auto"}
-                as={ChevronLeftIcon}
-                color={"#1856F3"}
-                fontSize="3xl"
-              />
-              <Text fontSize={"16px"} color={"#1856F3"}>
-                Back
-              </Text>
-            </Flex>
+      <Flex p={5} bgColor={"white"} w={"100vw"} direction={"column"}>
+        <Flex justifyContent={"space-between"} mb={5}>
+          <Flex onClick={goBack} cursor={"pointer"} alignItems={"center"}>
+            <Icon
+              justifySelf={"flex-end"}
+              ml={"auto"}
+              as={ChevronLeftIcon}
+              color={"#1856F3"}
+              fontSize="3xl"
+            />
+            <Text fontSize={"16px"} color={"#1856F3"}>
+              Back
+            </Text>
+          </Flex>
 
-      <Box>
-              <Button
-                bgColor={"#1856F3"}
-                fontSize={["x-small", "x-small", "md"]}
-                color={"white"}
-                _hover={{
-                  bg: "white",
-                  border: "1px solid #1856F3",
-                  color: "#1856F3",
-                }}
-                zIndex={"1"}
-                borderRadius={"md"}
-              >
-                Generate Payment Link
-              </Button>
-            </Box>
-      </Flex>
+          <Box>
+            <Button
+              bgColor={"#1856F3"}
+              fontSize={["x-small", "x-small", "md"]}
+              color={"white"}
+              _hover={{
+                bg: "white",
+                border: "1px solid #1856F3",
+                color: "#1856F3",
+              }}
+              zIndex={"1"}
+              borderRadius={"md"}
+            >
+              Generate Payment Link
+            </Button>
+          </Box>
+        </Flex>
         <Flex
           direction={"column"}
           bgColor={"#F7F7F7"}
