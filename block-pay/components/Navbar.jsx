@@ -9,15 +9,15 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  let isLoggedIn = false;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const auth = getAuth(app);
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        isLoggedIn = true;
+        setIsLoggedIn(true);
       } else {
-        isLoggedIn = false;
+        setIsLoggedIn(false);
       }
     });
 
