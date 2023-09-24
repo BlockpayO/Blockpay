@@ -68,14 +68,15 @@ const Navbar = () => {
               {nav.title}
             </Link>
           ))}
-          {isLoggedIn ? (
+          {isLoggedIn && (
             <Link
               className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
               href="/user/dashboard"
             >
               Dashboard
             </Link>
-          ) : (
+          )}
+          {!isLoggedIn && (
             <Link
               className="text-[#4f7df2e6] hover:text-gray-50 hover:bg-[#1856F3] block px-3 py-2 rounded-md text-base font-medium"
               href="/sign-in"
