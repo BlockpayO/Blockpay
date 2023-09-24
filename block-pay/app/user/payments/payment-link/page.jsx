@@ -149,7 +149,13 @@ const PaymentLinkPage = () => {
     <Flex>
       <SideNav view={view} closeView={closeView} />
 
-      <Flex p={5} bgColor={"white"} w={"100vw"} direction={"column"}>
+      <Flex
+        p={5}
+        bgColor={"white"}
+        w={"100vw"}
+        direction={"column"}
+        marginTop={9}
+      >
         <Flex justifyContent={"space-between"} mb={5}>
           <Flex onClick={goBack} cursor={"pointer"} alignItems={"center"}>
             <Icon
